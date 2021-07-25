@@ -1,8 +1,10 @@
 .vs/*
 TestResults/*
 
-Source/bin/*
-Source/obj/*
+SharpGo/bin/*
+SharpGo/obj/*
 
 Tests/bin/*
 Tests/obj/*
+
+*.user
