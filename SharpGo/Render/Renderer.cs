@@ -50,14 +50,43 @@ namespace Source.Render
 		{
 			DrawGrid(board);
 
+			float r = (float) SpecialFunctions.Lerp(board.NbRows, 2, 100, 0, 1);
+
 			for (int i = 0; i < board.NbRows; i++)
 			{
 				for (int j = 0; j < board.NbCols; j++)
 				{
-					State state = board[i, j];
-
+					DrawState(board[i, j], board.NbRows, board.NbCols, i, j, r);
 				}
 			}
+		}
+
+		private void DrawState(State state, int nbRows, int nbCols, int i, int j, float radius)
+		{
+			switch (state)
+			{
+				case State.Empty:
+					db.Stroke(255);
+					db.Fill(255, 0, 0);
+					break;
+				case State.White:
+					db.Stroke(50);
+					db.Fill(255);
+					break;
+				case State.Black:
+					db.Stroke(255);
+					db.Fill(0);
+					break;
+			}
+
+			float x = (float) SpecialFunctions.Lerp(j, -0.5, nbCols - 0.5, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
+			float y = (float) SpecialFunctions.Lerp(i, -0.5, nbRows - 0.5, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
+
+
+			db.Circle(x, y, radius);
+
+			db.TextColor(255);
+			db.Text($"{i},{j}", x, y);
 		}
 
 		private void DrawGrid(Board board)

@@ -3,7 +3,7 @@
 	public enum State
 	{
 		Empty,
-		Black,
-		White
+		White,
+		Black
 	}
 }
