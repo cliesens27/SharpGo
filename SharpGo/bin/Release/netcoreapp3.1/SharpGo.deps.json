@@ -1,0 +1,41 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "SharpGo/1.0.0": {
+        "dependencies": {
+          "DrawingBoardNET.Source": "1.0.0.1"
+        },
+        "runtime": {
+          "SharpGo.dll": {}
+        }
+      },
+      "DrawingBoardNET.Source/1.0.0.1": {
+        "runtime": {
+          "lib/netcoreapp3.1/DrawingBoardNET.Source.dll": {
+            "assemblyVersion": "1.0.0.1",
+            "fileVersion": "1.0.0.1"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "SharpGo/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "DrawingBoardNET.Source/1.0.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-PrMIf58cUZyN8dWmlDro0NN0Lrij+kH2IaRNb9vQ3j1IvwLDMjKmKbtHAzce81zMDrVUPficSLOVbX1ByrVrhA==",
+      "path": "drawingboardnet.source/1.0.0.1",
+      "hashPath": "drawingboardnet.source.1.0.0.1.nupkg.sha512"
+    }
+  }
+}
