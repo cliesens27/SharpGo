@@ -33,13 +33,13 @@ namespace Source.Render
 			db.Line(WIDTH / 2, 0, WIDTH / 2, HEIGHT);
 
 			db.RectMode = RectangleMode.Corner;
-					DrawLeftPanel(board);
+			DrawLeftPanel(board);
 			DrawRightPanel();
 		}
 
 		private void DrawLeftPanel(Board board)
 		{
-						db.Stroke(255);
+			db.Stroke(255);
 			db.NoFill();
 			db.Square(PANEL_BORDER, PANEL_BORDER, PANEL_HEIGHT);
 

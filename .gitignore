@@ -1,0 +1,8 @@
+.vs/*
+TestResults/*
+
+Source/bin/*
+Source/obj/*
+
+Tests/bin/*
+Tests/obj/*

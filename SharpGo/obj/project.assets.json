@@ -40,9 +40,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "G:\\C#\\SharpGo\\SharpGo\\Source.csproj",
-      "projectName": "Source",
-      "projectPath": "G:\\C#\\SharpGo\\SharpGo\\Source.csproj",
+      "projectUniqueName": "G:\\C#\\SharpGo\\SharpGo\\SharpGo.csproj",
+      "projectName": "SharpGo",
+      "projectPath": "G:\\C#\\SharpGo\\SharpGo\\SharpGo.csproj",
       "packagesPath": "C:\\Users\\clies\\.nuget\\packages\\",
       "outputPath": "G:\\C#\\SharpGo\\SharpGo\\obj\\",
       "projectStyle": "PackageReference",
