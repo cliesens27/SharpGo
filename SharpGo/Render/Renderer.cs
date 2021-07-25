@@ -1,5 +1,4 @@
-﻿using System;
-using DrawingBoardNET.Drawing;
+﻿using DrawingBoardNET.Drawing;
 using DrawingBoardNET.Drawing.Constants;
 using DrawingBoardNET.Window;
 using MathlibNET;
@@ -9,10 +8,10 @@ namespace Source.Render
 {
 	public class Renderer
 	{
-		private const int HEIGHT = 800;
+		private const int HEIGHT = 900;
 		private const int WIDTH = 2 * HEIGHT;
-		private const int PANEL_BORDER = 15;
-		private const int PANEL_SIZE = HEIGHT - 2 * PANEL_BORDER;
+		private const float PANEL_BORDER = 15;
+		private const float PANEL_SIZE = HEIGHT - 2 * PANEL_BORDER;
 		private const float BASE_RADIUS = HEIGHT / 4.0f;
 
 		private readonly DrawingBoard db;
@@ -31,20 +30,21 @@ namespace Source.Render
 			db.Background(0);
 
 			db.Stroke(255);
-			db.Line(WIDTH / 2, 0, WIDTH / 2, HEIGHT);
+			db.Line(WIDTH / 2.0f, 0, WIDTH / 2.0f, HEIGHT);
 
 			db.RectMode = RectangleMode.Corner;
 			DrawLeftPanel(board);
 			DrawRightPanel();
 		}
 
-		private void DrawLeftPanel(Board board)
-		{
-			DrawBoard(board);
-		}
+		private void DrawLeftPanel(Board board) => DrawBoard(board);
 
 		private void DrawBoard(Board board)
 		{
+			db.NoStroke();
+			db.Fill(35);
+			db.Square(2 * PANEL_BORDER, 2 * PANEL_BORDER, PANEL_SIZE - 2 * PANEL_BORDER);
+
 			DrawGrid(board);
 
 			float r = BASE_RADIUS / board.NbRows;
@@ -63,11 +63,9 @@ namespace Source.Render
 			switch (state)
 			{
 				case State.Empty:
-					db.Stroke(255);
-					db.Fill(255, 0, 0);
-					break;
+					return;
 				case State.White:
-					db.Stroke(50);
+					db.Stroke(0);
 					db.Fill(255);
 					break;
 				case State.Black:
@@ -111,8 +109,12 @@ namespace Source.Render
 
 		private void DrawRightPanel()
 		{
+			db.NoStroke();
+			db.Fill(35);
+			db.Square(WIDTH / 2 + 1, 0, PANEL_SIZE + 2 * PANEL_BORDER);
+
 			db.Stroke(255);
-			db.NoFill();
+			db.Fill(0);
 			db.Square(WIDTH / 2 + PANEL_BORDER, PANEL_BORDER, PANEL_SIZE);
 		}
 	}

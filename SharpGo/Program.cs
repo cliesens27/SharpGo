@@ -18,10 +18,7 @@ namespace SharpGo
 			db.Start();
 		}
 
-		private static void Update()
-		{
-			// TODO
-		}
+		private static void Update() { }
 
 		private static void Draw()
 		{
