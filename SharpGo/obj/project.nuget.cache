@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "HIP0MOVrGHqdm74/dTrR8Ut9J83B0+0DxN1wyeN38ykYXTNEEUn4EFQffLULkpMYtLf3r/wsPFnHL4ADvc0xkA==",
+  "success": true,
+  "projectFilePath": "G:\\C#\\SharpGo\\SharpGo\\Source.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\clies\\.nuget\\packages\\drawingboardnet.source\\1.0.0.1\\drawingboardnet.source.1.0.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}
