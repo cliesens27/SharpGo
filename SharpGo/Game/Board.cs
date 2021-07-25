@@ -8,18 +8,15 @@
 
 		private readonly State[][] states;
 
-		public Board(int size) : this(size, size) { }
-
-		public Board(int rows, int cols)
+		public Board(int size)
 		{
-			NbRows = rows;
-			NbCols = cols;
+			NbRows = NbCols = size;
 
-			states = new State[rows][];
+			states = new State[NbRows][];
 
-			for (int i = 0; i < rows; i++)
+			for (int i = 0; i < NbRows; i++)
 			{
-				states[i] = new State[cols];
+				states[i] = new State[NbCols];
 			}
 
 			Reset();

@@ -12,7 +12,7 @@ namespace SharpGo
 
 		static void Main(string[] args)
 		{
-			board = new Board(3); // 19
+			board = new Board(19);
 			renderer = new Renderer(out db, Draw);
 
 			db.Start();

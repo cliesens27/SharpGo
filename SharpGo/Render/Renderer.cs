@@ -11,7 +11,7 @@ namespace Source.Render
 	{
 		private const int HEIGHT = 800;
 		private const int WIDTH = 2 * HEIGHT;
-		private const int PANEL_BORDER = 10;
+		private const int PANEL_BORDER = 15;
 		private const int PANEL_SIZE = HEIGHT - 2 * PANEL_BORDER;
 		private const float BASE_RADIUS = HEIGHT / 4.0f;
 
@@ -40,10 +40,6 @@ namespace Source.Render
 
 		private void DrawLeftPanel(Board board)
 		{
-			db.Stroke(255);
-			db.NoFill();
-			db.Square(PANEL_BORDER, PANEL_BORDER, PANEL_SIZE);
-
 			DrawBoard(board);
 		}
 
@@ -80,35 +76,33 @@ namespace Source.Render
 					break;
 			}
 
-			float x = (float) SpecialFunctions.Lerp(j, -0.5, nbCols - 0.5, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
-			float y = (float) SpecialFunctions.Lerp(i, -0.5, nbRows - 0.5, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
-
+			float x = SpecialFunctions.Lerp(j, -0.5f, nbCols - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
+			float y = SpecialFunctions.Lerp(i, -0.5f, nbRows - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
 
 			db.Circle(x, y, radius);
-
-			db.TextColor(255);
-			db.Text($"{i},{j}", x, y);
 		}
 
 		private void DrawGrid(Board board)
 		{
 			db.Stroke(255);
 
-			for (int i = 0; i <= board.NbRows; i++)
+			float offset = 0.5f * PANEL_SIZE / board.NbRows;
+
+			for (int i = 0; i < board.NbRows; i++)
 			{
-				float x1 = SpecialFunctions.Lerp(i, 0, board.NbRows, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
-				float y1 = PANEL_BORDER;
+				float x1 = SpecialFunctions.Lerp(i, -0.5f, board.NbRows - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
+				float y1 = PANEL_BORDER + offset;
 				float x2 = x1;
-				float y2 = PANEL_SIZE + PANEL_BORDER;
+				float y2 = PANEL_SIZE + PANEL_BORDER - offset;
 
 				db.Line(x1, y1, x2, y2);
 			}
 
-			for (int i = 0; i <= board.NbCols; i++)
+			for (int i = 0; i < board.NbCols; i++)
 			{
-				float x1 = PANEL_BORDER;
-				float y1 = SpecialFunctions.Lerp(i, 0, board.NbRows, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
-				float x2 = PANEL_SIZE + PANEL_BORDER;
+				float x1 = PANEL_BORDER + offset;
+				float y1 = SpecialFunctions.Lerp(i, -0.5f, board.NbCols - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
+				float x2 = PANEL_SIZE + PANEL_BORDER - offset;
 				float y2 = y1;
 
 				db.Line(x1, y1, x2, y2);
