@@ -2,6 +2,7 @@
 using DrawingBoardNET.Drawing;
 using DrawingBoardNET.Drawing.Constants;
 using DrawingBoardNET.Window;
+using MathlibNET;
 using Source.Game;
 
 namespace Source.Render
@@ -11,8 +12,7 @@ namespace Source.Render
 		private const int HEIGHT = 800;
 		private const int WIDTH = 2 * HEIGHT;
 		private const int PANEL_BORDER = 10;
-		private const int PANEL_HEIGHT = HEIGHT - 2 * PANEL_BORDER;
-		private const int PANEL_WIDTH = PANEL_HEIGHT;
+		private const int PANEL_SIZE = HEIGHT - 2 * PANEL_BORDER;
 
 		private DrawingBoard db;
 
@@ -41,19 +41,47 @@ namespace Source.Render
 		{
 			db.Stroke(255);
 			db.NoFill();
-			db.Square(PANEL_BORDER, PANEL_BORDER, PANEL_HEIGHT);
+			db.Square(PANEL_BORDER, PANEL_BORDER, PANEL_SIZE);
 
 			DrawBoard(board);
 		}
 
 		private void DrawBoard(Board board)
 		{
+			DrawGrid(board);
+
 			for (int i = 0; i < board.NbRows; i++)
 			{
 				for (int j = 0; j < board.NbCols; j++)
 				{
 					State state = board[i, j];
+
 				}
+			}
+		}
+
+		private void DrawGrid(Board board)
+		{
+			db.Stroke(255);
+
+			for (int i = 0; i <= board.NbRows; i++)
+			{
+				float x1 = SpecialFunctions.Lerp(i, 0, board.NbRows, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
+				float y1 = PANEL_BORDER;
+				float x2 = x1;
+				float y2 = PANEL_SIZE + PANEL_BORDER;
+
+				db.Line(x1, y1, x2, y2);
+			}
+
+			for (int i = 0; i <= board.NbCols; i++)
+			{
+				float x1 = PANEL_BORDER;
+				float y1 = SpecialFunctions.Lerp(i, 0, board.NbRows, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
+				float x2 = PANEL_SIZE + PANEL_BORDER;
+				float y2 = y1;
+
+				db.Line(x1, y1, x2, y2);
 			}
 		}
 
@@ -61,7 +89,7 @@ namespace Source.Render
 		{
 			db.Stroke(255);
 			db.NoFill();
-			db.Square(WIDTH / 2 + PANEL_BORDER, PANEL_BORDER, PANEL_HEIGHT);
+			db.Square(WIDTH / 2 + PANEL_BORDER, PANEL_BORDER, PANEL_SIZE);
 		}
 	}
 }

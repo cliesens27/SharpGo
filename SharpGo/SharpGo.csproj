@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="DrawingBoardNET.Source" Version="1.0.0.1" />
+    <PackageReference Include="Mathlib.NET.Source" Version="1.0.0.2" />
   </ItemGroup>
 
 </Project>
