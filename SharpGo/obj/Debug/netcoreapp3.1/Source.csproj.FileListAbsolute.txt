@@ -1,0 +1,15 @@
+G:\C#\SharpGo\SharpGo\bin\Debug\netcoreapp3.1\Source.exe
+G:\C#\SharpGo\SharpGo\bin\Debug\netcoreapp3.1\Source.deps.json
+G:\C#\SharpGo\SharpGo\bin\Debug\netcoreapp3.1\Source.runtimeconfig.json
+G:\C#\SharpGo\SharpGo\bin\Debug\netcoreapp3.1\Source.runtimeconfig.dev.json
+G:\C#\SharpGo\SharpGo\bin\Debug\netcoreapp3.1\Source.dll
+G:\C#\SharpGo\SharpGo\bin\Debug\netcoreapp3.1\Source.pdb
+G:\C#\SharpGo\SharpGo\bin\Debug\netcoreapp3.1\DrawingBoardNET.Source.dll
+G:\C#\SharpGo\SharpGo\obj\Debug\netcoreapp3.1\Source.csprojAssemblyReference.cache
+G:\C#\SharpGo\SharpGo\obj\Debug\netcoreapp3.1\Source.AssemblyInfoInputs.cache
+G:\C#\SharpGo\SharpGo\obj\Debug\netcoreapp3.1\Source.AssemblyInfo.cs
+G:\C#\SharpGo\SharpGo\obj\Debug\netcoreapp3.1\Source.csproj.CoreCompileInputs.cache
+G:\C#\SharpGo\SharpGo\obj\Debug\netcoreapp3.1\Source.csproj.CopyComplete
+G:\C#\SharpGo\SharpGo\obj\Debug\netcoreapp3.1\Source.dll
+G:\C#\SharpGo\SharpGo\obj\Debug\netcoreapp3.1\Source.pdb
+G:\C#\SharpGo\SharpGo\obj\Debug\netcoreapp3.1\Source.genruntimeconfig.cache

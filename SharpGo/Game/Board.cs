@@ -1,29 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Source.Game
+﻿namespace Source.Game
 {
 	public class Board
 	{
 		public int NbRows { get; }
 		public int NbCols { get; }
 
-		private State[][] board;
+		public State this[int i, int j]
+		{
+			get => states[i][j];
+		}
 
-		protected Board(int rows, int cols)
+		private State[][] states;
+
+		public Board(int size) : this(size, size) { }
+
+		public Board(int rows, int cols)
 		{
 			NbRows = rows;
 			NbCols = cols;
 
-			board = new State[rows][];
+			states = new State[rows][];
 
 			for (int i = 0; i < rows; i++)
 			{
-				board[i] = new State[cols];
-
-				Reset();
+				states[i] = new State[cols];
 			}
+
+			Reset();
 		}
 
 		private void Reset()
@@ -32,7 +35,7 @@ namespace Source.Game
 			{
 				for (int j = 0; j < NbCols; j++)
 				{
-					board[i][j] = State.Empty;
+					states[i][j] = State.Empty;
 				}
 			}
 		}

@@ -1,16 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <StartupObject>SharpGo.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="DrawingBoardNET.Source" Version="1.0.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Render\" />
   </ItemGroup>
 
 </Project>
