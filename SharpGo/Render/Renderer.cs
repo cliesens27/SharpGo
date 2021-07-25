@@ -13,8 +13,9 @@ namespace Source.Render
 		private const int WIDTH = 2 * HEIGHT;
 		private const int PANEL_BORDER = 10;
 		private const int PANEL_SIZE = HEIGHT - 2 * PANEL_BORDER;
+		private const float BASE_RADIUS = HEIGHT / 4.0f;
 
-		private DrawingBoard db;
+		private readonly DrawingBoard db;
 
 		public Renderer(out DrawingBoard db, DrawMethod draw)
 		{
@@ -50,18 +51,18 @@ namespace Source.Render
 		{
 			DrawGrid(board);
 
-			float r = (float) SpecialFunctions.Lerp(board.NbRows, 2, 100, 0, 1);
+			float r = BASE_RADIUS / board.NbRows;
 
 			for (int i = 0; i < board.NbRows; i++)
 			{
 				for (int j = 0; j < board.NbCols; j++)
 				{
-					DrawState(board[i, j], board.NbRows, board.NbCols, i, j, r);
+					DrawStone(board[i, j], board.NbRows, board.NbCols, i, j, r);
 				}
 			}
 		}
 
-		private void DrawState(State state, int nbRows, int nbCols, int i, int j, float radius)
+		private void DrawStone(State state, int nbRows, int nbCols, int i, int j, float radius)
 		{
 			switch (state)
 			{

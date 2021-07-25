@@ -2,15 +2,11 @@
 {
 	public class Board
 	{
+		public State this[int i, int j] => states[i][j];
 		public int NbRows { get; }
 		public int NbCols { get; }
 
-		public State this[int i, int j]
-		{
-			get => states[i][j];
-		}
-
-		private State[][] states;
+		private readonly State[][] states;
 
 		public Board(int size) : this(size, size) { }
 
