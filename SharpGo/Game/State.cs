@@ -4,6 +4,9 @@
 	{
 		Empty,
 		White,
-		Black
+		Black,
+		EmptyBlack,
+		EmptyWhite,
+		EmptyBoth
 	}
 }

@@ -21,8 +21,8 @@ namespace SharpGo
 			board = new Board(19);
 			renderer = new Renderer(out db, Draw);
 
-			player1 = new RandomPlayer(State.Black);
-			player2 = new RandomPlayer(State.White);
+			player1 = new RandomPlayer(Color.Black);
+			player2 = new RandomPlayer(Color.White);
 
 			db.Start();
 		}
@@ -34,7 +34,7 @@ namespace SharpGo
 				throw new ArgumentException($"Cannot run game, both players are the same color.");
 			}
 
-			if (player1.Color == State.Black)
+			if (player1.Color == Color.Black)
 			{
 				player1.MakeMove(board);
 				player2.MakeMove(board);

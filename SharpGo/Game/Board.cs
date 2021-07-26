@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using SharpGo.Game.Players;
 
 namespace Source.Game
 {
@@ -26,9 +28,10 @@ namespace Source.Game
 			Reset();
 		}
 
-		public (State, int, int)[] GetUnoccupiedCellsArray() => GetUnoccupiedCells().Cast<(State, int, int)>().ToArray();
+		public (State, int, int)[] GetUnoccupiedCellsArray(Color color) =>
+			GetUnoccupiedCells(color).Cast<(State, int, int)>().ToArray();
 
-		public void AddStone(State state, int i, int j)
+		public void AddStone(Color color, int i, int j)
 		{
 			if (IsOccupied(i, j))
 			{
@@ -40,18 +43,37 @@ namespace Source.Game
 				throw new IndexOutOfRangeException($"Cannot add stone to cell ({i},{j}), it is outside the board.");
 			}
 
-			states[i][j] = state;
+			states[i][j] = Player.PlayerColorToState(color);
 		}
 
-		public IEnumerable GetUnoccupiedCells()
+		public IEnumerable<(State, int, int)> GetUnoccupiedCells(Color color)
+		{
+			foreach ((State s, int i, int j) in GetValidCells(color))
+			{
+				if (!IsOccupied(i, j))
+				{
+					yield return (s, i, j);
+				}
+			}
+		}
+
+		private IEnumerable<(State, int, int)> GetValidCells(Color color)
 		{
 			for (int i = 0; i < NbRows; i++)
 			{
 				for (int j = 0; j < NbCols; j++)
 				{
-					if (!IsOccupied(i, j))
+					if (color == Color.White && !(this[i, j] == State.EmptyWhite || this[i, j] == State.EmptyBoth))
 					{
 						yield return (this[i, j], i, j);
+					}
+					else if (color == Color.Black && !(this[i, j] == State.EmptyBlack || this[i, j] == State.EmptyBoth))
+					{
+						yield return (this[i, j], i, j);
+					}
+					else
+					{
+						throw new ArgumentException("Bad player color.");
 					}
 				}
 			}
