@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <StartupObject>SharpGo.Program</StartupObject>
+    <StartupObject>SharpGo.GoGame</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>

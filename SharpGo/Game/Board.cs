@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Linq;
 
 namespace Source.Game
 {
@@ -24,11 +26,9 @@ namespace Source.Game
 			Reset();
 		}
 
-		public void AddWhiteStone(int i, int j) => AddStone(State.White, i, j);
+		public (State, int, int)[] GetUnoccupiedCellsArray() => GetUnoccupiedCells().Cast<(State, int, int)>().ToArray();
 
-		public void AddBlackStone(int i, int j) => AddStone(State.Black, i, j);
-
-		private void AddStone(State state, int i, int j)
+		public void AddStone(State state, int i, int j)
 		{
 			if (IsOccupied(i, j))
 			{
@@ -41,6 +41,20 @@ namespace Source.Game
 			}
 
 			states[i][j] = state;
+		}
+
+		public IEnumerable GetUnoccupiedCells()
+		{
+			for (int i = 0; i < NbRows; i++)
+			{
+				for (int j = 0; j < NbCols; j++)
+				{
+					if (!IsOccupied(i, j))
+					{
+						yield return (this[i, j], i, j);
+					}
+				}
+			}
 		}
 
 		private bool IsOccupied(int i, int j) => this[i, j] != State.Empty;

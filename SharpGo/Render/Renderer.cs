@@ -13,14 +13,13 @@ namespace Source.Render
 		private const float PANEL_BORDER = 15;
 		private const float PANEL_SIZE = HEIGHT - 2 * PANEL_BORDER;
 		private const float BASE_RADIUS = HEIGHT / 4.0f;
-
 		private readonly DrawingBoard db;
 
 		public Renderer(out DrawingBoard db, DrawMethod draw)
 		{
 			db = new DrawingBoard(WIDTH, HEIGHT);
 			db.Title = "SharpGo";
-			db.TargetFrameRate = 60;
+			db.TargetFrameRate = 10;
 			db.Draw = draw;
 			this.db = db;
 		}
@@ -29,6 +28,7 @@ namespace Source.Render
 		{
 			db.Background(0);
 
+			db.StrokeWidth(1);
 			db.Stroke(255);
 			db.Line(WIDTH / 2.0f, 0, WIDTH / 2.0f, HEIGHT);
 
@@ -77,11 +77,13 @@ namespace Source.Render
 			float x = SpecialFunctions.Lerp(j, -0.5f, nbCols - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
 			float y = SpecialFunctions.Lerp(i, -0.5f, nbRows - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
 
+			db.StrokeWidth(3);
 			db.Circle(x, y, radius);
 		}
 
 		private void DrawGrid(Board board)
 		{
+			db.StrokeWidth(1);
 			db.Stroke(255);
 
 			float offset = 0.5f * PANEL_SIZE / board.NbRows;
@@ -113,6 +115,7 @@ namespace Source.Render
 			db.Fill(35);
 			db.Square(WIDTH / 2 + 1, 0, PANEL_SIZE + 2 * PANEL_BORDER);
 
+			db.StrokeWidth(1);
 			db.Stroke(255);
 			db.Fill(0);
 			db.Square(WIDTH / 2 + PANEL_BORDER, PANEL_BORDER, PANEL_SIZE);
