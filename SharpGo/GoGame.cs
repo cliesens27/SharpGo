@@ -13,43 +13,62 @@ namespace SharpGo
 		private static Player player1;
 		private static Player player2;
 		private static Board board;
+		private static bool update = true;
+		private static string errorMessage;
 
 		public static void Main(string[] args) => Run();
 
 		private static void Run()
 		{
-			board = new Board(19);
-			renderer = new Renderer(out db, Draw);
-
+			renderer = new Renderer(out db);
 			player1 = new RandomPlayer(Color.Black);
 			player2 = new RandomPlayer(Color.White);
+			board = new Board(3);
+
+			db.Draw = Draw;
 
 			db.Start();
 		}
 
 		private static void Update()
 		{
-			if (player1.Color == player2.Color)
+			if (db.FrameCount < 150 && update)
 			{
-				throw new ArgumentException($"Cannot run game, both players are the same color.");
-			}
+				if (player1.Color == player2.Color)
+				{
+					throw new ArgumentException($"Cannot run game, both players are the same color.");
+				}
 
-			if (player1.Color == Color.Black)
-			{
-				player1.Play(board);
-				player2.Play(board);
-			}
-			else
-			{
-				player2.Play(board);
-				player1.Play(board);
+				if (player1.Color == Color.Black)
+				{
+					player1.Play(board);
+					player2.Play(board);
+				}
+				else
+				{
+					player2.Play(board);
+					player1.Play(board);
+				}
 			}
 		}
 
 		private static void Draw()
 		{
-			Update();
+			try
+			{				
+				Update();
+			}
+			catch (Exception e)
+			{
+				errorMessage = e.Message;				
+				update = false;
+			}
+
 			renderer.Render(board);
+
+			db.TextColor(255, 0, 0);
+			db.FontSize(25);
+			db.Text(errorMessage, 0, 0);
 		}
 	}
 }

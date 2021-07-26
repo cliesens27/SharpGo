@@ -1,4 +1,6 @@
-﻿using MathlibNET.Random;
+﻿using System.Collections.Generic;
+using System.Linq;
+using MathlibNET.Random;
 using Source.Game;
 
 namespace SharpGo.Game.Players
@@ -7,10 +9,10 @@ namespace SharpGo.Game.Players
 	{
 		public RandomPlayer(Color color) : base(color) { }
 
-		protected override (int, int) PickPosition(Board board, (State, int, int)[] cells)
+		protected override (int, int) PickPosition(Board board, HashSet<(State, int, int)> intersections)
 		{
-			int index = Rng.Rand(cells.Length);
-			(_, int i, int j) = cells[index];
+			int index = Rng.Rand(intersections.Count);
+			(_, int i, int j) = intersections.ToArray()[index];
 			return (i, j);
 		}
 

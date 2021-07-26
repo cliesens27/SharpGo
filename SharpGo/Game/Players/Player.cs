@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Source.Game;
 
 namespace SharpGo.Game.Players
@@ -9,11 +10,11 @@ namespace SharpGo.Game.Players
 
 		protected Player(Color color) => Color = color;
 
-		protected void PlayStone(Board board, int i, int j) => board.AddStone(Color, i, j);
+		protected void PlaceStone(Board board, int i, int j) => board.PlaceStone(Color, i, j);
 
 		protected abstract bool Pass();
 
-		protected abstract (int, int) PickPosition(Board board, (State, int, int)[] validCells);
+		protected abstract (int, int) PickPosition(Board board, HashSet<(State, int, int)> validIntersections);
 
 		public void Play(Board board)
 		{
@@ -22,16 +23,16 @@ namespace SharpGo.Game.Players
 				return;
 			}
 
-			(State, int, int)[] validCells = board.GetUnoccupiedCellsArray(Color);
+			HashSet<(State, int, int)> validIntersections = board.GetUnoccupiedValidIntersections(Color);
 
-			if (validCells.Length == 0)
+			if (validIntersections.Count == 0)
 			{
-				throw new ArgumentException("Cannot pick a position, there are no valid cells.");
+				throw new ArgumentException("Cannot pick a position, there are no valid intersections.");
 			}
 
-			(int i, int j) = PickPosition(board, validCells);
+			(int i, int j) = PickPosition(board, validIntersections);
 
-			PlayStone(board, i, j);
+			PlaceStone(board, i, j);
 			// Capture
 			// Self-capture
 		}

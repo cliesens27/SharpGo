@@ -1,7 +1,7 @@
 ﻿using DrawingBoardNET.Drawing;
 using DrawingBoardNET.Drawing.Constants;
-using DrawingBoardNET.Window;
 using MathlibNET;
+using MathlibNET.Random;
 using Source.Game;
 
 namespace Source.Render
@@ -15,12 +15,11 @@ namespace Source.Render
 		private const float BASE_RADIUS = HEIGHT / 4.0f;
 		private readonly DrawingBoard db;
 
-		public Renderer(out DrawingBoard db, DrawMethod draw)
+		public Renderer(out DrawingBoard db)
 		{
 			db = new DrawingBoard(WIDTH, HEIGHT);
 			db.Title = "SharpGo";
-			db.TargetFrameRate = 10;
-			db.Draw = draw;
+			db.TargetFrameRate = 15;
 			this.db = db;
 		}
 
@@ -55,6 +54,20 @@ namespace Source.Render
 				{
 					DrawStone(board[i, j], board.NbRows, board.NbCols, i, j, r);
 				}
+			}
+
+			int ii = Rng.Rand(board.NbRows);
+			int jj = Rng.Rand(board.NbCols);
+			var connectedIntersections = board.GetConnectedIntersections(ii, jj);
+
+			foreach ((State s, int iii, int jjj) in connectedIntersections)
+			{
+				float x = SpecialFunctions.Lerp(jjj, -0.5f, board.NbCols - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
+				float y = SpecialFunctions.Lerp(iii, -0.5f, board.NbRows - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
+
+				db.Fill(255, 0, 0);
+				db.StrokeWidth(3);
+				db.Circle(x, y, r);
 			}
 		}
 
