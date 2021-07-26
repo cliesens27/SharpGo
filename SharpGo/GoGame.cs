@@ -36,13 +36,13 @@ namespace SharpGo
 
 			if (player1.Color == Color.Black)
 			{
-				player1.MakeMove(board);
-				player2.MakeMove(board);
+				player1.Play(board);
+				player2.Play(board);
 			}
 			else
 			{
-				player2.MakeMove(board);
-				player1.MakeMove(board);
+				player2.Play(board);
+				player1.Play(board);
 			}
 		}
 

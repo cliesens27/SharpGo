@@ -29,7 +29,7 @@ namespace Source.Game
 		}
 
 		public (State, int, int)[] GetUnoccupiedCellsArray(Color color) =>
-			GetUnoccupiedCells(color).Cast<(State, int, int)>().ToArray();
+			GetUnoccupiedAndValidCells(color).Cast<(State, int, int)>().ToArray();
 
 		public void AddStone(Color color, int i, int j)
 		{
@@ -46,7 +46,7 @@ namespace Source.Game
 			states[i][j] = Player.PlayerColorToState(color);
 		}
 
-		public IEnumerable<(State, int, int)> GetUnoccupiedCells(Color color)
+		public IEnumerable<(State, int, int)> GetUnoccupiedAndValidCells(Color color)
 		{
 			foreach ((State s, int i, int j) in GetValidCells(color))
 			{

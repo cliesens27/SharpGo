@@ -7,26 +7,11 @@ namespace SharpGo.Game.Players
 	{
 		public RandomPlayer(Color color) : base(color) { }
 
-		public override void MakeMove(Board board)
+		protected override (int, int) PickPosition(Board board, (State, int, int)[] cells)
 		{
-			if (Pass())
-			{
-				return;
-			}
-			else
-			{
-				(State, int, int)[] cells = board.GetUnoccupiedCellsArray(Color);
-
-				if (cells.Length == 0)
-				{
-					return;
-				}
-
-				int index = Rng.Rand(cells.Length);
-				(_, int i, int j) = cells[index];
-
-				AddStone(board, i, j);
-			}
+			int index = Rng.Rand(cells.Length);
+			(_, int i, int j) = cells[index];
+			return (i, j);
 		}
 
 		protected override bool Pass() => Rng.Rand() < 0.25;
