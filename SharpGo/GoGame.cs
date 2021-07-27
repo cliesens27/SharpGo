@@ -23,7 +23,7 @@ namespace SharpGo
 			renderer = new Renderer(out db);
 			player1 = new RandomPlayer(Color.Black);
 			player2 = new RandomPlayer(Color.White);
-			board = new Board(3);
+			board = new Board(19);
 
 			db.Draw = Draw;
 
@@ -32,7 +32,7 @@ namespace SharpGo
 
 		private static void Update()
 		{
-			if (db.FrameCount < 150 && update)
+			if (db.FrameCount < 999999999 && update)
 			{
 				if (player1.Color == player2.Color)
 				{
@@ -55,12 +55,12 @@ namespace SharpGo
 		private static void Draw()
 		{
 			try
-			{				
+			{
 				Update();
 			}
 			catch (Exception e)
 			{
-				errorMessage = e.Message;				
+				errorMessage = e.Message;
 				update = false;
 			}
 

@@ -13,12 +13,14 @@ namespace Source.Game
 		public int NbIntersections { get; }
 
 		private readonly State[][] states;
+		private HashSet<(State, int, int)> visited;
 
 		public Board(int size)
 		{
 			NbRows = NbCols = size;
 			NbIntersections = NbRows * NbCols;
 			states = new State[NbRows][];
+			visited = new HashSet<(State, int, int)>();
 
 			for (int i = 0; i < NbRows; i++)
 			{
@@ -85,26 +87,16 @@ namespace Source.Game
 				}
 			}
 
-			intersections.Except(toRemove);
+			intersections.ExceptWith(toRemove);
 			return intersections;
 		}
 
-		public HashSet<(State, int, int)> GetConnectedIntersections(int i, int j, HashSet<(State, int, int)> set=null)
+		public HashSet<(State, int, int)> GetConnectedIntersections(int i, int j)
 		{
-			HashSet<(State, int, int)> intersections = GetAdjacentConnectedIntersections(i, j);
-			HashSet<(State, int, int)> toAdd = new HashSet<(State, int, int)>();
-
-			foreach ((State, int, int) intersection in intersections)
-			{
-				(_, int row, int col) = intersection;
-				// TODO: needs fixing!
-				HashSet<(State, int, int)> connectedIntersections = GetConnectedIntersections(row, col,intersections);
-				toAdd.Union(connectedIntersections);
-			}
-
-			intersections.Union(toAdd);
-			intersections.Remove((this[i, j], i, j));
-			return intersections;
+			visited.Clear();
+			HashSet<(State, int, int)> connectedIntersections = _GetConnectedIntersections(i, j);
+			connectedIntersections.Remove((this[i, j], i, j));
+			return connectedIntersections;
 		}
 
 		public HashSet<(State, int, int)> GetUnoccupiedValidIntersections(Color color)
@@ -122,7 +114,7 @@ namespace Source.Game
 				}
 			}
 
-			intersections.Except(toRemove);
+			intersections.ExceptWith(toRemove);
 			return intersections;
 		}
 
@@ -142,6 +134,25 @@ namespace Source.Game
 			}
 
 			return intersections;
+		}
+
+		private HashSet<(State, int, int)> _GetConnectedIntersections(int i, int j)
+		{
+			HashSet<(State, int, int)> connectedIntersections = GetAdjacentConnectedIntersections(i, j);
+			HashSet<(State, int, int)> toAdd = new HashSet<(State, int, int)>();
+
+			foreach ((State, int, int) intersection in connectedIntersections)
+			{
+				if (visited.Add(intersection))
+				{
+					(_, int row, int col) = intersection;
+					HashSet<(State, int, int)> intersections = _GetConnectedIntersections(row, col);
+					toAdd.UnionWith(intersections);
+				}
+			}
+
+			connectedIntersections.UnionWith(toAdd);
+			return connectedIntersections;
 		}
 
 		private bool IsValidPosition(Color color, int i, int j) =>
