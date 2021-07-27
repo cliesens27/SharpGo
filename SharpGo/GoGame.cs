@@ -16,7 +16,7 @@ namespace SharpGo
 		private static bool update = true;
 		private static string errorMessage;
 
-		public static void Main(string[] args) => Run();
+		public static void Main() => Run();
 
 		private static void Run()
 		{
@@ -26,7 +26,6 @@ namespace SharpGo
 			board = new Board(19);
 
 			db.Draw = Draw;
-
 			db.Start();
 		}
 

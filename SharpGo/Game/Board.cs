@@ -13,7 +13,7 @@ namespace Source.Game
 		public int NbIntersections { get; }
 
 		private readonly State[][] states;
-		private HashSet<(State, int, int)> visited;
+		private readonly HashSet<(State, int, int)> visited;
 
 		public Board(int size)
 		{
