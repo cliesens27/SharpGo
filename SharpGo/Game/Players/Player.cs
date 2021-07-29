@@ -7,6 +7,7 @@ namespace SharpGo.Game.Players
 	public abstract class Player
 	{
 		public Color Color { get; }
+		public bool Passed { get; private set; }
 
 		protected Player(Color color) => Color = color;
 
@@ -20,7 +21,12 @@ namespace SharpGo.Game.Players
 		{
 			if (Pass())
 			{
+				Passed = true;
 				return;
+			}
+			else
+			{
+				Passed = false;
 			}
 
 			HashSet<(State, int, int)> validIntersections = board.GetUnoccupiedValidIntersections(Color);

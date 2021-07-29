@@ -4,34 +4,32 @@ using SharpGo.Game.Players;
 using Source.Game;
 using Source.Render;
 
-namespace SharpGo
+namespace SharpGo.Game
 {
 	public class GoGame
 	{
-		private static DrawingBoard db;
-		private static Renderer renderer;
-		private static Player player1;
-		private static Player player2;
-		private static Board board;
-		private static bool update = true;
-		private static string errorMessage;
+		private readonly DrawingBoard db;
+		private readonly Renderer renderer;
+		private readonly Player player1;
+		private readonly Player player2;
+		private readonly Board board;
+		private bool update = true;
+		private string errorMessage;
 
-		public static void Main() => Run();
-
-		private static void Run()
+		public GoGame(Player p1, Player p2, int boardSize = 19)
 		{
 			renderer = new Renderer(out db);
-			player1 = new RandomPlayer(Color.Black);
-			player2 = new RandomPlayer(Color.White);
-			board = new Board(19);
-
+			board = new Board(boardSize);
+			player1 = p1;
+			player2 = p2;
 			db.Draw = Draw;
-			db.Start();
 		}
 
-		private static void Update()
+		public void Start() => db.Start();
+
+		private void Update()
 		{
-			if (db.FrameCount < 999999999 && update)
+			if (update)
 			{
 				if (player1.Color == player2.Color)
 				{
@@ -51,7 +49,7 @@ namespace SharpGo
 			}
 		}
 
-		private static void Draw()
+		private void Draw()
 		{
 			try
 			{
