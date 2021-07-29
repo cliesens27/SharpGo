@@ -8,32 +8,24 @@ namespace SharpGo.Game.Players
 	{
 		public Color Color { get; }
 		public bool Passed { get; private set; }
+		public int NbTurnsPlayed{ get; private set; }
 
 		protected Player(Color color) => Color = color;
 
 		protected void PlaceStone(Board board, int i, int j) => board.PlaceStone(Color, i, j);
 
-		protected abstract bool Pass();
+		protected abstract bool Pass(Board board, HashSet<Intersection> validIntersections);
 
-		protected abstract (int, int) PickPosition(Board board, HashSet<(State, int, int)> validIntersections);
+		protected abstract (int, int) PickPosition(Board board, HashSet<Intersection> validIntersections);
 
 		public void Play(Board board)
 		{
-			if (Pass())
+			HashSet<Intersection> validIntersections = board.GetUnoccupiedValidIntersections(Color);
+
+			if (Pass(board, validIntersections) || validIntersections.Count == 0)
 			{
 				Passed = true;
 				return;
-			}
-			else
-			{
-				Passed = false;
-			}
-
-			HashSet<(State, int, int)> validIntersections = board.GetUnoccupiedValidIntersections(Color);
-
-			if (validIntersections.Count == 0)
-			{
-				throw new ArgumentException("Cannot pick a position, there are no valid intersections.");
 			}
 
 			(int i, int j) = PickPosition(board, validIntersections);
@@ -41,6 +33,9 @@ namespace SharpGo.Game.Players
 			PlaceStone(board, i, j);
 			// Capture
 			// Self-capture
+
+			Passed = false;
+			NbTurnsPlayed++;
 		}
 
 		public static State PlayerColorToState(Color color)

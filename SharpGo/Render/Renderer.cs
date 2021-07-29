@@ -1,6 +1,10 @@
-﻿using DrawingBoardNET.Drawing;
+﻿using System.Collections.Generic;
+using System.Linq;
+using DrawingBoardNET.Drawing;
 using DrawingBoardNET.Drawing.Constants;
 using MathlibNET;
+using MathlibNET.Random;
+using SharpGo.Game;
 using Source.Game;
 
 namespace Source.Render
@@ -31,8 +35,8 @@ namespace Source.Render
 			db.Line(WIDTH / 2.0f, 0, WIDTH / 2.0f, HEIGHT);
 
 			db.RectMode = RectangleMode.Corner;
-			DrawLeftPanel(board);
 			DrawRightPanel();
+			DrawLeftPanel(board);
 		}
 
 		private void DrawLeftPanel(Board board) => DrawBoard(board);
@@ -45,13 +49,13 @@ namespace Source.Render
 
 			DrawGrid(board);
 
-			float r = BASE_RADIUS / board.NbRows;
+			float radius = BASE_RADIUS / board.NbRows;
 
 			for (int i = 0; i < board.NbRows; i++)
 			{
 				for (int j = 0; j < board.NbCols; j++)
 				{
-					DrawStone(board[i, j], board.NbRows, board.NbCols, i, j, r);
+					DrawStone(board[i, j], board.NbRows, board.NbCols, i, j, radius);
 				}
 			}
 		}
@@ -117,6 +121,28 @@ namespace Source.Render
 			db.Stroke(255);
 			db.Fill(0);
 			db.Square(WIDTH / 2 + PANEL_BORDER, PANEL_BORDER, PANEL_SIZE);
+		}
+
+		private void DrawConnectedIntersections(Board board, int i, int j, int r, int g, int b, float radius)
+		{
+			var connectedIntersections = board.GetConnectedIntersections(i, j);
+			connectedIntersections.Add(new Intersection(board[i, j], i, j));
+
+			db.Stroke(255 - r, 255 - g, 255 - b);
+			db.StrokeWidth(3);
+			db.Fill(r, g, b);
+
+			foreach (var intersection in connectedIntersections)
+			{
+				float x = SpecialFunctions.Lerp(
+					intersection.J, -0.5f, board.NbCols - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER
+				);
+				float y = SpecialFunctions.Lerp(
+					intersection.I, -0.5f, board.NbRows - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER
+				);
+
+				db.Circle(x, y, radius / 2);
+			}
 		}
 	}
 }

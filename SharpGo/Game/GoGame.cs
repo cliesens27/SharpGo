@@ -8,13 +8,15 @@ namespace SharpGo.Game
 {
 	public class GoGame
 	{
+		public int NbTurns { get; private set; }
+
 		private readonly DrawingBoard db;
 		private readonly Renderer renderer;
 		private readonly Player player1;
 		private readonly Player player2;
 		private readonly Board board;
-		private bool update = true;
 		private string errorMessage;
+		private bool update = true;
 
 		public GoGame(Player p1, Player p2, int boardSize = 19)
 		{
@@ -46,6 +48,13 @@ namespace SharpGo.Game
 					player2.Play(board);
 					player1.Play(board);
 				}
+
+				if (player1.Passed && player1.Passed)
+				{
+					update = false;
+				}
+
+				NbTurns++;
 			}
 		}
 
@@ -63,9 +72,17 @@ namespace SharpGo.Game
 
 			renderer.Render(board);
 
-			db.TextColor(255, 0, 0);
-			db.FontSize(25);
-			db.Text(errorMessage, 0, 0);
+			DrawErrorMessage(errorMessage);
+		}
+
+		private void DrawErrorMessage(string errorMessage)
+		{
+			if (!string.IsNullOrWhiteSpace(errorMessage))
+			{
+				db.TextColor(255, 0, 0);
+				db.FontSize(25);
+				db.Text(errorMessage, 0, 0);
+			}
 		}
 	}
 }
