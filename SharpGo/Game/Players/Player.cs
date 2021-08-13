@@ -14,21 +14,21 @@ namespace SharpGo.Game.Players
 
 		protected void PlaceStone(Board board, int i, int j) => board.PlaceStone(Color, i, j);
 
-		protected abstract bool Pass(Board board, HashSet<Intersection> validIntersections);
+		protected abstract bool Pass(Board board, HashSet<Intersection> legalIntersections);
 
-		protected abstract (int, int) PickPosition(Board board, HashSet<Intersection> validIntersections);
+		protected abstract (int, int) PickPosition(Board board, HashSet<Intersection> legalIntersections);
 
 		public void Play(Board board)
 		{
-			HashSet<Intersection> validIntersections = board.GetUnoccupiedValidIntersections(Color);
+			HashSet<Intersection> legalIntersections = board.GetUnoccupiedLegalIntersections(Color);
 
-			if (Pass(board, validIntersections) || validIntersections.Count == 0)
+			if (Pass(board, legalIntersections) || legalIntersections.Count == 0)
 			{
 				Passed = true;
 				return;
 			}
 
-			(int i, int j) = PickPosition(board, validIntersections);
+			(int i, int j) = PickPosition(board, legalIntersections);
 
 			PlaceStone(board, i, j);
 			// Capture

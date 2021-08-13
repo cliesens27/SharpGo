@@ -10,14 +10,14 @@ namespace SharpGo.Game.Players
 	{
 		public RandomPlayer(Color color) : base(color) { }
 
-		protected override (int, int) PickPosition(Board board, HashSet<Intersection> validIntersections)
+		protected override (int, int) PickPosition(Board board, HashSet<Intersection> legalIntersections)
 		{
-			int index = Rng.Rand(validIntersections.Count);
-			Intersection intersection = validIntersections.ToArray()[index];
+			int index = Rng.Rand(legalIntersections.Count);
+			Intersection intersection = legalIntersections.ToArray()[index];
 			return (intersection.I, intersection.J);
 		}
 
-		protected override bool Pass(Board board, HashSet<Intersection> validIntersections) =>
+		protected override bool Pass(Board board, HashSet<Intersection> legalIntersections) =>
 			Rng.Rand() < SpecialFunctions.Lerp(NbTurnsPlayed, 0, 1000, 0, 0.5);
 	}
 }

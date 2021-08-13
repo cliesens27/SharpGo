@@ -125,9 +125,9 @@ namespace Source.Game
 			return connectedIntersections;
 		}
 
-		public HashSet<Intersection> GetUnoccupiedValidIntersections(Color color)
+		public HashSet<Intersection> GetUnoccupiedLegalIntersections(Color color)
 		{
-			HashSet<Intersection> intersections = GetValidIntersections(color);
+			HashSet<Intersection> intersections = GetLegalIntersections(color);
 			HashSet<Intersection> toRemove = new HashSet<Intersection>();
 
 			foreach (Intersection intersection in intersections)
@@ -144,7 +144,7 @@ namespace Source.Game
 			return intersections;
 		}
 
-		public HashSet<Intersection> GetValidIntersections(Color color)
+		public HashSet<Intersection> GetLegalIntersections(Color color)
 		{
 			HashSet<Intersection> intersections = new HashSet<Intersection>();
 
@@ -245,7 +245,7 @@ namespace Source.Game
 			(i1 == i2 - 1 && j1 == j2);
 
 		private bool AreAdjacentConnected(int i1, int j1, int i2, int j2) =>
-			CanBeConnected(i1, j1, i2, j2) && AreAdjacent(i1, j1, i2, j2);
+			AreAdjacent(i1, j1, i2, j2) && CanBeConnected(i1, j1, i2, j2);
 
 		private bool CanBeConnected(int i1, int j1, int i2, int j2) =>
 			this[i1, j1] == this[i2, j2] || IsEmpty(i1, j1) && IsEmpty(i2, j2);
