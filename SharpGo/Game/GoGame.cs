@@ -33,6 +33,8 @@ namespace SharpGo.Game
 		{
 			if (update)
 			{
+				board.UpdateEmptyIntersections();
+
 				if (player1.Color == player2.Color)
 				{
 					throw new ArgumentException($"Cannot run game, both players are the same color.");

@@ -7,7 +7,12 @@ namespace Source.Game
 {
 	internal class Board
 	{
-		internal State this[int i, int j] => states[i][j];
+		internal State this[int i, int j]
+		{
+			get => states[i][j];
+			private set => states[i][j] = value;
+		}
+
 		internal int NbRows { get; }
 		internal int NbCols { get; }
 		internal int NbIntersections { get; }
@@ -43,7 +48,21 @@ namespace Source.Game
 				throw new IndexOutOfRangeException($"Cannot place stone on intersection ({i},{j}), it is outside the board.");
 			}
 
-			states[i][j] = Player.PlayerColorToState(color);
+			this[i, j] = Player.PlayerColorToState(color);
+		}
+
+		internal void UpdateEmptyIntersections()
+		{
+			for (int i = 0; i < NbRows; i++)
+			{
+				for (int j = 0; j < NbCols; j++)
+				{
+					if (utils.IsEmpty(i, j))
+					{
+						this[i, j] = State.Empty;
+					}
+				}
+			}
 		}
 
 		internal (int nbWhite, int nbBlack, int nbEmpty) CountIntersections() => utils.CountIntersections();
@@ -70,7 +89,7 @@ namespace Source.Game
 			{
 				for (int j = 0; j < NbCols; j++)
 				{
-					states[i][j] = State.Empty;
+					this[i, j] = State.Empty;
 				}
 			}
 		}
