@@ -120,7 +120,7 @@ namespace Source.Game
 		public HashSet<Intersection> GetConnectedIntersections(int i, int j)
 		{
 			visited.Clear();
-			HashSet<Intersection> connectedIntersections = _GetConnectedIntersections(i, j);
+			HashSet<Intersection> connectedIntersections = GetConnectedIntersectionsAux(i, j);
 			connectedIntersections.Remove(new Intersection(this[i, j], i, j));
 			return connectedIntersections;
 		}
@@ -152,7 +152,7 @@ namespace Source.Game
 			{
 				for (int j = 0; j < NbCols; j++)
 				{
-					if (IsValidPosition(color, i, j))
+					if (IsLegal(color, i, j))
 					{
 						intersections.Add(new Intersection(this[i, j], i, j));
 					}
@@ -160,6 +160,24 @@ namespace Source.Game
 			}
 
 			return intersections;
+		}
+
+		public HashSet<Intersection> GetChain(int i, int j)
+		{
+			HashSet<HashSet<Intersection>> chains = GetChains();
+
+			foreach (HashSet<Intersection> chain in chains)
+			{
+				foreach (Intersection intersection in chain)
+				{
+					if (intersection.I == i && intersection.J == j)
+					{
+						return chain;
+					}
+				}
+			}
+
+			return new HashSet<Intersection>();
 		}
 
 		public HashSet<HashSet<Intersection>> GetChains()
@@ -193,7 +211,7 @@ namespace Source.Game
 			return chains;
 		}
 
-		private HashSet<Intersection> _GetConnectedIntersections(int i, int j)
+		private HashSet<Intersection> GetConnectedIntersectionsAux(int i, int j)
 		{
 			HashSet<Intersection> connectedIntersections = GetAdjacentConnectedIntersections(i, j);
 			HashSet<Intersection> toAdd = new HashSet<Intersection>();
@@ -203,7 +221,7 @@ namespace Source.Game
 				if (visited.Add(intersection))
 				{
 					(int row, int col) = (intersection.I, intersection.J);
-					HashSet<Intersection> intersections = _GetConnectedIntersections(row, col);
+					HashSet<Intersection> intersections = GetConnectedIntersectionsAux(row, col);
 					toAdd.UnionWith(intersections);
 				}
 			}
@@ -212,7 +230,7 @@ namespace Source.Game
 			return connectedIntersections;
 		}
 
-		private bool IsValidPosition(Color color, int i, int j) =>
+		private bool IsLegal(Color color, int i, int j) =>
 			(color == Color.White && (this[i, j] == State.Empty || this[i, j] == State.EmptyBlack)) ||
 			(color == Color.Black && (this[i, j] == State.Empty || this[i, j] == State.EmptyWhite));
 
