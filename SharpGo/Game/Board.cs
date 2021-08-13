@@ -73,7 +73,7 @@ namespace Source.Game
 
 		public HashSet<Intersection> GetAdjacentIntersections(int i, int j)
 		{
-			HashSet<Intersection> intersections = new HashSet<Intersection>();
+			var intersections = new HashSet<Intersection>();
 
 			if (IsInsideBoard(i + 1, j))
 			{
@@ -101,9 +101,9 @@ namespace Source.Game
 		public HashSet<Intersection> GetAdjacentConnectedIntersections(int i, int j)
 		{
 			HashSet<Intersection> intersections = GetAdjacentIntersections(i, j);
-			HashSet<Intersection> toRemove = new HashSet<Intersection>();
+			var toRemove = new HashSet<Intersection>();
 
-			foreach (Intersection intersection in intersections)
+			foreach (var intersection in intersections)
 			{
 				(int row, int col) = (intersection.I, intersection.J);
 
@@ -128,9 +128,9 @@ namespace Source.Game
 		public HashSet<Intersection> GetUnoccupiedLegalIntersections(Color color)
 		{
 			HashSet<Intersection> intersections = GetLegalIntersections(color);
-			HashSet<Intersection> toRemove = new HashSet<Intersection>();
+			var toRemove = new HashSet<Intersection>();
 
-			foreach (Intersection intersection in intersections)
+			foreach (var intersection in intersections)
 			{
 				(int i, int j) = (intersection.I, intersection.J);
 
@@ -146,7 +146,7 @@ namespace Source.Game
 
 		public HashSet<Intersection> GetLegalIntersections(Color color)
 		{
-			HashSet<Intersection> intersections = new HashSet<Intersection>();
+			var intersections = new HashSet<Intersection>();
 
 			for (int i = 0; i < NbRows; i++)
 			{
@@ -166,9 +166,9 @@ namespace Source.Game
 		{
 			HashSet<HashSet<Intersection>> chains = GetChains();
 
-			foreach (HashSet<Intersection> chain in chains)
+			foreach (var chain in chains)
 			{
-				foreach (Intersection intersection in chain)
+				foreach (var intersection in chain)
 				{
 					if (intersection.I == i && intersection.J == j)
 					{
@@ -182,7 +182,7 @@ namespace Source.Game
 
 		public HashSet<HashSet<Intersection>> GetChains()
 		{
-			HashSet<HashSet<Intersection>> chains = new HashSet<HashSet<Intersection>>();
+			var chains = new HashSet<HashSet<Intersection>>();
 
 			for (int i = 0; i < NbRows; i++)
 			{
@@ -194,15 +194,16 @@ namespace Source.Game
 				}
 			}
 
-			HashSet<HashSet<Intersection>> toRemove = new HashSet<HashSet<Intersection>>();
+			var toRemove = new HashSet<HashSet<Intersection>>();
 
-			foreach (HashSet<Intersection> s1 in chains)
+			foreach (var chain1 in chains)
 			{
-				foreach (HashSet<Intersection> s2 in chains)
+				foreach (var chain2 in chains)
 				{
-					if (s1 != s2 && s1.SetEquals(s2) && !(toRemove.Contains(s1) || toRemove.Contains(s2)))
+					if (chain1 != chain2 && chain1.SetEquals(chain2) &&
+						!(toRemove.Contains(chain1) || toRemove.Contains(chain2)))
 					{
-						toRemove.Add(s1);
+						toRemove.Add(chain1);
 					}
 				}
 			}
@@ -214,9 +215,9 @@ namespace Source.Game
 		private HashSet<Intersection> GetConnectedIntersectionsAux(int i, int j)
 		{
 			HashSet<Intersection> connectedIntersections = GetAdjacentConnectedIntersections(i, j);
-			HashSet<Intersection> toAdd = new HashSet<Intersection>();
+			var toAdd = new HashSet<Intersection>();
 
-			foreach (Intersection intersection in connectedIntersections)
+			foreach (var intersection in connectedIntersections)
 			{
 				if (visited.Add(intersection))
 				{
