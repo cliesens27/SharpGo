@@ -1,15 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using DrawingBoardNET.Drawing;
+﻿using DrawingBoardNET.Drawing;
 using DrawingBoardNET.Drawing.Constants;
 using MathlibNET;
-using MathlibNET.Random;
 using SharpGo.Game;
 using Source.Game;
 
 namespace Source.Render
 {
-	public class Renderer
+	internal class Renderer
 	{
 		private const int HEIGHT = 900;
 		private const int WIDTH = 2 * HEIGHT;
@@ -18,7 +15,7 @@ namespace Source.Render
 		private const float BASE_RADIUS = HEIGHT / 4.0f;
 		private readonly DrawingBoard db;
 
-		public Renderer(out DrawingBoard db)
+		internal Renderer(out DrawingBoard db)
 		{
 			db = new DrawingBoard(WIDTH, HEIGHT);
 			db.Title = "SharpGo";
@@ -26,7 +23,7 @@ namespace Source.Render
 			this.db = db;
 		}
 
-		public void Render(Board board)
+		internal void Render(Board board)
 		{
 			db.Background(0);
 

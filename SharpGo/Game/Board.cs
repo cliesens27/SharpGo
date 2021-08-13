@@ -5,22 +5,23 @@ using SharpGo.Game.Players;
 
 namespace Source.Game
 {
-	public class Board
+	internal class Board
 	{
-		public State this[int i, int j] => states[i][j];
-		public int NbRows { get; }
-		public int NbCols { get; }
-		public int NbIntersections { get; }
+		internal State this[int i, int j] => states[i][j];
+		internal int NbRows { get; }
+		internal int NbCols { get; }
+		internal int NbIntersections { get; }
 
 		private readonly State[][] states;
-		private readonly HashSet<Intersection> visited;
+		private readonly BoardUtils utils;
 
-		public Board(int size)
+		internal Board(int size)
 		{
+			utils = new BoardUtils(this);
+
 			NbRows = NbCols = size;
 			NbIntersections = NbRows * NbCols;
 			states = new State[NbRows][];
-			visited = new HashSet<Intersection>();
 
 			for (int i = 0; i < NbRows; i++)
 			{
@@ -30,14 +31,14 @@ namespace Source.Game
 			Reset();
 		}
 
-		public void PlaceStone(Color color, int i, int j)
+		internal void PlaceStone(PlayerColor color, int i, int j)
 		{
-			if (IsOccupied(i, j))
+			if (utils.IsOccupied(i, j))
 			{
 				throw new InvalidOperationException($"Cannot place stone on intersection ({i},{j}), it is already occupied.");
 			}
 
-			if (!IsInsideBoard(i, j))
+			if (!utils.IsInsideBoard(i, j))
 			{
 				throw new IndexOutOfRangeException($"Cannot place stone on intersection ({i},{j}), it is outside the board.");
 			}
@@ -45,213 +46,23 @@ namespace Source.Game
 			states[i][j] = Player.PlayerColorToState(color);
 		}
 
-		public (int nbWhite, int nbBlack, int nbEmpty) CountIntersections()
-		{
-			(int nbWhite, int nbBlack, int nbEmpty) = (0, 0, 0);
+		internal (int nbWhite, int nbBlack, int nbEmpty) CountIntersections() => utils.CountIntersections();
 
-			for (int i = 0; i < NbRows; i++)
-			{
-				for (int j = 0; j < NbCols; j++)
-				{
-					if (this[i, j] == State.White)
-					{
-						nbWhite++;
-					}
-					else if (this[i, j] == State.Black)
-					{
-						nbBlack++;
-					}
-					else if (IsEmpty(i, j))
-					{
-						nbEmpty++;
-					}
-				}
-			}
+		internal HashSet<Intersection> GetAdjacentIntersections(int i, int j) => utils.GetAdjacentIntersections(i, j);
 
-			return (nbWhite, nbBlack, nbEmpty);
-		}
+		internal HashSet<Intersection> GetAdjacentConnectedIntersections(int i, int j) =>
+			utils.GetAdjacentConnectedIntersections(i, j);
 
-		public HashSet<Intersection> GetAdjacentIntersections(int i, int j)
-		{
-			var intersections = new HashSet<Intersection>();
+		internal HashSet<Intersection> GetConnectedIntersections(int i, int j) => utils.GetConnectedIntersections(i, j);
 
-			if (IsInsideBoard(i + 1, j))
-			{
-				intersections.Add(new Intersection(this[i, j], i + 1, j));
-			}
+		internal HashSet<Intersection> GetUnoccupiedLegalIntersections(PlayerColor color) =>
+			utils.GetUnoccupiedLegalIntersections(color);
 
-			if (IsInsideBoard(i - 1, j))
-			{
-				intersections.Add(new Intersection(this[i, j], i - 1, j));
-			}
+		internal HashSet<Intersection> GetLegalIntersections(PlayerColor color) => utils.GetLegalIntersections(color);
 
-			if (IsInsideBoard(i, j + 1))
-			{
-				intersections.Add(new Intersection(this[i, j], i, j + 1));
-			}
+		internal HashSet<Intersection> GetChain(int i, int j) => utils.GetChain(i, j);
 
-			if (IsInsideBoard(i, j - 1))
-			{
-				intersections.Add(new Intersection(this[i, j], i, j - 1));
-			}
-
-			return intersections;
-		}
-
-		public HashSet<Intersection> GetAdjacentConnectedIntersections(int i, int j)
-		{
-			HashSet<Intersection> intersections = GetAdjacentIntersections(i, j);
-			var toRemove = new HashSet<Intersection>();
-
-			foreach (var intersection in intersections)
-			{
-				(int row, int col) = (intersection.I, intersection.J);
-
-				if (!AreAdjacentConnected(i, j, row, col))
-				{
-					toRemove.Add(intersection);
-				}
-			}
-
-			intersections.ExceptWith(toRemove);
-			return intersections;
-		}
-
-		public HashSet<Intersection> GetConnectedIntersections(int i, int j)
-		{
-			visited.Clear();
-			HashSet<Intersection> connectedIntersections = GetConnectedIntersectionsAux(i, j);
-			connectedIntersections.Remove(new Intersection(this[i, j], i, j));
-			return connectedIntersections;
-		}
-
-		public HashSet<Intersection> GetUnoccupiedLegalIntersections(Color color)
-		{
-			HashSet<Intersection> intersections = GetLegalIntersections(color);
-			var toRemove = new HashSet<Intersection>();
-
-			foreach (var intersection in intersections)
-			{
-				(int i, int j) = (intersection.I, intersection.J);
-
-				if (IsOccupied(i, j))
-				{
-					toRemove.Add(intersection);
-				}
-			}
-
-			intersections.ExceptWith(toRemove);
-			return intersections;
-		}
-
-		public HashSet<Intersection> GetLegalIntersections(Color color)
-		{
-			var intersections = new HashSet<Intersection>();
-
-			for (int i = 0; i < NbRows; i++)
-			{
-				for (int j = 0; j < NbCols; j++)
-				{
-					if (IsLegal(color, i, j))
-					{
-						intersections.Add(new Intersection(this[i, j], i, j));
-					}
-				}
-			}
-
-			return intersections;
-		}
-
-		public HashSet<Intersection> GetChain(int i, int j)
-		{
-			HashSet<HashSet<Intersection>> chains = GetChains();
-
-			foreach (var chain in chains)
-			{
-				foreach (var intersection in chain)
-				{
-					if (intersection.I == i && intersection.J == j)
-					{
-						return chain;
-					}
-				}
-			}
-
-			return new HashSet<Intersection>();
-		}
-
-		public HashSet<HashSet<Intersection>> GetChains()
-		{
-			var chains = new HashSet<HashSet<Intersection>>();
-
-			for (int i = 0; i < NbRows; i++)
-			{
-				for (int j = 0; j < NbCols; j++)
-				{
-					HashSet<Intersection> chain = GetConnectedIntersections(i, j);
-					chain.Add(new Intersection(this[i, j], i, j));
-					chains.Add(chain);
-				}
-			}
-
-			var toRemove = new HashSet<HashSet<Intersection>>();
-
-			foreach (var chain1 in chains)
-			{
-				foreach (var chain2 in chains)
-				{
-					if (chain1 != chain2 && chain1.SetEquals(chain2) &&
-						!(toRemove.Contains(chain1) || toRemove.Contains(chain2)))
-					{
-						toRemove.Add(chain1);
-					}
-				}
-			}
-
-			chains.ExceptWith(toRemove);
-			return chains;
-		}
-
-		private HashSet<Intersection> GetConnectedIntersectionsAux(int i, int j)
-		{
-			HashSet<Intersection> connectedIntersections = GetAdjacentConnectedIntersections(i, j);
-			var toAdd = new HashSet<Intersection>();
-
-			foreach (var intersection in connectedIntersections)
-			{
-				if (visited.Add(intersection))
-				{
-					(int row, int col) = (intersection.I, intersection.J);
-					HashSet<Intersection> intersections = GetConnectedIntersectionsAux(row, col);
-					toAdd.UnionWith(intersections);
-				}
-			}
-
-			connectedIntersections.UnionWith(toAdd);
-			return connectedIntersections;
-		}
-
-		private bool IsLegal(Color color, int i, int j) =>
-			(color == Color.White && (this[i, j] == State.Empty || this[i, j] == State.EmptyBlack)) ||
-			(color == Color.Black && (this[i, j] == State.Empty || this[i, j] == State.EmptyWhite));
-
-		private bool IsOccupied(int i, int j) => this[i, j] == State.White || this[i, j] == State.Black;
-
-		private bool IsEmpty(int i, int j) => !IsOccupied(i, j);
-
-		private bool AreAdjacent(int i1, int j1, int i2, int j2) =>
-			(i1 == i2 && j1 == j2 + 1) ||
-			(i1 == i2 && j1 == j2 - 1) ||
-			(i1 == i2 + 1 && j1 == j2) ||
-			(i1 == i2 - 1 && j1 == j2);
-
-		private bool AreAdjacentConnected(int i1, int j1, int i2, int j2) =>
-			AreAdjacent(i1, j1, i2, j2) && CanBeConnected(i1, j1, i2, j2);
-
-		private bool CanBeConnected(int i1, int j1, int i2, int j2) =>
-			this[i1, j1] == this[i2, j2] || IsEmpty(i1, j1) && IsEmpty(i2, j2);
-
-		private bool IsInsideBoard(int i, int j) => i >= 0 && i < NbRows && j >= 0 && j < NbCols;
+		internal HashSet<HashSet<Intersection>> GetChains() => utils.GetChains();
 
 		private void Reset()
 		{

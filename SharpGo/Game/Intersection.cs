@@ -2,12 +2,12 @@
 
 namespace SharpGo.Game
 {
-	public struct Intersection
+	internal struct Intersection
 	{
-		public State State { get; }
-		public int I { get; }
-		public int J { get; }
+		internal State State { get; }
+		internal int I { get; }
+		internal int J { get; }
 
-		public Intersection(State state, int i, int j) => (State, I, J) = (state, i, j);
+		internal Intersection(State state, int i, int j) => (State, I, J) = (state, i, j);
 	}
 }

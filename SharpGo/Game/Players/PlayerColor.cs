@@ -1,6 +1,6 @@
 ﻿namespace SharpGo.Game.Players
 {
-	public enum Color
+	public enum PlayerColor
 	{
 		White,
 		Black
