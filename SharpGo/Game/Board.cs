@@ -162,25 +162,25 @@ namespace Source.Game
 			return intersections;
 		}
 
-		public HashSet<HashSet<Intersection>> GetComponents()
+		public HashSet<HashSet<Intersection>> GetChains()
 		{
-			HashSet<HashSet<Intersection>> components = new HashSet<HashSet<Intersection>>();
+			HashSet<HashSet<Intersection>> chains = new HashSet<HashSet<Intersection>>();
 
 			for (int i = 0; i < NbRows; i++)
 			{
 				for (int j = 0; j < NbCols; j++)
 				{
-					HashSet<Intersection> component = GetConnectedIntersections(i, j);
-					component.Add(new Intersection(this[i, j], i, j));
-					components.Add(component);
+					HashSet<Intersection> chain = GetConnectedIntersections(i, j);
+					chain.Add(new Intersection(this[i, j], i, j));
+					chains.Add(chain);
 				}
 			}
 
 			HashSet<HashSet<Intersection>> toRemove = new HashSet<HashSet<Intersection>>();
 
-			foreach (HashSet<Intersection> s1 in components)
+			foreach (HashSet<Intersection> s1 in chains)
 			{
-				foreach (HashSet<Intersection> s2 in components)
+				foreach (HashSet<Intersection> s2 in chains)
 				{
 					if (s1 != s2 && s1.SetEquals(s2) && !(toRemove.Contains(s1) || toRemove.Contains(s2)))
 					{
@@ -189,8 +189,8 @@ namespace Source.Game
 				}
 			}
 
-			components.ExceptWith(toRemove);
-			return components;
+			chains.ExceptWith(toRemove);
+			return chains;
 		}
 
 		private HashSet<Intersection> _GetConnectedIntersections(int i, int j)
