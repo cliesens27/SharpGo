@@ -61,6 +61,38 @@ namespace SharpGo.Game
 			return (nbWhite, nbBlack, nbEmpty);
 		}
 
+		public int CountLiberties(int i, int j)
+		{
+			if (IsEmpty(i, j))
+			{
+				return 0;
+			}
+
+			HashSet<Intersection> chain = GetChain(i, j);
+			var visited = new HashSet<Intersection> { new Intersection(board[i, j], i, j) };
+			int nbLiberties = 0;
+
+			foreach (var intersection in chain)
+			{
+				var adjacentIntersections = GetAdjacentIntersections(intersection.I, intersection.J);
+
+				foreach (var adj in adjacentIntersections)
+				{
+					if (!visited.Contains(adj))
+					{
+						if (IsEmpty(adj.I, adj.J))
+						{
+							nbLiberties++;
+						}
+
+						visited.Add(adj);
+					}
+				}
+			}
+
+			return nbLiberties;
+		}
+
 		public HashSet<Intersection> GetAdjacentIntersections(int i, int j)
 		{
 			var intersections = new HashSet<Intersection>();
