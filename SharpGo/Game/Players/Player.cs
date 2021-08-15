@@ -4,11 +4,11 @@ using Source.Game;
 
 namespace SharpGo.Game.Players
 {
-	internal abstract class Player
+	public abstract class Player
 	{
-		internal PlayerColor Color { get; }
-		internal bool Passed { get; private set; }
-		internal int NbTurnsPlayed { get; private set; }
+		public PlayerColor Color { get; }
+		public bool Passed { get; private set; }
+		public int NbTurnsPlayed { get; private set; }
 
 		protected Player(PlayerColor color) => Color = color;
 
@@ -18,7 +18,7 @@ namespace SharpGo.Game.Players
 
 		protected abstract (int, int) PickPosition(Board board, HashSet<Intersection> legalIntersections);
 
-		internal void Play(Board board)
+		public void Play(Board board)
 		{
 			HashSet<Intersection> legalIntersections = board.GetUnoccupiedLegalIntersections(Color);
 
@@ -38,7 +38,7 @@ namespace SharpGo.Game.Players
 			NbTurnsPlayed++;
 		}
 
-		internal static State PlayerColorToState(PlayerColor color)
+		public static State PlayerColorToState(PlayerColor color)
 		{
 			if (color == PlayerColor.White)
 			{

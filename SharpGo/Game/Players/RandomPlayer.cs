@@ -6,9 +6,9 @@ using Source.Game;
 
 namespace SharpGo.Game.Players
 {
-	internal class RandomPlayer : Player
+	public class RandomPlayer : Player
 	{
-		internal RandomPlayer(PlayerColor color) : base(color) { }
+		public RandomPlayer(PlayerColor color) : base(color) { }
 
 		protected override (int, int) PickPosition(Board board, HashSet<Intersection> legalIntersections)
 		{

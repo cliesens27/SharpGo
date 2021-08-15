@@ -5,22 +5,22 @@ using SharpGo.Game.Players;
 
 namespace Source.Game
 {
-	internal class Board
+	public class Board
 	{
-		internal State this[int i, int j]
+		public State this[int i, int j]
 		{
 			get => states[i][j];
 			private set => states[i][j] = value;
 		}
 
-		internal int NbRows { get; }
-		internal int NbCols { get; }
-		internal int NbIntersections { get; }
+		public int NbRows { get; }
+		public int NbCols { get; }
+		public int NbIntersections { get; }
 
 		private readonly State[][] states;
 		private readonly BoardUtils utils;
 
-		internal Board(int size)
+		public Board(int size)
 		{
 			utils = new BoardUtils(this);
 
@@ -36,7 +36,7 @@ namespace Source.Game
 			Reset();
 		}
 
-		internal void PlaceStone(PlayerColor color, int i, int j)
+		public void PlaceStone(PlayerColor color, int i, int j)
 		{
 			if (utils.IsOccupied(i, j))
 			{
@@ -51,7 +51,7 @@ namespace Source.Game
 			this[i, j] = Player.PlayerColorToState(color);
 		}
 
-		internal void UpdateEmptyIntersections()
+		public void UpdateEmptyIntersections()
 		{
 			for (int i = 0; i < NbRows; i++)
 			{
@@ -65,23 +65,23 @@ namespace Source.Game
 			}
 		}
 
-		internal (int nbWhite, int nbBlack, int nbEmpty) CountIntersections() => utils.CountIntersections();
+		public (int nbWhite, int nbBlack, int nbEmpty) CountIntersections() => utils.CountIntersections();
 
-		internal HashSet<Intersection> GetAdjacentIntersections(int i, int j) => utils.GetAdjacentIntersections(i, j);
+		public HashSet<Intersection> GetAdjacentIntersections(int i, int j) => utils.GetAdjacentIntersections(i, j);
 
-		internal HashSet<Intersection> GetAdjacentConnectedIntersections(int i, int j) =>
+		public HashSet<Intersection> GetAdjacentConnectedIntersections(int i, int j) =>
 			utils.GetAdjacentConnectedIntersections(i, j);
 
-		internal HashSet<Intersection> GetConnectedIntersections(int i, int j) => utils.GetConnectedIntersections(i, j);
+		public HashSet<Intersection> GetConnectedIntersections(int i, int j) => utils.GetConnectedIntersections(i, j);
 
-		internal HashSet<Intersection> GetUnoccupiedLegalIntersections(PlayerColor color) =>
+		public HashSet<Intersection> GetUnoccupiedLegalIntersections(PlayerColor color) =>
 			utils.GetUnoccupiedLegalIntersections(color);
 
-		internal HashSet<Intersection> GetLegalIntersections(PlayerColor color) => utils.GetLegalIntersections(color);
+		public HashSet<Intersection> GetLegalIntersections(PlayerColor color) => utils.GetLegalIntersections(color);
 
-		internal HashSet<Intersection> GetChain(int i, int j) => utils.GetChain(i, j);
+		public HashSet<Intersection> GetChain(int i, int j) => utils.GetChain(i, j);
 
-		internal HashSet<HashSet<Intersection>> GetChains() => utils.GetChains();
+		public HashSet<HashSet<Intersection>> GetChains() => utils.GetChains();
 
 		private void Reset()
 		{

@@ -6,9 +6,9 @@ using Source.Render;
 
 namespace SharpGo.Game
 {
-	internal class GoGame
+	public class GoGame
 	{
-		internal int NbTurns { get; private set; }
+		public int NbTurns { get; private set; }
 
 		private readonly DrawingBoard db;
 		private readonly Renderer renderer;
@@ -18,7 +18,7 @@ namespace SharpGo.Game
 		private string errorMessage;
 		private bool update = true;
 
-		internal GoGame(Player p1, Player p2, int boardSize = 19)
+		public GoGame(Player p1, Player p2, int boardSize = 19)
 		{
 			renderer = new Renderer(out db);
 			board = new Board(boardSize);
@@ -27,7 +27,7 @@ namespace SharpGo.Game
 			db.Draw = Draw;
 		}
 
-		internal void Start() => db.Start();
+		public void Start() => db.Start();
 
 		private void Update()
 		{

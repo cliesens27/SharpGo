@@ -6,7 +6,7 @@ using Source.Game;
 
 namespace Source.Render
 {
-	internal class Renderer
+	public class Renderer
 	{
 		private const int HEIGHT = 900;
 		private const int WIDTH = 2 * HEIGHT;
@@ -15,7 +15,7 @@ namespace Source.Render
 		private const float BASE_RADIUS = HEIGHT / 4.0f;
 		private readonly DrawingBoard db;
 
-		internal Renderer(out DrawingBoard db)
+		public Renderer(out DrawingBoard db)
 		{
 			db = new DrawingBoard(WIDTH, HEIGHT);
 			db.Title = "SharpGo";
@@ -23,7 +23,7 @@ namespace Source.Render
 			this.db = db;
 		}
 
-		internal void Render(Board board)
+		public void Render(Board board)
 		{
 			db.Background(0);
 

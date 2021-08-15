@@ -4,37 +4,38 @@ using Source.Game;
 
 namespace SharpGo.Game
 {
-	internal class BoardUtils
+	public class BoardUtils
 	{
 		private readonly HashSet<Intersection> visited = new HashSet<Intersection>();
 		private readonly Board board;
 
-		internal BoardUtils(Board board) => this.board = board;
+		public BoardUtils(Board board) => this.board = board;
 
-		internal bool IsOccupied(int i, int j) => board[i, j] == State.White || board[i, j] == State.Black;
+		public bool IsOccupied(int i, int j) => board[i, j] == State.White || board[i, j] == State.Black;
 
-		internal bool IsInsideBoard(int i, int j) =>
-			i >= 0 && i < board.NbRows && j >= 0 && j < board.NbCols;
+		public bool IsInsideBoard(int i, int j) =>
+			i >= 0 && i < board.NbRows &&
+			j >= 0 && j < board.NbCols;
 
-		internal bool IsLegal(PlayerColor color, int i, int j) =>
+		public bool IsLegal(PlayerColor color, int i, int j) =>
 			(color == PlayerColor.White && (board[i, j] == State.Empty || board[i, j] == State.EmptyBlack)) ||
 			(color == PlayerColor.Black && (board[i, j] == State.Empty || board[i, j] == State.EmptyWhite));
 
-		internal bool IsEmpty(int i, int j) => !IsOccupied(i, j);
+		public bool IsEmpty(int i, int j) => !IsOccupied(i, j);
 
-		internal bool AreAdjacent(int i1, int j1, int i2, int j2) =>
-			(i1 == i2 && j1 == j2 + 1) ||
-			(i1 == i2 && j1 == j2 - 1) ||
-			(i1 == i2 + 1 && j1 == j2) ||
-			(i1 == i2 - 1 && j1 == j2);
+		public bool AreAdjacent(int i1, int j1, int i2, int j2) =>
+			(i1 == i2 && (j1 == j2 + 1 || j1 == j2 - 1)) ||
+			(j1 == j2 && (i1 == i2 + 1 || i1 == i2 - 1));
 
-		internal bool AreAdjacentConnected(int i1, int j1, int i2, int j2) =>
-			AreAdjacent(i1, j1, i2, j2) && CanBeConnected(i1, j1, i2, j2);
+		public bool AreAdjacentConnected(int i1, int j1, int i2, int j2) =>
+			AreAdjacent(i1, j1, i2, j2) &&
+			CanBeConnected(i1, j1, i2, j2);
 
-		internal bool CanBeConnected(int i1, int j1, int i2, int j2) =>
-			board[i1, j1] == board[i2, j2] || IsEmpty(i1, j1) && IsEmpty(i2, j2);
+		public bool CanBeConnected(int i1, int j1, int i2, int j2) =>
+			board[i1, j1] == board[i2, j2] ||
+			(IsEmpty(i1, j1) && IsEmpty(i2, j2));
 
-		internal (int nbWhite, int nbBlack, int nbEmpty) CountIntersections()
+		public (int nbWhite, int nbBlack, int nbEmpty) CountIntersections()
 		{
 			(int nbWhite, int nbBlack, int nbEmpty) = (0, 0, 0);
 
@@ -60,7 +61,7 @@ namespace SharpGo.Game
 			return (nbWhite, nbBlack, nbEmpty);
 		}
 
-		internal HashSet<Intersection> GetAdjacentIntersections(int i, int j)
+		public HashSet<Intersection> GetAdjacentIntersections(int i, int j)
 		{
 			var intersections = new HashSet<Intersection>();
 
@@ -87,7 +88,7 @@ namespace SharpGo.Game
 			return intersections;
 		}
 
-		internal HashSet<Intersection> GetAdjacentConnectedIntersections(int i, int j)
+		public HashSet<Intersection> GetAdjacentConnectedIntersections(int i, int j)
 		{
 			HashSet<Intersection> intersections = GetAdjacentIntersections(i, j);
 			var toRemove = new HashSet<Intersection>();
@@ -106,7 +107,7 @@ namespace SharpGo.Game
 			return intersections;
 		}
 
-		internal HashSet<Intersection> GetConnectedIntersections(int i, int j)
+		public HashSet<Intersection> GetConnectedIntersections(int i, int j)
 		{
 			visited.Clear();
 			HashSet<Intersection> connectedIntersections = GetConnectedIntersectionsAux(i, j);
@@ -114,7 +115,7 @@ namespace SharpGo.Game
 			return connectedIntersections;
 		}
 
-		internal HashSet<Intersection> GetUnoccupiedLegalIntersections(PlayerColor color)
+		public HashSet<Intersection> GetUnoccupiedLegalIntersections(PlayerColor color)
 		{
 			HashSet<Intersection> intersections = GetLegalIntersections(color);
 			var toRemove = new HashSet<Intersection>();
@@ -133,7 +134,7 @@ namespace SharpGo.Game
 			return intersections;
 		}
 
-		internal HashSet<Intersection> GetLegalIntersections(PlayerColor color)
+		public HashSet<Intersection> GetLegalIntersections(PlayerColor color)
 		{
 			var intersections = new HashSet<Intersection>();
 
@@ -151,7 +152,7 @@ namespace SharpGo.Game
 			return intersections;
 		}
 
-		internal HashSet<Intersection> GetChain(int i, int j)
+		public HashSet<Intersection> GetChain(int i, int j)
 		{
 			HashSet<HashSet<Intersection>> chains = GetChains();
 
@@ -169,7 +170,7 @@ namespace SharpGo.Game
 			return new HashSet<Intersection>();
 		}
 
-		internal HashSet<HashSet<Intersection>> GetChains()
+		public HashSet<HashSet<Intersection>> GetChains()
 		{
 			var chains = new HashSet<HashSet<Intersection>>();
 
