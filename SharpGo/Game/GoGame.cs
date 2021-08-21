@@ -17,6 +17,7 @@ namespace SharpGo.Game
 		private readonly Board board;
 		private string errorMessage;
 		private bool update = true;
+		private int currentPlayer;
 
 		public GoGame(Player p1, Player p2, int boardSize = 19)
 		{
@@ -25,6 +26,20 @@ namespace SharpGo.Game
 			player1 = p1;
 			player2 = p2;
 			db.Draw = Draw;
+
+			if (player1.Color == player2.Color)
+			{
+				throw new ArgumentException($"Cannot run game, both players are the same color.");
+			}
+
+			if (player1.Color == PlayerColor.Black)
+			{
+				currentPlayer = 1;
+			}
+			else
+			{
+				currentPlayer = 2;
+			}
 		}
 
 		public void Start() => db.Start();
@@ -33,22 +48,20 @@ namespace SharpGo.Game
 		{
 			if (update)
 			{
-				board.UpdateEmptyIntersections();
-
-				if (player1.Color == player2.Color)
-				{
-					throw new ArgumentException($"Cannot run game, both players are the same color.");
-				}
-
-				if (player1.Color == PlayerColor.Black)
+				if (currentPlayer == 1)
 				{
 					player1.Play(board);
-					player2.Play(board);
+					currentPlayer = 2;
 				}
 				else
 				{
 					player2.Play(board);
-					player1.Play(board);
+					currentPlayer = 1;
+				}
+
+				if (player1.NbTurnsPlayed == player2.NbTurnsPlayed)
+				{
+					board.UpdateEmptyIntersections();
 				}
 
 				if (player1.Passed && player1.Passed)

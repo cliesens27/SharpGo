@@ -19,7 +19,7 @@ namespace Source.Render
 		{
 			db = new DrawingBoard(WIDTH, HEIGHT);
 			db.Title = "SharpGo";
-			db.TargetFrameRate = 999;
+			db.TargetFrameRate = 5;
 			this.db = db;
 		}
 
@@ -62,6 +62,8 @@ namespace Source.Render
 			switch (state)
 			{
 				case State.Empty:
+				case State.EmptyWhite:
+				case State.EmptyBlack:
 					return;
 				case State.White:
 					db.Stroke(0);

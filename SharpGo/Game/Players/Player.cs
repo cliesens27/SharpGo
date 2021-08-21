@@ -14,13 +14,22 @@ namespace SharpGo.Game.Players
 
 		protected void PlaceStone(Board board, int i, int j) => board.PlaceStone(Color, i, j);
 
+		protected void Capture(HashSet<Intersection> intersections, Board board)
+		{
+			foreach(var intersection in intersections)
+			{
+				board.Capture(intersection);
+			}
+		}
+
 		protected abstract bool Pass(Board board, HashSet<Intersection> legalIntersections);
 
 		protected abstract (int, int) PickPosition(Board board, HashSet<Intersection> legalIntersections);
 
 		public void Play(Board board)
 		{
-			HashSet<Intersection> legalIntersections = board.GetUnoccupiedLegalIntersections(Color);
+			HashSet<Intersection> legalIntersections = board.GetLegalIntersections(Color);
+			HashSet<Intersection> capturableIntersections = board.GetLegalIntersectionsWithNoLiberties(Color);
 
 			if (Pass(board, legalIntersections) || legalIntersections.Count == 0)
 			{
@@ -31,8 +40,7 @@ namespace SharpGo.Game.Players
 			(int i, int j) = PickPosition(board, legalIntersections);
 
 			PlaceStone(board, i, j);
-			// Capture
-			// Self-capture
+			Capture(capturableIntersections, board);
 
 			Passed = false;
 			NbTurnsPlayed++;

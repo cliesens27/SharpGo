@@ -18,8 +18,8 @@ namespace SharpGo.Game
 			j >= 0 && j < board.NbCols;
 
 		public bool IsLegal(PlayerColor color, int i, int j) =>
-			(color == PlayerColor.White && (board[i, j] == State.Empty || board[i, j] == State.EmptyBlack)) ||
-			(color == PlayerColor.Black && (board[i, j] == State.Empty || board[i, j] == State.EmptyWhite));
+			color == PlayerColor.White && (board[i, j] == State.Empty || board[i, j] == State.EmptyBlack) ||
+			color == PlayerColor.Black && (board[i, j] == State.Empty || board[i, j] == State.EmptyWhite);
 
 		public bool IsEmpty(int i, int j) => !IsOccupied(i, j);
 
@@ -61,7 +61,7 @@ namespace SharpGo.Game
 			return (nbWhite, nbBlack, nbEmpty);
 		}
 
-		public int CountLiberties(int i, int j)
+		public int CountIntersectionLiberties(int i, int j)
 		{
 			if (IsEmpty(i, j))
 			{
@@ -91,6 +91,29 @@ namespace SharpGo.Game
 			}
 
 			return nbLiberties;
+		}
+
+		public HashSet<Intersection> GetLegalIntersectionsWithNoLiberties(PlayerColor color)
+		{
+			HashSet<Intersection> intersections = new HashSet<Intersection>();
+
+			for (int i = 0; i < board.NbRows; i++)
+			{
+				for (int j = 0; j < board.NbCols; j++)
+				{
+					if (IsOccupied(i, j) && board[i, j] != Player.PlayerColorToState(color))
+					{
+						int nbLiberties = CountIntersectionLiberties(i, j);
+
+						if (nbLiberties == 0)
+						{
+							intersections.Add(new Intersection(board[i, j], i, j));
+						}
+					}
+				}
+			}
+
+			return intersections;
 		}
 
 		public HashSet<Intersection> GetAdjacentIntersections(int i, int j)
@@ -145,25 +168,6 @@ namespace SharpGo.Game
 			HashSet<Intersection> connectedIntersections = GetConnectedIntersectionsAux(i, j);
 			connectedIntersections.Remove(new Intersection(board[i, j], i, j));
 			return connectedIntersections;
-		}
-
-		public HashSet<Intersection> GetUnoccupiedLegalIntersections(PlayerColor color)
-		{
-			HashSet<Intersection> intersections = GetLegalIntersections(color);
-			var toRemove = new HashSet<Intersection>();
-
-			foreach (var intersection in intersections)
-			{
-				(int i, int j) = (intersection.I, intersection.J);
-
-				if (IsOccupied(i, j))
-				{
-					toRemove.Add(intersection);
-				}
-			}
-
-			intersections.ExceptWith(toRemove);
-			return intersections;
 		}
 
 		public HashSet<Intersection> GetLegalIntersections(PlayerColor color)

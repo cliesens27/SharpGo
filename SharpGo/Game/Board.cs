@@ -51,6 +51,18 @@ namespace Source.Game
 			this[i, j] = Player.PlayerColorToState(color);
 		}
 
+		public void Capture(Intersection intersection)
+		{
+			if (this[intersection.I, intersection.J] == State.White)
+			{
+				this[intersection.I, intersection.J] = State.EmptyWhite;
+			}
+			else if (this[intersection.I, intersection.J] == State.Black)
+			{
+				this[intersection.I, intersection.J] = State.EmptyBlack;
+			}
+		}
+
 		public void UpdateEmptyIntersections()
 		{
 			for (int i = 0; i < NbRows; i++)
@@ -67,15 +79,15 @@ namespace Source.Game
 
 		public (int nbWhite, int nbBlack, int nbEmpty) CountIntersections() => utils.CountIntersections();
 
+		public HashSet<Intersection> GetLegalIntersectionsWithNoLiberties(PlayerColor color) =>
+			utils.GetLegalIntersectionsWithNoLiberties(color);
+
 		public HashSet<Intersection> GetAdjacentIntersections(int i, int j) => utils.GetAdjacentIntersections(i, j);
 
 		public HashSet<Intersection> GetAdjacentConnectedIntersections(int i, int j) =>
 			utils.GetAdjacentConnectedIntersections(i, j);
 
 		public HashSet<Intersection> GetConnectedIntersections(int i, int j) => utils.GetConnectedIntersections(i, j);
-
-		public HashSet<Intersection> GetUnoccupiedLegalIntersections(PlayerColor color) =>
-			utils.GetUnoccupiedLegalIntersections(color);
 
 		public HashSet<Intersection> GetLegalIntersections(PlayerColor color) => utils.GetLegalIntersections(color);
 
