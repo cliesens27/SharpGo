@@ -13,9 +13,7 @@ namespace SharpGo.Game
 
 		public bool IsOccupied(int i, int j) => board[i, j] == State.White || board[i, j] == State.Black;
 
-		public bool IsInsideBoard(int i, int j) =>
-			i >= 0 && i < board.NbRows &&
-			j >= 0 && j < board.NbCols;
+		public bool IsInsideBoard(int i, int j) => (i >= 0 && i < board.Size) && (j >= 0 && j < board.Size);
 
 		public bool IsLegal(PlayerColor color, int i, int j) =>
 			color == PlayerColor.White && (board[i, j] == State.Empty || board[i, j] == State.EmptyBlack) ||
@@ -71,9 +69,9 @@ namespace SharpGo.Game
 		{
 			HashSet<Intersection> intersections = new HashSet<Intersection>();
 
-			for (int i = 0; i < board.NbRows; i++)
+			for (int i = 0; i < board.Size; i++)
 			{
-				for (int j = 0; j < board.NbCols; j++)
+				for (int j = 0; j < board.Size; j++)
 				{
 					if (IsOccupied(i, j) && board[i, j] != Player.PlayerColorToState(color))
 					{
@@ -148,9 +146,9 @@ namespace SharpGo.Game
 		{
 			var intersections = new HashSet<Intersection>();
 
-			for (int i = 0; i < board.NbRows; i++)
+			for (int i = 0; i < board.Size; i++)
 			{
-				for (int j = 0; j < board.NbCols; j++)
+				for (int j = 0; j < board.Size; j++)
 				{
 					if (IsLegal(color, i, j))
 					{
@@ -184,9 +182,9 @@ namespace SharpGo.Game
 		{
 			var chains = new HashSet<HashSet<Intersection>>();
 
-			for (int i = 0; i < board.NbRows; i++)
+			for (int i = 0; i < board.Size; i++)
 			{
-				for (int j = 0; j < board.NbCols; j++)
+				for (int j = 0; j < board.Size; j++)
 				{
 					HashSet<Intersection> chain = GetConnectedIntersections(i, j);
 					chain.Add(new Intersection(board[i, j], i, j));

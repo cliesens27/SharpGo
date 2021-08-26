@@ -46,18 +46,18 @@ namespace Source.Render
 
 			DrawGrid(board);
 
-			float radius = BASE_RADIUS / board.NbRows;
+			float radius = BASE_RADIUS / board.Size;
 
-			for (int i = 0; i < board.NbRows; i++)
+			for (int i = 0; i < board.Size; i++)
 			{
-				for (int j = 0; j < board.NbCols; j++)
+				for (int j = 0; j < board.Size; j++)
 				{
-					DrawStone(board[i, j], board.NbRows, board.NbCols, i, j, radius);
+					DrawStone(board[i, j], board.Size, board.Size, i, j, radius);
 				}
 			}
 		}
 
-		private void DrawStone(State state, int nbRows, int nbCols, int i, int j, float radius)
+		private void DrawStone(State state, int nbRows, int Size, int i, int j, float radius)
 		{
 			switch (state)
 			{
@@ -75,7 +75,7 @@ namespace Source.Render
 					break;
 			}
 
-			float x = SpecialFunctions.Lerp(j, -0.5f, nbCols - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
+			float x = SpecialFunctions.Lerp(j, -0.5f, Size - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
 			float y = SpecialFunctions.Lerp(i, -0.5f, nbRows - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
 
 			db.StrokeWidth(3);
@@ -87,11 +87,11 @@ namespace Source.Render
 			db.StrokeWidth(1);
 			db.Stroke(255);
 
-			float offset = 0.5f * PANEL_SIZE / board.NbRows;
+			float offset = 0.5f * PANEL_SIZE / board.Size;
 
-			for (int i = 0; i < board.NbRows; i++)
+			for (int i = 0; i < board.Size; i++)
 			{
-				float x1 = SpecialFunctions.Lerp(i, -0.5f, board.NbRows - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
+				float x1 = SpecialFunctions.Lerp(i, -0.5f, board.Size - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
 				float y1 = PANEL_BORDER + offset;
 				float x2 = x1;
 				float y2 = PANEL_SIZE + PANEL_BORDER - offset;
@@ -99,10 +99,10 @@ namespace Source.Render
 				db.Line(x1, y1, x2, y2);
 			}
 
-			for (int i = 0; i < board.NbCols; i++)
+			for (int i = 0; i < board.Size; i++)
 			{
 				float x1 = PANEL_BORDER + offset;
-				float y1 = SpecialFunctions.Lerp(i, -0.5f, board.NbCols - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
+				float y1 = SpecialFunctions.Lerp(i, -0.5f, board.Size - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
 				float x2 = PANEL_SIZE + PANEL_BORDER - offset;
 				float y2 = y1;
 
@@ -134,10 +134,10 @@ namespace Source.Render
 			foreach (var intersection in connectedIntersections)
 			{
 				float x = SpecialFunctions.Lerp(
-					intersection.J, -0.5f, board.NbCols - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER
+					intersection.J, -0.5f, board.Size - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER
 				);
 				float y = SpecialFunctions.Lerp(
-					intersection.I, -0.5f, board.NbRows - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER
+					intersection.I, -0.5f, board.Size - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER
 				);
 
 				db.Circle(x, y, radius / 2);

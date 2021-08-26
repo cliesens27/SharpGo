@@ -13,15 +13,14 @@ namespace Source.Game
 			private set => states[i][j] = value;
 		}
 
-		public int NbRows { get; }
-		public int NbCols { get; }
+		public int Size { get; }
 		public int NbIntersections { get; }
 
 		public int NbEmptyIntersection { get; private set; }
 		public int NbWhiteStones { get; private set; } = 0;
 		public int NbBlackStones { get; private set; } = 0;
 
-		public bool IsEmpty => (NbWhiteStones == 0) && (NbBlackStones == 0) && (NbEmptyIntersection == NbRows * NbCols);
+		public bool IsEmpty => (NbWhiteStones == 0) && (NbBlackStones == 0) && (NbEmptyIntersection == Size * Size);
 
 		private readonly State[][] states;
 		private readonly BoardUtils utils;
@@ -30,14 +29,14 @@ namespace Source.Game
 		{
 			utils = new BoardUtils(this);
 
-			NbRows = NbCols = size;
-			NbIntersections = NbRows * NbCols;
+			Size = size;
+			NbIntersections = Size * Size;
 			NbEmptyIntersection = NbIntersections;
-			states = new State[NbRows][];
+			states = new State[Size][];
 
-			for (int i = 0; i < NbRows; i++)
+			for (int i = 0; i < Size; i++)
 			{
-				states[i] = new State[NbCols];
+				states[i] = new State[Size];
 			}
 
 			Reset();
@@ -87,9 +86,9 @@ namespace Source.Game
 
 		public void UpdateEmptyIntersections()
 		{
-			for (int i = 0; i < NbRows; i++)
+			for (int i = 0; i < Size; i++)
 			{
-				for (int j = 0; j < NbCols; j++)
+				for (int j = 0; j < Size; j++)
 				{
 					if (utils.IsEmpty(i, j))
 					{
@@ -117,9 +116,9 @@ namespace Source.Game
 
 		private void Reset()
 		{
-			for (int i = 0; i < NbRows; i++)
+			for (int i = 0; i < Size; i++)
 			{
-				for (int j = 0; j < NbCols; j++)
+				for (int j = 0; j < Size; j++)
 				{
 					this[i, j] = State.Empty;
 				}
