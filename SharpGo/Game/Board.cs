@@ -17,6 +17,12 @@ namespace Source.Game
 		public int NbCols { get; }
 		public int NbIntersections { get; }
 
+		public int NbEmptyIntersection { get; private set; }
+		public int NbWhiteStones { get; private set; } = 0;
+		public int NbBlackStones { get; private set; } = 0;
+
+		public bool IsEmpty => (NbWhiteStones == 0) && (NbBlackStones == 0) && (NbEmptyIntersection == NbRows * NbCols);
+
 		private readonly State[][] states;
 		private readonly BoardUtils utils;
 
@@ -26,6 +32,7 @@ namespace Source.Game
 
 			NbRows = NbCols = size;
 			NbIntersections = NbRows * NbCols;
+			NbEmptyIntersection = NbIntersections;
 			states = new State[NbRows][];
 
 			for (int i = 0; i < NbRows; i++)
@@ -49,6 +56,17 @@ namespace Source.Game
 			}
 
 			this[i, j] = Player.PlayerColorToState(color);
+
+			if (color == PlayerColor.White)
+			{
+				NbWhiteStones++;
+			}
+			else if (color == PlayerColor.Black)
+			{
+				NbBlackStones++;
+			}
+
+			NbEmptyIntersection--;
 		}
 
 		public void Capture(Intersection intersection)
@@ -56,11 +74,15 @@ namespace Source.Game
 			if (this[intersection.I, intersection.J] == State.White)
 			{
 				this[intersection.I, intersection.J] = State.EmptyWhite;
+				NbWhiteStones--;
 			}
 			else if (this[intersection.I, intersection.J] == State.Black)
 			{
 				this[intersection.I, intersection.J] = State.EmptyBlack;
+				NbBlackStones--;
 			}
+
+			NbEmptyIntersection++;
 		}
 
 		public void UpdateEmptyIntersections()
@@ -76,8 +98,6 @@ namespace Source.Game
 				}
 			}
 		}
-
-		public (int nbWhite, int nbBlack, int nbEmpty) CountIntersections() => utils.CountIntersections();
 
 		public HashSet<Intersection> GetLegalIntersectionsWithNoLiberties(PlayerColor color) =>
 			utils.GetLegalIntersectionsWithNoLiberties(color);

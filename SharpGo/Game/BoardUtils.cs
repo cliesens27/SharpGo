@@ -35,32 +35,6 @@ namespace SharpGo.Game
 			board[i1, j1] == board[i2, j2] ||
 			(IsEmpty(i1, j1) && IsEmpty(i2, j2));
 
-		public (int nbWhite, int nbBlack, int nbEmpty) CountIntersections()
-		{
-			(int nbWhite, int nbBlack, int nbEmpty) = (0, 0, 0);
-
-			for (int i = 0; i < board.NbRows; i++)
-			{
-				for (int j = 0; j < board.NbCols; j++)
-				{
-					if (board[i, j] == State.White)
-					{
-						nbWhite++;
-					}
-					else if (board[i, j] == State.Black)
-					{
-						nbBlack++;
-					}
-					else if (IsEmpty(i, j))
-					{
-						nbEmpty++;
-					}
-				}
-			}
-
-			return (nbWhite, nbBlack, nbEmpty);
-		}
-
 		public int CountIntersectionLiberties(int i, int j)
 		{
 			if (IsEmpty(i, j))
