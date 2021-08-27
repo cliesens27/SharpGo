@@ -22,9 +22,9 @@ namespace SharpGo.Tests
 			Assert.AreEqual(State.Black, b[0, 0]);
 
 			Player p1 = new RandomNoPassPlayer(PlayerColor.Black);
-			Player p2 = new RandomNoPassPlayer(PlayerColor.Black);
+			Player p2 = new RandomNoPassPlayer(PlayerColor.White);
 
-			for (int i = 0; i < 100; i++)
+			for (int i = 0; i < 5; i++)
 			{
 				p1.Play(b);
 				p2.Play(b);
