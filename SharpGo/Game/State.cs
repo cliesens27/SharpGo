@@ -1,4 +1,4 @@
-﻿namespace Source.Game
+﻿namespace SharpGo.Game
 {
 	public enum State
 	{

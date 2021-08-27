@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using MathlibNET;
 using MathlibNET.Random;
 
 namespace SharpGo.Game.Players
 {
-	public class RandomPlayer : Player
+	public class RandomNoPassPlayer : Player
 	{
-		public RandomPlayer(PlayerColor color) : base(color) { }
+		public RandomNoPassPlayer(PlayerColor color) : base(color) { }
 
 		protected override (int, int) PickPosition(Board board, HashSet<Intersection> legalIntersections)
 		{
@@ -16,7 +15,6 @@ namespace SharpGo.Game.Players
 			return (intersection.I, intersection.J);
 		}
 
-		protected override bool Pass(Board board, HashSet<Intersection> legalIntersections) =>
-			Rng.Rand() < SpecialFunctions.Lerp(NbTurnsPlayed, 0, 1000, 0, 0.5);
+		protected override bool Pass(Board board, HashSet<Intersection> legalIntersections) => false;
 	}
 }

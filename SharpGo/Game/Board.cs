@@ -1,37 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
-using SharpGo.Game;
 using SharpGo.Game.Players;
 
-namespace Source.Game
+namespace SharpGo.Game
 {
 	public class Board
 	{
 		public State this[int i, int j]
 		{
-			get => states[i][j];
-			private set => states[i][j] = value;
+			get
+			{
+				if (!utils.IsInsideBoard(i, j))
+				{
+					throw new IndexOutOfRangeException($"Cannot place stone on intersection ({i},{j}), it is outside the board.");
+				}
+
+				return states[i][j];
+			}
+			private set
+			{
+				if (!utils.IsInsideBoard(i, j))
+				{
+					throw new IndexOutOfRangeException($"Cannot place stone on intersection ({i},{j}), it is outside the board.");
+				}
+
+				states[i][j] = value;
+			}
 		}
 
 		public int Size { get; }
 		public int NbIntersections { get; }
 
-		public int NbEmptyIntersection { get; private set; }
+		public int NbEmptyIntersections { get; private set; }
 		public int NbWhiteStones { get; private set; } = 0;
 		public int NbBlackStones { get; private set; } = 0;
 
-		public bool IsEmpty => (NbWhiteStones == 0) && (NbBlackStones == 0) && (NbEmptyIntersection == Size * Size);
+		public bool IsEmpty => (NbWhiteStones == 0) && (NbBlackStones == 0) && (NbEmptyIntersections == Size * Size);
 
 		private readonly State[][] states;
 		private readonly BoardUtils utils;
 
-		public Board(int size)
+		public Board(int size = 19)
 		{
 			utils = new BoardUtils(this);
 
 			Size = size;
 			NbIntersections = Size * Size;
-			NbEmptyIntersection = NbIntersections;
+			NbEmptyIntersections = NbIntersections;
 			states = new State[Size][];
 
 			for (int i = 0; i < Size; i++)
@@ -65,7 +80,7 @@ namespace Source.Game
 				NbBlackStones++;
 			}
 
-			NbEmptyIntersection--;
+			NbEmptyIntersections--;
 		}
 
 		public void Capture(Intersection intersection)
@@ -81,7 +96,7 @@ namespace Source.Game
 				NbBlackStones--;
 			}
 
-			NbEmptyIntersection++;
+			NbEmptyIntersections++;
 		}
 
 		public void UpdateEmptyIntersections()

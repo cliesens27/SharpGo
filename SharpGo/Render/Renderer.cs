@@ -2,9 +2,8 @@
 using DrawingBoardNET.Drawing.Constants;
 using MathlibNET;
 using SharpGo.Game;
-using Source.Game;
 
-namespace Source.Render
+namespace SharpGo.Render
 {
 	public class Renderer
 	{

@@ -1,8 +1,8 @@
 ﻿using System;
 using DrawingBoardNET.Drawing;
 using SharpGo.Game.Players;
-using Source.Game;
-using Source.Render;
+using SharpGo.Game;
+using SharpGo.Render;
 
 namespace SharpGo.Game
 {

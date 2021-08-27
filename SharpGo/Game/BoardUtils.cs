@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using SharpGo.Game.Players;
-using Source.Game;
 
 namespace SharpGo.Game
 {
