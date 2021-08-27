@@ -12,7 +12,7 @@ namespace SharpGo
 			Player p1 = new RandomPlayer(PlayerColor.Black);
 			Player p2 = new RandomPlayer(PlayerColor.White);
 
-			game = new GoGame(p1, p2, 19);
+			game = new GoGame(p1, p2, 10);
 			game.Start();
 		}
 	}

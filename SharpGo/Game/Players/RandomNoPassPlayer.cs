@@ -15,6 +15,6 @@ namespace SharpGo.Game.Players
 			return (intersection.I, intersection.J);
 		}
 
-		protected override bool Pass(Board board, HashSet<Intersection> legalIntersections) => true;
+		protected override bool Pass(Board board, HashSet<Intersection> legalIntersections) => false;
 	}
 }

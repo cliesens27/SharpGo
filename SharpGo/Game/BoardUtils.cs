@@ -24,13 +24,13 @@ namespace SharpGo.Game
 			(i1 == i2 && (j1 == j2 + 1 || j1 == j2 - 1)) ||
 			(j1 == j2 && (i1 == i2 + 1 || i1 == i2 - 1));
 
-		public bool AreAdjacentConnected(int i1, int j1, int i2, int j2) =>
-			AreAdjacent(i1, j1, i2, j2) &&
-			CanBeConnected(i1, j1, i2, j2);
-
 		public bool CanBeConnected(int i1, int j1, int i2, int j2) =>
 			board[i1, j1] == board[i2, j2] ||
 			(IsEmpty(i1, j1) && IsEmpty(i2, j2));
+
+		public bool AreAdjacentConnected(int i1, int j1, int i2, int j2) =>
+			AreAdjacent(i1, j1, i2, j2) &&
+			CanBeConnected(i1, j1, i2, j2);
 
 		public int CountIntersectionLiberties(int i, int j)
 		{
@@ -64,29 +64,6 @@ namespace SharpGo.Game
 			return nbLiberties;
 		}
 
-		public HashSet<Intersection> GetLegalIntersectionsWithNoLiberties(PlayerColor color)
-		{
-			HashSet<Intersection> intersections = new HashSet<Intersection>();
-
-			for (int i = 0; i < board.Size; i++)
-			{
-				for (int j = 0; j < board.Size; j++)
-				{
-					if (IsOccupied(i, j) && board[i, j] != Player.PlayerColorToState(color))
-					{
-						int nbLiberties = CountIntersectionLiberties(i, j);
-
-						if (nbLiberties == 0)
-						{
-							intersections.Add(new Intersection(board[i, j], i, j));
-						}
-					}
-				}
-			}
-
-			return intersections;
-		}
-
 		public HashSet<Intersection> GetAdjacentIntersections(int i, int j)
 		{
 			var intersections = new HashSet<Intersection>();
@@ -114,6 +91,14 @@ namespace SharpGo.Game
 			return intersections;
 		}
 
+		public HashSet<Intersection> GetConnectedIntersections(int i, int j)
+		{
+			visited.Clear();
+			HashSet<Intersection> connectedIntersections = GetConnectedIntersectionsAux(i, j);
+			connectedIntersections.Remove(new Intersection(board[i, j], i, j));
+			return connectedIntersections;
+		}
+
 		public HashSet<Intersection> GetAdjacentConnectedIntersections(int i, int j)
 		{
 			HashSet<Intersection> intersections = GetAdjacentIntersections(i, j);
@@ -131,14 +116,6 @@ namespace SharpGo.Game
 
 			intersections.ExceptWith(toRemove);
 			return intersections;
-		}
-
-		public HashSet<Intersection> GetConnectedIntersections(int i, int j)
-		{
-			visited.Clear();
-			HashSet<Intersection> connectedIntersections = GetConnectedIntersectionsAux(i, j);
-			connectedIntersections.Remove(new Intersection(board[i, j], i, j));
-			return connectedIntersections;
 		}
 
 		public HashSet<Intersection> GetLegalIntersections(PlayerColor color)
@@ -159,8 +136,36 @@ namespace SharpGo.Game
 			return intersections;
 		}
 
+		public HashSet<Intersection> GetCapturableIntersections(PlayerColor color)
+		{
+			HashSet<Intersection> intersections = new HashSet<Intersection>();
+
+			for (int i = 0; i < board.Size; i++)
+			{
+				for (int j = 0; j < board.Size; j++)
+				{
+					if (IsOccupied(i, j) && board[i, j] != Player.PlayerColorToState(color))
+					{
+						int nbLiberties = CountIntersectionLiberties(i, j);
+
+						if (nbLiberties == 0)
+						{
+							intersections.Add(new Intersection(board[i, j], i, j));
+						}
+					}
+				}
+			}
+
+			return intersections;
+		}
+
 		public HashSet<Intersection> GetChain(int i, int j)
 		{
+			if (IsEmpty(i, j))
+			{
+				return new HashSet<Intersection>();
+			}
+
 			HashSet<HashSet<Intersection>> chains = GetChains();
 
 			foreach (var chain in chains)
@@ -185,6 +190,11 @@ namespace SharpGo.Game
 			{
 				for (int j = 0; j < board.Size; j++)
 				{
+					if (IsEmpty(i, j))
+					{
+						continue;
+					}
+
 					HashSet<Intersection> chain = GetConnectedIntersections(i, j);
 					chain.Add(new Intersection(board[i, j], i, j));
 					chains.Add(chain);

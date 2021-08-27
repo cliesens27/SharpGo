@@ -11,20 +11,18 @@ namespace SharpGo.Tests
 		[TestMethod]
 		public void Test_Properties()
 		{
-			Board b = new Board(19);
+			int size = 6;
+			Board b = new Board(size);
 			Assert.IsTrue(b.IsEmpty);
 			Assert.AreEqual(0, b.NbBlackStones);
 			Assert.AreEqual(0, b.NbWhiteStones);
-			Assert.AreEqual(19, b.Size);
-			Assert.AreEqual(19 * 19, b.NbEmptyIntersections);
-
-			b.PlaceStone(PlayerColor.Black, 0, 0);
-			Assert.AreEqual(State.Black, b[0, 0]);
+			Assert.AreEqual(size, b.Size);
+			Assert.AreEqual(size * size, b.NbEmptyIntersections);
 
 			Player p1 = new RandomNoPassPlayer(PlayerColor.Black);
 			Player p2 = new RandomNoPassPlayer(PlayerColor.White);
 
-			for (int i = 0; i < 5; i++)
+			for (int i = 0; i < size; i++)
 			{
 				p1.Play(b);
 				p2.Play(b);
@@ -32,8 +30,8 @@ namespace SharpGo.Tests
 				Assert.IsFalse(b.IsEmpty);
 				Assert.AreEqual(i + 1, b.NbBlackStones);
 				Assert.AreEqual(i + 1, b.NbWhiteStones);
-				Assert.AreEqual(19, b.Size);
-				Assert.AreEqual(19 * 19 - 2 * (i + 1), b.NbEmptyIntersections);
+				Assert.AreEqual(size, b.Size);
+				Assert.AreEqual(size * size - 2 * (i + 1), b.NbEmptyIntersections);
 			}
 		}
 

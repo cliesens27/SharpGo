@@ -113,8 +113,8 @@ namespace SharpGo.Game
 			}
 		}
 
-		public HashSet<Intersection> GetLegalIntersectionsWithNoLiberties(PlayerColor color) =>
-			utils.GetLegalIntersectionsWithNoLiberties(color);
+		public HashSet<Intersection> GetCapturableIntersections(PlayerColor color) =>
+			utils.GetCapturableIntersections(color);
 
 		public HashSet<Intersection> GetAdjacentIntersections(int i, int j) => utils.GetAdjacentIntersections(i, j);
 
