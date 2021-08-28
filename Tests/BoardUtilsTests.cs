@@ -12,13 +12,14 @@ namespace SharpGo.Tests
 		{
 			Board b = new Board();
 			BoardUtils utils = new BoardUtils(b);
+			RandomNoPassPlayer p = new RandomNoPassPlayer(PlayerColor.Black);
 
 			Assert.IsFalse(utils.IsOccupied(0, 0));
 
 			b.PlaceStone(PlayerColor.Black, 0, 0);
 			Assert.IsTrue(utils.IsOccupied(0, 0));
 
-			b.Capture(new Intersection(State.Black, 0, 0));
+			b.Capture(p, new Intersection(State.Black, 0, 0));
 			Assert.IsFalse(utils.IsOccupied(0, 0));
 		}
 
@@ -42,13 +43,14 @@ namespace SharpGo.Tests
 		{
 			Board b = new Board();
 			BoardUtils utils = new BoardUtils(b);
+			RandomNoPassPlayer p = new RandomNoPassPlayer(PlayerColor.Black);
 
 			Assert.IsTrue(utils.IsLegal(PlayerColor.Black, 0, 0));
 
 			b.PlaceStone(PlayerColor.Black, 0, 0);
 			Assert.IsFalse(utils.IsLegal(PlayerColor.Black, 0, 0));
 
-			b.Capture(new Intersection(State.Black, 0, 0));
+			b.Capture(p, new Intersection(State.Black, 0, 0));
 			Assert.IsFalse(utils.IsLegal(PlayerColor.Black, 0, 0));
 
 			b.UpdateEmptyIntersections();
@@ -60,13 +62,14 @@ namespace SharpGo.Tests
 		{
 			Board b = new Board();
 			BoardUtils utils = new BoardUtils(b);
+			RandomNoPassPlayer p = new RandomNoPassPlayer(PlayerColor.Black);
 
 			Assert.IsTrue(utils.IsEmpty(0, 0));
 
 			b.PlaceStone(PlayerColor.Black, 0, 0);
 			Assert.IsFalse(utils.IsEmpty(0, 0));
 
-			b.Capture(new Intersection(State.Black, 0, 0));
+			b.Capture(p, new Intersection(State.Black, 0, 0));
 			Assert.IsTrue(utils.IsEmpty(0, 0));
 
 			b.UpdateEmptyIntersections();

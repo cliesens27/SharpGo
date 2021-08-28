@@ -73,11 +73,13 @@ namespace SharpGo.Tests
 		public void Test_Capture()
 		{
 			Board b = new Board();
+			RandomNoPassPlayer p = new RandomNoPassPlayer(PlayerColor.Black);
+
 			b.PlaceStone(PlayerColor.Black, 0, 0);
 			Assert.AreEqual(1, b.NbBlackStones);
 			Assert.AreEqual(State.Black, b[0, 0]);
 
-			b.Capture(new Intersection(State.Black, 0, 0));
+			b.Capture(p, new Intersection(State.Black, 0, 0));
 			Assert.AreEqual(0, b.NbBlackStones);
 			Assert.AreEqual(State.EmptyBlack, b[0, 0]);
 			Assert.IsTrue(b.IsEmpty);
@@ -95,11 +97,12 @@ namespace SharpGo.Tests
 		public void Test_UpdateEmptyIntersections()
 		{
 			Board b = new Board();
+			RandomNoPassPlayer p = new RandomNoPassPlayer(PlayerColor.Black);
 
 			for (int i = 0; i < b.Size; i++)
 			{
 				b.PlaceStone(PlayerColor.Black, i, 0);
-				b.Capture(new Intersection(State.Black, i, 0));
+				b.Capture(p, new Intersection(State.Black, i, 0));
 			}
 
 			for (int i = 0; i < b.Size; i++)
