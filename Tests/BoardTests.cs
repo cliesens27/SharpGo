@@ -19,19 +19,16 @@ namespace SharpGo.Tests
 			Assert.AreEqual(size, b.Size);
 			Assert.AreEqual(size * size, b.NbEmptyIntersections);
 
-			Player p1 = new RandomNoPassPlayer(PlayerColor.Black);
-			Player p2 = new RandomNoPassPlayer(PlayerColor.White);
-
-			for (int i = 0; i < b.Size; i++)
+			for (int i = 1; i < b.Size; i++)
 			{
-				p1.Play(b);
-				p2.Play(b);
+				b.PlaceStone(PlayerColor.White, i, 0);
+				b.PlaceStone(PlayerColor.Black, 0, i);
 
 				Assert.IsFalse(b.IsEmpty);
-				Assert.AreEqual(i + 1, b.NbBlackStones);
-				Assert.AreEqual(i + 1, b.NbWhiteStones);
+				Assert.AreEqual(i, b.NbBlackStones);
+				Assert.AreEqual(i, b.NbWhiteStones);
 				Assert.AreEqual(size, b.Size);
-				Assert.AreEqual(b.Size * b.Size - 2 * (i + 1), b.NbEmptyIntersections);
+				Assert.AreEqual(b.Size * b.Size - 2 * i, b.NbEmptyIntersections);
 			}
 		}
 
