@@ -2,27 +2,28 @@
 using DrawingBoardNET.Drawing.Constants;
 using MathlibNET;
 using SharpGo.Game;
+using SharpGo.Game.Players;
 
 namespace SharpGo.Render
 {
 	public class Renderer
 	{
-		private const int HEIGHT = 900;
+		private const int HEIGHT = 950;
 		private const int WIDTH = 2 * HEIGHT;
-		private const float PANEL_BORDER = 15;
+		private const float PANEL_BORDER = 10;
 		private const float PANEL_SIZE = HEIGHT - 2 * PANEL_BORDER;
 		private const float BASE_RADIUS = HEIGHT / 4.0f;
 		private readonly DrawingBoard db;
 
-		public Renderer(out DrawingBoard db)
+		public Renderer(out DrawingBoard db, int frameRate)
 		{
 			db = new DrawingBoard(WIDTH, HEIGHT);
 			db.Title = "SharpGo";
-			db.TargetFrameRate = 5;
+			db.TargetFrameRate = frameRate;
 			this.db = db;
 		}
 
-		public void Render(Board board)
+		public void Render(Board board, Player player1, Player player2)
 		{
 			db.Background(0);
 
@@ -31,7 +32,7 @@ namespace SharpGo.Render
 			db.Line(WIDTH / 2.0f, 0, WIDTH / 2.0f, HEIGHT);
 
 			db.RectMode = RectangleMode.Corner;
-			DrawRightPanel();
+			DrawRightPanel(player1, player2);
 			DrawLeftPanel(board);
 		}
 
@@ -77,7 +78,7 @@ namespace SharpGo.Render
 			float x = SpecialFunctions.Lerp(j, -0.5f, Size - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
 			float y = SpecialFunctions.Lerp(i, -0.5f, nbRows - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
 
-			db.StrokeWidth(3);
+			db.StrokeWidth(2);
 			db.Circle(x, y, radius);
 		}
 
@@ -109,7 +110,7 @@ namespace SharpGo.Render
 			}
 		}
 
-		private void DrawRightPanel()
+		private void DrawRightPanel(Player player1, Player player2)
 		{
 			db.NoStroke();
 			db.Fill(35);
@@ -119,6 +120,21 @@ namespace SharpGo.Render
 			db.Stroke(255);
 			db.Fill(0);
 			db.Square(WIDTH / 2 + PANEL_BORDER, PANEL_BORDER, PANEL_SIZE);
+
+			db.TextColor(255);
+
+			db.FontSize(24);
+			db.Text($"Player 1", WIDTH / 2 + PANEL_BORDER, PANEL_BORDER);
+			db.FontSize(18);
+			db.Text($"{player1.Color}", WIDTH / 2 + PANEL_BORDER + 30, PANEL_BORDER + 50);
+			db.Text($"{(player1.HasPassed ? "Passed" : "Played")}", WIDTH / 2 + PANEL_BORDER + 30, PANEL_BORDER + 2 * 50);
+
+
+			db.FontSize(24);
+			db.Text($"Player 2", 3 * WIDTH / 4 + PANEL_BORDER, PANEL_BORDER);
+			db.FontSize(18);
+			db.Text($"{player2.Color}", 3 * WIDTH / 4 + PANEL_BORDER + 30, PANEL_BORDER + 50);
+			db.Text($"{(player2.HasPassed ? "Passed" : "Played")}", 3 * WIDTH / 4 + PANEL_BORDER + 30, PANEL_BORDER + 2 * 50);
 		}
 
 		private void DrawConnectedIntersections(Board board, int i, int j, int r, int g, int b, float radius)

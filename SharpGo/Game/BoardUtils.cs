@@ -15,8 +15,27 @@ namespace SharpGo.Game
 		public bool IsInsideBoard(int i, int j) => (i >= 0 && i < board.Size) && (j >= 0 && j < board.Size);
 
 		public bool IsLegal(PlayerColor color, int i, int j) =>
-			color == PlayerColor.White && (board[i, j] == State.Empty || board[i, j] == State.EmptyBlack) ||
-			color == PlayerColor.Black && (board[i, j] == State.Empty || board[i, j] == State.EmptyWhite);
+			!IsSuicide(color, i, j) &&
+			(color == PlayerColor.White && (board[i, j] == State.Empty || board[i, j] == State.EmptyBlack) ||
+			color == PlayerColor.Black && (board[i, j] == State.Empty || board[i, j] == State.EmptyWhite));
+
+		public bool IsSuicide(PlayerColor color, int i, int j)
+		{
+			int nbLiberties;
+
+			if (IsEmpty(i, j))
+			{
+				board.PlaceTempStone(color, i, j);
+				nbLiberties = CountIntersectionLiberties(i, j);
+				board.RemoveTempStone(i, j);
+			}
+			else
+			{
+				nbLiberties = CountIntersectionLiberties(i, j);
+			}
+
+			return nbLiberties == 0;
+		}
 
 		public bool IsEmpty(int i, int j) => !IsOccupied(i, j);
 

@@ -113,6 +113,29 @@ namespace SharpGo.Game
 			}
 		}
 
+		public void PlaceTempStone(PlayerColor color, int i, int j)
+		{
+			if (utils.IsOccupied(i, j))
+			{
+				throw new InvalidOperationException($"Cannot place stone on intersection ({i},{j}), it is already occupied.");
+			}
+
+			if (!utils.IsInsideBoard(i, j))
+			{
+				throw new IndexOutOfRangeException($"Cannot place stone on intersection ({i},{j}), it is outside the board.");
+			}
+
+			this[i, j] = Player.PlayerColorToState(color);
+		}
+
+		public void RemoveTempStone(int i, int j)
+		{
+			if (this[i, j] == State.White || this[i, j] == State.Black)
+			{
+				this[i, j] = State.Empty;
+			}
+		}
+
 		public HashSet<Intersection> GetCapturableIntersections(PlayerColor color) =>
 			utils.GetCapturableIntersections(color);
 

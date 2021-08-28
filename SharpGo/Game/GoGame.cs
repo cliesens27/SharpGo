@@ -1,7 +1,6 @@
 ﻿using System;
 using DrawingBoardNET.Drawing;
 using SharpGo.Game.Players;
-using SharpGo.Game;
 using SharpGo.Render;
 
 namespace SharpGo.Game
@@ -19,9 +18,9 @@ namespace SharpGo.Game
 		private bool update = true;
 		private int currentPlayer;
 
-		public GoGame(Player p1, Player p2, int boardSize = 19)
+		public GoGame(Player p1, Player p2, int frameRate, int boardSize = 19)
 		{
-			renderer = new Renderer(out db);
+			renderer = new Renderer(out db, frameRate);
 			board = new Board(boardSize);
 			player1 = p1;
 			player2 = p2;
@@ -64,7 +63,7 @@ namespace SharpGo.Game
 					board.UpdateEmptyIntersections();
 				}
 
-				if (player1.Passed && player1.Passed)
+				if (player1.HasPassed && player1.HasPassed)
 				{
 					update = false;
 				}
@@ -85,7 +84,7 @@ namespace SharpGo.Game
 				update = false;
 			}
 
-			renderer.Render(board);
+			renderer.Render(board, player1, player2);
 
 			DrawErrorMessage(errorMessage);
 		}

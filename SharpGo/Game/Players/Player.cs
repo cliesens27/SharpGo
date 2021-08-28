@@ -6,7 +6,7 @@ namespace SharpGo.Game.Players
 	public abstract class Player
 	{
 		public PlayerColor Color { get; }
-		public bool Passed { get; private set; }
+		public bool HasPassed { get; private set; }
 		public int NbTurnsPlayed { get; private set; }
 
 		protected Player(PlayerColor color) => Color = color;
@@ -32,7 +32,7 @@ namespace SharpGo.Game.Players
 
 			if (Pass(board, legalIntersections) || legalIntersections.Count == 0)
 			{
-				Passed = true;
+				HasPassed = true;
 				return;
 			}
 
@@ -41,7 +41,7 @@ namespace SharpGo.Game.Players
 			PlaceStone(board, i, j);
 			Capture(capturableIntersections, board);
 
-			Passed = false;
+			HasPassed = false;
 			NbTurnsPlayed++;
 		}
 

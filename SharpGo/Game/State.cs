@@ -7,6 +7,5 @@
 		Black,
 		EmptyBlack,
 		EmptyWhite,
-		EmptyBoth
 	}
 }
