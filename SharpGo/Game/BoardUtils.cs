@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using SharpGo.Game.Players;
 
 namespace SharpGo.Game
@@ -14,7 +15,7 @@ namespace SharpGo.Game
 
 		public bool IsInsideBoard(int i, int j) => (i >= 0 && i < board.Size) && (j >= 0 && j < board.Size);
 
-		public bool IsLegal(PlayerColor color, int i, int j) => CanPlaceStone(color, i, j);
+		public bool IsLegal(PlayerColor color, int i, int j) => !IsSuicide(color, i, j) && CanPlaceStone(color, i, j);
 
 		public bool IsSuicide(PlayerColor color, int i, int j)
 		{
