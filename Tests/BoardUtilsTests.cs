@@ -1,8 +1,6 @@
-﻿using DrawingBoardNET.Drawing;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SharpGo.Game;
 using SharpGo.Game.Players;
-using SharpGo.Render;
 
 namespace SharpGo.Tests
 {
@@ -42,7 +40,7 @@ namespace SharpGo.Tests
 		[TestMethod]
 		public void Test_IsLegal()
 		{
-			Board b = new Board(4);
+			Board b = new Board();
 			BoardUtils utils = new BoardUtils(b);
 
 			Assert.IsTrue(utils.IsLegal(PlayerColor.Black, 0, 0));
@@ -130,7 +128,7 @@ namespace SharpGo.Tests
 		[TestMethod]
 		public void Test_CountIntersectionLiberties()
 		{
-			Board b = new Board(10);
+			Board b = new Board();
 			BoardUtils utils = new BoardUtils(b);
 
 			b.PlaceStone(PlayerColor.Black, 0, 0);
@@ -146,19 +144,19 @@ namespace SharpGo.Tests
 		[TestMethod]
 		public void Test_GetAdjacentIntersections()
 		{
-			Board b = new Board(6);
+			Board b = new Board();
 			BoardUtils utils = new BoardUtils(b);
 
 			Assert.AreEqual(2, utils.GetAdjacentIntersections(0, 0).Count);
 			Assert.AreEqual(4, utils.GetAdjacentIntersections(1, 1).Count);
 			Assert.AreEqual(3, utils.GetAdjacentIntersections(0, 2).Count);
-			Assert.AreEqual(2, utils.GetAdjacentIntersections(5, 5).Count);
+			Assert.AreEqual(2, utils.GetAdjacentIntersections(18, 18).Count);
 		}
 
 		[TestMethod]
 		public void Test_GetConnectedIntersections()
 		{
-			Board b = new Board(6);
+			Board b = new Board();
 			BoardUtils utils = new BoardUtils(b);
 
 			b.PlaceStone(PlayerColor.Black, 0, 0);
@@ -179,13 +177,13 @@ namespace SharpGo.Tests
 			Assert.AreEqual(7, utils.GetConnectedIntersections(0, 0).Count);
 			Assert.AreEqual(4, utils.GetConnectedIntersections(1, 1).Count);
 			Assert.AreEqual(0, utils.GetConnectedIntersections(1, 2).Count);
-			Assert.AreEqual(21, utils.GetConnectedIntersections(0, 4).Count);
+			Assert.AreEqual(b.Size * b.Size - 15, utils.GetConnectedIntersections(0, 4).Count);
 		}
 
 		[TestMethod]
 		public void Test_GetAdjacentConnectedIntersections()
 		{
-			Board b = new Board(6);
+			Board b = new Board();
 			BoardUtils utils = new BoardUtils(b);
 
 			b.PlaceStone(PlayerColor.Black, 0, 0);
@@ -212,7 +210,7 @@ namespace SharpGo.Tests
 		[TestMethod]
 		public void Test_GetLegalIntersections()
 		{
-			Board b = new Board(6);
+			Board b = new Board();
 			BoardUtils utils = new BoardUtils(b);
 
 			b.PlaceStone(PlayerColor.Black, 0, 0);
@@ -230,13 +228,13 @@ namespace SharpGo.Tests
 			b.PlaceStone(PlayerColor.White, 3, 0);
 			b.PlaceStone(PlayerColor.White, 4, 0);
 
-			Assert.AreEqual(23, utils.GetLegalIntersections(PlayerColor.Black).Count);
+			Assert.AreEqual(b.Size * b.Size - 13, utils.GetLegalIntersections(PlayerColor.Black).Count);
 		}
 
 		[TestMethod]
 		public void Test_GetCapturableIntersections()
 		{
-			Board b = new Board(6);
+			Board b = new Board();
 			BoardUtils utils = new BoardUtils(b);
 
 			b.PlaceStone(PlayerColor.Black, 0, 0);
@@ -267,7 +265,7 @@ namespace SharpGo.Tests
 		[TestMethod]
 		public void Test_GetChain()
 		{
-			Board b = new Board(6);
+			Board b = new Board();
 			BoardUtils utils = new BoardUtils(b);
 
 			b.PlaceStone(PlayerColor.Black, 0, 0);
@@ -298,7 +296,7 @@ namespace SharpGo.Tests
 		[TestMethod]
 		public void Test_GetChains()
 		{
-			Board b = new Board(6);
+			Board b = new Board();
 			BoardUtils utils = new BoardUtils(b);
 
 			b.PlaceStone(PlayerColor.Black, 0, 0);

@@ -23,7 +23,7 @@ namespace SharpGo.Render
 			this.db = db;
 		}
 
-		public void Render(Board board, Player player1, Player player2)
+		public void Render(GoGame game)
 		{
 			db.Background(0);
 
@@ -32,8 +32,8 @@ namespace SharpGo.Render
 			db.Line(WIDTH / 2.0f, 0, WIDTH / 2.0f, HEIGHT);
 
 			db.RectMode = RectangleMode.Corner;
-			DrawRightPanel(player1, player2);
-			DrawLeftPanel(board);
+			DrawRightPanel(game);
+			DrawLeftPanel(game.Board);
 		}
 
 		private void DrawLeftPanel(Board board) => DrawBoard(board);
@@ -110,7 +110,7 @@ namespace SharpGo.Render
 			}
 		}
 
-		private void DrawRightPanel(Player player1, Player player2)
+		private void DrawRightPanel(GoGame game)
 		{
 			db.NoStroke();
 			db.Fill(35);
@@ -121,20 +121,19 @@ namespace SharpGo.Render
 			db.Fill(0);
 			db.Square(WIDTH / 2 + PANEL_BORDER, PANEL_BORDER, PANEL_SIZE);
 
+			DrawPlayer(game.Player1, 1, WIDTH / 2 + PANEL_BORDER, PANEL_BORDER);
+			DrawPlayer(game.Player2, 2, 3 * WIDTH / 4 + PANEL_BORDER, PANEL_BORDER);
+		}
+
+		private void DrawPlayer(Player player, int playerNumber, float x, float y)
+		{
 			db.TextColor(255);
-
 			db.FontSize(24);
-			db.Text($"Player 1", WIDTH / 2 + PANEL_BORDER, PANEL_BORDER);
-			db.FontSize(18);
-			db.Text($"{player1.Color}", WIDTH / 2 + PANEL_BORDER + 30, PANEL_BORDER + 50);
-			db.Text($"{(player1.HasPassed ? "Passed" : "Played")}", WIDTH / 2 + PANEL_BORDER + 30, PANEL_BORDER + 2 * 50);
+			db.Text($"Player {playerNumber}", x, y);
 
-
-			db.FontSize(24);
-			db.Text($"Player 2", 3 * WIDTH / 4 + PANEL_BORDER, PANEL_BORDER);
 			db.FontSize(18);
-			db.Text($"{player2.Color}", 3 * WIDTH / 4 + PANEL_BORDER + 30, PANEL_BORDER + 50);
-			db.Text($"{(player2.HasPassed ? "Passed" : "Played")}", 3 * WIDTH / 4 + PANEL_BORDER + 30, PANEL_BORDER + 2 * 50);
+			db.Text($"{player.Color}", x, y + 75);
+			db.Text($"{(player.HasPassed ? "Passed" : "Played")}", x, y + 100);
 		}
 
 		private void DrawConnectedIntersections(Board board, int i, int j, int r, int g, int b, float radius)

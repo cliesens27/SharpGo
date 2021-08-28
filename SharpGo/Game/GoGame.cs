@@ -7,31 +7,31 @@ namespace SharpGo.Game
 {
 	public class GoGame
 	{
-		public int NbTurns { get; private set; }
+		public int NbTurns { get; private set; } = 0;
+		public bool GameHasEnded { get; private set; } = false;
+		public Player Player1 { get; }
+		public Player Player2 { get; }
+		public Board Board { get; }
 
 		private readonly DrawingBoard db;
 		private readonly Renderer renderer;
-		private readonly Player player1;
-		private readonly Player player2;
-		private readonly Board board;
 		private string errorMessage;
-		private bool update = true;
 		private int currentPlayer;
 
 		public GoGame(Player p1, Player p2, int frameRate, int boardSize = 19)
 		{
 			renderer = new Renderer(out db, frameRate);
-			board = new Board(boardSize);
-			player1 = p1;
-			player2 = p2;
+			Board = new Board(boardSize);
+			Player1 = p1;
+			Player2 = p2;
 			db.Draw = Draw;
 
-			if (player1.Color == player2.Color)
+			if (Player1.Color == Player2.Color)
 			{
 				throw new ArgumentException($"Cannot run game, both players are the same color.");
 			}
 
-			if (player1.Color == PlayerColor.Black)
+			if (Player1.Color == PlayerColor.Black)
 			{
 				currentPlayer = 1;
 			}
@@ -45,27 +45,27 @@ namespace SharpGo.Game
 
 		private void Update()
 		{
-			if (update)
+			if (!GameHasEnded)
 			{
 				if (currentPlayer == 1)
 				{
-					player1.Play(board);
+					Player1.Play(Board);
 					currentPlayer = 2;
 				}
-				else
+				else if (currentPlayer == 2)
 				{
-					player2.Play(board);
+					Player2.Play(Board);
 					currentPlayer = 1;
 				}
 
-				if (player1.NbTurnsPlayed == player2.NbTurnsPlayed)
+				if (Player1.NbTurnsPlayed == Player2.NbTurnsPlayed)
 				{
-					board.UpdateEmptyIntersections();
+					Board.UpdateEmptyIntersections();
 				}
 
-				if (player1.HasPassed && player1.HasPassed)
+				if (Player1.HasPassed && Player1.HasPassed)
 				{
-					update = false;
+					GameHasEnded = true;
 				}
 
 				NbTurns++;
@@ -81,10 +81,10 @@ namespace SharpGo.Game
 			catch (Exception e)
 			{
 				errorMessage = e.Message;
-				update = false;
+				GameHasEnded = true;
 			}
 
-			renderer.Render(board, player1, player2);
+			renderer.Render(this);
 
 			DrawErrorMessage(errorMessage);
 		}
