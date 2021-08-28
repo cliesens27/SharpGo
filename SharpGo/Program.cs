@@ -9,11 +9,11 @@ namespace SharpGo
 
 		public static void Main()
 		{
-			Player p1 = new RandomNoPassPlayer(PlayerColor.Black);
-			Player p2 = new RandomNoPassPlayer(PlayerColor.White);
+			//Player p1 = new RandomNoPassPlayer(PlayerColor.Black);
+			//Player p2 = new RandomNoPassPlayer(PlayerColor.White);
 
-			game = new GoGame(p1, p2);
-			game.Start();
+			//game = new GoGame(p1, p2);
+			//game.Start();
 		}
 	}
 }

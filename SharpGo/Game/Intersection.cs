@@ -1,8 +1,6 @@
-﻿using SharpGo.Game;
-
-namespace SharpGo.Game
+﻿namespace SharpGo.Game
 {
-	public struct Intersection
+	public class Intersection
 	{
 		public State State { get; }
 		public int I { get; }
