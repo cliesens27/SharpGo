@@ -85,18 +85,21 @@ namespace SharpGo.Game
 
 		public void Capture(Intersection intersection)
 		{
-			if (this[intersection.I, intersection.J] == State.White)
-			{
-				this[intersection.I, intersection.J] = State.EmptyWhite;
-				NbWhiteStones--;
-			}
-			else if (this[intersection.I, intersection.J] == State.Black)
-			{
-				this[intersection.I, intersection.J] = State.EmptyBlack;
-				NbBlackStones--;
-			}
+			int i = intersection.I;
+			int j = intersection.J;
 
-			NbEmptyIntersections++;
+			if (this[i, j] == State.White)
+			{
+				this[i, j] = State.EmptyWhite;
+				NbWhiteStones--;
+				NbEmptyIntersections++;
+			}
+			else if (this[i, j] == State.Black)
+			{
+				this[i, j] = State.EmptyBlack;
+				NbBlackStones--;
+				NbEmptyIntersections++;
+			}
 		}
 
 		public void UpdateEmptyIntersections()
@@ -128,11 +131,11 @@ namespace SharpGo.Game
 			this[i, j] = Player.PlayerColorToState(color);
 		}
 
-		public void RemoveTempStone(int i, int j)
+		public void RemoveTempStone(State state, int i, int j)
 		{
 			if (this[i, j] == State.White || this[i, j] == State.Black)
 			{
-				this[i, j] = State.Empty;
+				this[i, j] = state;
 			}
 		}
 

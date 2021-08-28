@@ -14,10 +14,7 @@ namespace SharpGo.Game
 
 		public bool IsInsideBoard(int i, int j) => (i >= 0 && i < board.Size) && (j >= 0 && j < board.Size);
 
-		public bool IsLegal(PlayerColor color, int i, int j) =>
-			!IsSuicide(color, i, j) &&
-			(color == PlayerColor.White && (board[i, j] == State.Empty || board[i, j] == State.EmptyBlack) ||
-			color == PlayerColor.Black && (board[i, j] == State.Empty || board[i, j] == State.EmptyWhite));
+		public bool IsLegal(PlayerColor color, int i, int j) => CanPlaceStone(color, i, j);
 
 		public bool IsSuicide(PlayerColor color, int i, int j)
 		{
@@ -25,9 +22,11 @@ namespace SharpGo.Game
 
 			if (IsEmpty(i, j))
 			{
+				State previousState = board[i, j];
+
 				board.PlaceTempStone(color, i, j);
 				nbLiberties = CountIntersectionLiberties(i, j);
-				board.RemoveTempStone(i, j);
+				board.RemoveTempStone(previousState, i, j);
 			}
 			else
 			{
@@ -256,5 +255,9 @@ namespace SharpGo.Game
 			connectedIntersections.UnionWith(toAdd);
 			return connectedIntersections;
 		}
+
+		private bool CanPlaceStone(PlayerColor color, int i, int j) =>
+			(color == PlayerColor.White && (board[i, j] == State.Empty || board[i, j] == State.EmptyBlack)) ||
+			(color == PlayerColor.Black && (board[i, j] == State.Empty || board[i, j] == State.EmptyWhite));
 	}
 }

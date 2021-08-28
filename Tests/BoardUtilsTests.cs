@@ -42,7 +42,7 @@ namespace SharpGo.Tests
 		[TestMethod]
 		public void Test_IsLegal()
 		{
-			Board b = new Board();
+			Board b = new Board(4);
 			BoardUtils utils = new BoardUtils(b);
 
 			Assert.IsTrue(utils.IsLegal(PlayerColor.Black, 0, 0));
@@ -321,7 +321,7 @@ namespace SharpGo.Tests
 			b.PlaceStone(PlayerColor.White, 3, 2);
 			b.PlaceStone(PlayerColor.White, 4, 2);
 			b.PlaceStone(PlayerColor.White, 5, 1);
-			
+
 			Assert.AreEqual(5, utils.GetChains().Count);
 		}
 	}
