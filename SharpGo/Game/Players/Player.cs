@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SharpGo.Game.Players
 {
@@ -15,7 +16,7 @@ namespace SharpGo.Game.Players
 
 		protected void Capture(HashSet<Intersection> intersections, Board board)
 		{
-			foreach(var intersection in intersections)
+			foreach (var intersection in intersections)
 			{
 				board.Capture(intersection);
 			}

@@ -23,6 +23,19 @@ namespace SharpGo.Render
 			this.db = db;
 		}
 
+		public void Render(Board board, Player player1, Player player2)
+		{
+			db.Background(0);
+
+			db.StrokeWidth(1);
+			db.Stroke(255);
+			db.Line(WIDTH / 2.0f, 0, WIDTH / 2.0f, HEIGHT);
+
+			db.RectMode = RectangleMode.Corner;
+			DrawPlayers(player1, player2);
+			DrawLeftPanel(board);
+		}
+
 		public void Render(GoGame game)
 		{
 			db.Background(0);
@@ -110,6 +123,21 @@ namespace SharpGo.Render
 			}
 		}
 
+		private void DrawPlayers(Player player1, Player player2)
+		{
+			db.NoStroke();
+			db.Fill(35);
+			db.Square(WIDTH / 2 + 1, 0, PANEL_SIZE + 2 * PANEL_BORDER);
+
+			db.StrokeWidth(1);
+			db.Stroke(255);
+			db.Fill(0);
+			db.Square(WIDTH / 2 + PANEL_BORDER, PANEL_BORDER, PANEL_SIZE);
+
+			DrawPlayer(player1, 1, WIDTH / 2 + PANEL_BORDER, PANEL_BORDER);
+			DrawPlayer(player2, 2, 3 * WIDTH / 4 + PANEL_BORDER, PANEL_BORDER);
+		}
+
 		private void DrawRightPanel(GoGame game)
 		{
 			db.NoStroke();
@@ -123,6 +151,8 @@ namespace SharpGo.Render
 
 			DrawPlayer(game.Player1, 1, WIDTH / 2 + PANEL_BORDER, PANEL_BORDER);
 			DrawPlayer(game.Player2, 2, 3 * WIDTH / 4 + PANEL_BORDER, PANEL_BORDER);
+
+			DrawGameInfo(game);
 		}
 
 		private void DrawPlayer(Player player, int playerNumber, float x, float y)
@@ -132,8 +162,16 @@ namespace SharpGo.Render
 			db.Text($"Player {playerNumber}", x, y);
 
 			db.FontSize(18);
-			db.Text($"{player.Color}", x, y + 75);
-			db.Text($"{(player.HasPassed ? "Passed" : "Played")}", x, y + 100);
+			db.Text($"{player.Color}", x, y + 60);
+			db.Text($"{(player.HasPassed ? "Passed" : "Played")}", x, y + 90);
+		}
+
+		private void DrawGameInfo(GoGame game)
+		{
+			db.TextColor(255);
+			db.FontSize(24);
+			db.Text($"Turns : {game.NbTurns}", WIDTH / 2 + PANEL_BORDER, PANEL_BORDER + PANEL_SIZE / 2);
+			db.Text($"{(game.GameHasEnded ? "Game has ended" : "")}", WIDTH / 2 + PANEL_BORDER, PANEL_BORDER + PANEL_SIZE / 2 + 50);
 		}
 
 		private void DrawConnectedIntersections(Board board, int i, int j, int r, int g, int b, float radius)

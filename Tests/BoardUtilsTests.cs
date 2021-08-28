@@ -322,5 +322,54 @@ namespace SharpGo.Tests
 
 			Assert.AreEqual(5, utils.GetChains().Count);
 		}
+
+		[TestMethod]
+		public void Test_ChainsAndLiberties()
+		{
+			Board b = new Board();
+			BoardUtils utils = new BoardUtils(b);
+
+			b.PlaceStone(PlayerColor.Black, 0, 0);
+			b.PlaceStone(PlayerColor.Black, 0, 1);
+			b.PlaceStone(PlayerColor.Black, 0, 2);
+			b.PlaceStone(PlayerColor.Black, 0, 3);
+			b.PlaceStone(PlayerColor.Black, 1, 3);
+			b.PlaceStone(PlayerColor.Black, 2, 3);
+			b.PlaceStone(PlayerColor.Black, 2, 2);
+			b.PlaceStone(PlayerColor.Black, 2, 1);
+			b.PlaceStone(PlayerColor.Black, 4, 1);
+			b.PlaceStone(PlayerColor.Black, 1, 1);
+
+			b.PlaceStone(PlayerColor.White, 1, 0);
+			b.PlaceStone(PlayerColor.White, 2, 0);
+			b.PlaceStone(PlayerColor.White, 3, 0);
+			b.PlaceStone(PlayerColor.White, 4, 0);
+			b.PlaceStone(PlayerColor.White, 1, 2);
+			b.PlaceStone(PlayerColor.White, 3, 1);
+			b.PlaceStone(PlayerColor.White, 3, 2);
+			b.PlaceStone(PlayerColor.White, 4, 2);
+			b.PlaceStone(PlayerColor.White, 5, 1);
+
+			var chains = utils.GetChains();
+
+			foreach (var chain in chains)
+			{
+				int nbLiberties = -1;
+
+				foreach (var intersection in chain)
+				{
+					if (nbLiberties == -1)
+					{
+						nbLiberties = utils.CountIntersectionLiberties(intersection.I, intersection.J);
+					}
+					else
+					{
+						Assert.AreEqual(nbLiberties, utils.CountIntersectionLiberties(intersection.I, intersection.J));
+					}
+				}
+			}
+
+			Assert.AreEqual(5, chains.Count);
+		}
 	}
 }

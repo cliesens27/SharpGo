@@ -15,16 +15,20 @@ namespace SharpGo.Game
 
 		private readonly DrawingBoard db;
 		private readonly Renderer renderer;
+		private readonly bool render;
+		private readonly bool closeOnGameEnd;
 		private string errorMessage;
 		private int currentPlayer;
 
-		public GoGame(Player p1, Player p2, int frameRate, int boardSize = 19)
+		public GoGame(Player p1, Player p2, int boardSize = 19, bool closeOnGameEnd = false, bool render = true, int frameRate = 999)
 		{
 			renderer = new Renderer(out db, frameRate);
 			Board = new Board(boardSize);
 			Player1 = p1;
 			Player2 = p2;
 			db.Draw = Draw;
+			this.render = render;
+			this.closeOnGameEnd = closeOnGameEnd;
 
 			if (Player1.Color == Player2.Color)
 			{
@@ -70,6 +74,13 @@ namespace SharpGo.Game
 
 				NbTurns++;
 			}
+			else
+			{
+				if (closeOnGameEnd)
+				{
+					db.Close();
+				}
+			}
 		}
 
 		private void Draw()
@@ -84,7 +95,10 @@ namespace SharpGo.Game
 				GameHasEnded = true;
 			}
 
-			renderer.Render(this);
+			if (render)
+			{
+				renderer.Render(this);
+			}
 
 			DrawErrorMessage(errorMessage);
 		}
