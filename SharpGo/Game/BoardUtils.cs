@@ -244,12 +244,26 @@ namespace SharpGo.Game
 				{
 					(int row, int col) = (intersection.I, intersection.J);
 					HashSet<Intersection> intersections = GetConnectedIntersectionsAux(row, col);
-					toAdd.UnionWith(intersections);
+
+					toAdd = SmartUnion(toAdd, intersections);
 				}
 			}
 
-			connectedIntersections.UnionWith(toAdd);
-			return connectedIntersections;
+			return SmartUnion(connectedIntersections, toAdd);
+		}
+
+		private HashSet<Intersection> SmartUnion(HashSet<Intersection> a, HashSet<Intersection> b)
+		{
+			if (a.Count > b.Count)
+			{
+				a.UnionWith(b);
+				return a;
+			}
+			else
+			{
+				b.UnionWith(a);
+				return b;
+			}
 		}
 
 		private bool CanPlaceStone(PlayerColor color, int i, int j) =>
