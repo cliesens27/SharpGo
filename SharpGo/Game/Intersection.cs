@@ -20,7 +20,7 @@ namespace SharpGo.Game
 			return State == o.State && I == o.I && J == o.J;
 		}
 
-		public override int GetHashCode() => Tuple.Create(State, I, J).GetHashCode();
+		public override int GetHashCode() => (State, I, J).GetHashCode();
 
 		public static bool operator ==(Intersection x, Intersection y) => x.Equals(y);
 

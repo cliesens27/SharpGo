@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using SharpGo.Game.Players;
 
@@ -185,20 +186,9 @@ namespace SharpGo.Game
 				return new HashSet<Intersection>();
 			}
 
-			HashSet<HashSet<Intersection>> chains = GetChains();
-
-			foreach (var chain in chains)
-			{
-				foreach (var intersection in chain)
-				{
-					if (intersection.I == i && intersection.J == j)
-					{
-						return chain;
-					}
-				}
-			}
-
-			return new HashSet<Intersection>();
+			HashSet<Intersection> chain = GetConnectedIntersections(i, j);
+			chain.Add(new Intersection(board[i, j], i, j));
+			return chain;
 		}
 
 		public HashSet<HashSet<Intersection>> GetChains()
@@ -221,11 +211,16 @@ namespace SharpGo.Game
 			}
 
 			var toRemove = new HashSet<HashSet<Intersection>>();
+			HashSet<Intersection>[] arr = chains.ToArray();
 
-			foreach (var chain1 in chains)
+			for (int i = 0; i < arr.Length; i++)
 			{
-				foreach (var chain2 in chains)
+				HashSet<Intersection> chain1 = arr[i];
+
+				for (int j = i; j < arr.Length; j++)
 				{
+					HashSet<Intersection> chain2 = arr[j];
+
 					if (chain1 != chain2 && chain1.SetEquals(chain2) &&
 						!(toRemove.Contains(chain1) || toRemove.Contains(chain2)))
 					{
