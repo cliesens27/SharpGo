@@ -7,7 +7,7 @@ namespace SharpGo.Tests
 {
 	public static class TestUtils
 	{
-		public static void DrawBoard(Board board, Player p1, Player p2, int frameRate)
+		public static void DrawBoard(Board board, int frameRate = 30, Player p1 = null, Player p2 = null)
 		{
 			DrawingBoard db;
 			Renderer r = new Renderer(out db, frameRate);

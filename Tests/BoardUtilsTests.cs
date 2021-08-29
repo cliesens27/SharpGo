@@ -19,7 +19,7 @@ namespace SharpGo.Tests
 			b.PlaceStone(PlayerColor.Black, 0, 0);
 			Assert.IsTrue(utils.IsOccupied(0, 0));
 
-			b.Capture(p, new Intersection(State.Black, 0, 0));
+			b.Capture(0, 0);
 			Assert.IsFalse(utils.IsOccupied(0, 0));
 		}
 
@@ -50,7 +50,7 @@ namespace SharpGo.Tests
 			b.PlaceStone(PlayerColor.Black, 0, 0);
 			Assert.IsFalse(utils.IsLegal(PlayerColor.Black, 0, 0));
 
-			b.Capture(p, new Intersection(State.Black, 0, 0));
+			b.Capture(0, 0);
 			Assert.IsFalse(utils.IsLegal(PlayerColor.Black, 0, 0));
 
 			b.UpdateEmptyIntersections();
@@ -69,7 +69,7 @@ namespace SharpGo.Tests
 			b.PlaceStone(PlayerColor.Black, 0, 0);
 			Assert.IsFalse(utils.IsEmpty(0, 0));
 
-			b.Capture(p, new Intersection(State.Black, 0, 0));
+			b.Capture(0, 0);
 			Assert.IsTrue(utils.IsEmpty(0, 0));
 
 			b.UpdateEmptyIntersections();
@@ -142,6 +142,29 @@ namespace SharpGo.Tests
 			Assert.AreEqual(0, utils.CountIntersectionLiberties(0, 1));
 			Assert.AreEqual(4, utils.CountIntersectionLiberties(1, 1));
 			Assert.AreEqual(3, utils.CountIntersectionLiberties(0, 2));
+		}
+
+		[TestMethod]
+		public void Test_ComputeScore_ComputeTerritory()
+		{
+			Board b = new Board(5);
+			b.PlaceStone(PlayerColor.Black, 0, 1);
+			b.PlaceStone(PlayerColor.White, 0, 2);
+			b.PlaceStone(PlayerColor.Black, 1, 0);
+			b.PlaceStone(PlayerColor.Black, 1, 1);
+			b.PlaceStone(PlayerColor.White, 1, 2);
+			b.PlaceStone(PlayerColor.White, 2, 2);
+			b.PlaceStone(PlayerColor.White, 2, 3);
+			b.PlaceStone(PlayerColor.White, 2, 4);
+
+			Assert.AreEqual(3, b.NbBlackStones);
+			Assert.AreEqual(5, b.NbWhiteStones);
+
+			Assert.AreEqual(1, b.Utils.ComputeTerritory(PlayerColor.Black));
+			Assert.AreEqual(4, b.Utils.ComputeTerritory(PlayerColor.White));
+
+			Assert.AreEqual(4, b.Utils.ComputeScore(PlayerColor.Black));
+			Assert.AreEqual(9, b.Utils.ComputeScore(PlayerColor.White));
 		}
 
 		[TestMethod]
@@ -324,6 +347,37 @@ namespace SharpGo.Tests
 			b.PlaceStone(PlayerColor.White, 5, 1);
 
 			Assert.AreEqual(5, utils.GetChains().Count);
+		}
+
+		[TestMethod]
+		public void Test_GetEmptyChains()
+		{
+			Board b = new Board();
+			BoardUtils utils = new BoardUtils(b);
+
+			b.PlaceStone(PlayerColor.Black, 0, 0);
+			b.PlaceStone(PlayerColor.Black, 0, 1);
+			b.PlaceStone(PlayerColor.Black, 0, 2);
+			b.PlaceStone(PlayerColor.Black, 0, 3);
+			b.PlaceStone(PlayerColor.Black, 1, 3);
+			b.PlaceStone(PlayerColor.Black, 2, 3);
+			b.PlaceStone(PlayerColor.Black, 2, 2);
+			b.PlaceStone(PlayerColor.Black, 2, 1);
+			b.PlaceStone(PlayerColor.Black, 4, 1);
+			b.PlaceStone(PlayerColor.Black, 1, 1);
+
+			b.PlaceStone(PlayerColor.White, 1, 0);
+			b.PlaceStone(PlayerColor.White, 2, 0);
+			b.PlaceStone(PlayerColor.White, 3, 0);
+			b.PlaceStone(PlayerColor.White, 4, 0);
+			b.PlaceStone(PlayerColor.White, 1, 2);
+			b.PlaceStone(PlayerColor.White, 3, 1);
+			b.PlaceStone(PlayerColor.White, 3, 2);
+			b.PlaceStone(PlayerColor.White, 4, 2);
+			b.PlaceStone(PlayerColor.White, 5, 1);
+
+			Assert.AreEqual(5, utils.GetChains().Count);
+			Assert.AreEqual(1, utils.GetEmptyChains().Count);
 		}
 
 		[TestMethod]

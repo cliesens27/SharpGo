@@ -32,7 +32,12 @@ namespace SharpGo.Render
 			db.Line(WIDTH / 2.0f, 0, WIDTH / 2.0f, HEIGHT);
 
 			db.RectMode = RectangleMode.Corner;
-			DrawPlayers(player1, player2);
+
+			if (player1 != null && player2 != null)
+			{
+				DrawRightPanel(board, player1, player2);
+			}
+
 			DrawLeftPanel(board);
 		}
 
@@ -123,39 +128,7 @@ namespace SharpGo.Render
 			}
 		}
 
-		private void DrawPlayers(Player player1, Player player2)
-		{
-			db.NoStroke();
-			db.Fill(35);
-			db.Square(WIDTH / 2 + 1, 0, PANEL_SIZE + 2 * PANEL_BORDER);
-
-			db.StrokeWidth(1);
-			db.Stroke(255);
-			db.Fill(0);
-			db.Square(WIDTH / 2 + PANEL_BORDER, PANEL_BORDER, PANEL_SIZE);
-
-			DrawPlayer(player1, 1, WIDTH / 2 + PANEL_BORDER, PANEL_BORDER);
-			DrawPlayer(player2, 2, 3 * WIDTH / 4 + PANEL_BORDER, PANEL_BORDER);
-		}
-
-		private void DrawRightPanel(GoGame game)
-		{
-			db.NoStroke();
-			db.Fill(35);
-			db.Square(WIDTH / 2 + 1, 0, PANEL_SIZE + 2 * PANEL_BORDER);
-
-			db.StrokeWidth(1);
-			db.Stroke(255);
-			db.Fill(0);
-			db.Square(WIDTH / 2 + PANEL_BORDER, PANEL_BORDER, PANEL_SIZE);
-
-			DrawPlayer(game.Player1, 1, WIDTH / 2 + PANEL_BORDER, PANEL_BORDER);
-			DrawPlayer(game.Player2, 2, 3 * WIDTH / 4 + PANEL_BORDER, PANEL_BORDER);
-
-			DrawGameInfo(game);
-		}
-
-		private void DrawPlayer(Player player, int playerNumber, float x, float y)
+		private void DrawPlayer(Board board, Player player, int playerNumber, float x, float y)
 		{
 			db.TextColor(255);
 			db.FontSize(24);
@@ -164,6 +137,33 @@ namespace SharpGo.Render
 			db.FontSize(18);
 			db.Text($"{player.Color}", x, y + 60);
 			db.Text($"{(player.HasPassed ? "Passed" : "Played")}", x, y + 90);
+			db.Text($"Score : {board.Utils.ComputeScore(player.Color)}", x, y + 120);
+		}
+
+		private void DrawPlayers(Board board, Player player1, Player player2)
+		{
+			db.NoStroke();
+			db.Fill(35);
+			db.Square(WIDTH / 2 + 1, 0, PANEL_SIZE + 2 * PANEL_BORDER);
+
+			db.StrokeWidth(1);
+			db.Stroke(255);
+			db.Fill(0);
+			db.Square(WIDTH / 2 + PANEL_BORDER, PANEL_BORDER, PANEL_SIZE);
+
+			DrawPlayer(board, player1, 1, WIDTH / 2 + PANEL_BORDER, PANEL_BORDER);
+			DrawPlayer(board, player2, 2, 3 * WIDTH / 4 + PANEL_BORDER, PANEL_BORDER);
+		}
+
+		private void DrawRightPanel(Board board, Player player1, Player player2)
+		{
+			DrawPlayers(board, player1, player2);
+		}
+
+		private void DrawRightPanel(GoGame game)
+		{
+			DrawPlayers(game.Board, game.Player1, game.Player2);
+			DrawGameInfo(game);
 		}
 
 		private void DrawGameInfo(GoGame game)
@@ -176,7 +176,7 @@ namespace SharpGo.Render
 
 		private void DrawConnectedIntersections(Board board, int i, int j, int r, int g, int b, float radius)
 		{
-			var connectedIntersections = board.GetConnectedIntersections(i, j);
+			var connectedIntersections = board.Utils.GetConnectedIntersections(i, j);
 			connectedIntersections.Add(new Intersection(board[i, j], i, j));
 
 			db.Stroke(255 - r, 255 - g, 255 - b);

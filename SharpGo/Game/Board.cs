@@ -10,7 +10,7 @@ namespace SharpGo.Game
 		{
 			get
 			{
-				if (!utils.IsInsideBoard(i, j))
+				if (!Utils.IsInsideBoard(i, j))
 				{
 					throw new IndexOutOfRangeException($"Cannot place stone on intersection ({i},{j}), it is outside the board.");
 				}
@@ -19,7 +19,7 @@ namespace SharpGo.Game
 			}
 			private set
 			{
-				if (!utils.IsInsideBoard(i, j))
+				if (!Utils.IsInsideBoard(i, j))
 				{
 					throw new IndexOutOfRangeException($"Cannot place stone on intersection ({i},{j}), it is outside the board.");
 				}
@@ -30,6 +30,7 @@ namespace SharpGo.Game
 
 		public int Size { get; }
 		public int NbIntersections { get; }
+		public BoardUtils Utils { get; }
 
 		public int NbEmptyIntersections { get; private set; }
 		public int NbWhiteStones { get; private set; } = 0;
@@ -38,11 +39,10 @@ namespace SharpGo.Game
 		public bool IsEmpty => (NbWhiteStones == 0) && (NbBlackStones == 0) && (NbEmptyIntersections == Size * Size);
 
 		private readonly State[][] states;
-		private readonly BoardUtils utils;
 
 		public Board(int size = 19)
 		{
-			utils = new BoardUtils(this);
+			Utils = new BoardUtils(this);
 
 			Size = size;
 			NbIntersections = Size * Size;
@@ -59,12 +59,12 @@ namespace SharpGo.Game
 
 		public void PlaceStone(PlayerColor color, int i, int j)
 		{
-			if (utils.IsOccupied(i, j))
+			if (Utils.IsOccupied(i, j))
 			{
 				throw new InvalidOperationException($"Cannot place stone on intersection ({i},{j}), it is already occupied.");
 			}
 
-			if (!utils.IsInsideBoard(i, j))
+			if (!Utils.IsInsideBoard(i, j))
 			{
 				throw new IndexOutOfRangeException($"Cannot place stone on intersection ({i},{j}), it is outside the board.");
 			}
@@ -83,40 +83,8 @@ namespace SharpGo.Game
 			NbEmptyIntersections--;
 		}
 
-		public void Capture(Player player, Intersection intersection)
+		public void Capture(int i, int j)
 		{
-			int i = intersection.I;
-			int j = intersection.J;
-
-			//if (this[i, j] == State.White)
-			//{
-			//	if (player.LastMove != null && player.LastMove.I == i && player.LastMove.J == j)
-			//	{
-			//		this[i, j] = State.EmptyWhite;
-			//	}
-			//	else
-			//	{
-			//		this[i, j] = State.Empty;
-			//	}
-
-			//	NbWhiteStones--;
-			//	NbEmptyIntersections++;
-			//}
-			//else if (this[i, j] == State.Black)
-			//{
-			//	if (player.LastMove != null && player.LastMove.I == i && player.LastMove.J == j)
-			//	{
-			//		this[i, j] = State.EmptyBlack;
-			//	}
-			//	else
-			//	{
-			//		this[i, j] = State.Empty;
-			//	}
-
-			//	NbBlackStones--;
-			//	NbEmptyIntersections++;
-			//}
-
 			if (this[i, j] == State.White)
 			{
 				this[i, j] = State.EmptyWhite;
@@ -139,7 +107,7 @@ namespace SharpGo.Game
 			{
 				for (int j = 0; j < Size; j++)
 				{
-					if (utils.IsEmpty(i, j))
+					if (Utils.IsEmpty(i, j))
 					{
 						this[i, j] = State.Empty;
 					}
@@ -149,12 +117,12 @@ namespace SharpGo.Game
 
 		public void PlaceTempStone(PlayerColor color, int i, int j)
 		{
-			if (utils.IsOccupied(i, j))
+			if (Utils.IsOccupied(i, j))
 			{
 				throw new InvalidOperationException($"Cannot place stone on intersection ({i},{j}), it is already occupied.");
 			}
 
-			if (!utils.IsInsideBoard(i, j))
+			if (!Utils.IsInsideBoard(i, j))
 			{
 				throw new IndexOutOfRangeException($"Cannot place stone on intersection ({i},{j}), it is outside the board.");
 			}
@@ -169,22 +137,6 @@ namespace SharpGo.Game
 				this[i, j] = state;
 			}
 		}
-
-		public HashSet<Intersection> GetCapturableIntersections(PlayerColor color) =>
-			utils.GetCapturableIntersections(color);
-
-		public HashSet<Intersection> GetAdjacentIntersections(int i, int j) => utils.GetAdjacentIntersections(i, j);
-
-		public HashSet<Intersection> GetAdjacentConnectedIntersections(int i, int j) =>
-			utils.GetAdjacentConnectedIntersections(i, j);
-
-		public HashSet<Intersection> GetConnectedIntersections(int i, int j) => utils.GetConnectedIntersections(i, j);
-
-		public HashSet<Intersection> GetLegalIntersections(PlayerColor color) => utils.GetLegalIntersections(color);
-
-		public HashSet<Intersection> GetChain(int i, int j) => utils.GetChain(i, j);
-
-		public HashSet<HashSet<Intersection>> GetChains() => utils.GetChains();
 
 		private void Reset()
 		{

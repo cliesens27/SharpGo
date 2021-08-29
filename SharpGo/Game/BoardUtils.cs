@@ -84,28 +84,89 @@ namespace SharpGo.Game
 			return nbLiberties;
 		}
 
+		public int ComputeTerritory(PlayerColor color)
+		{
+			HashSet<HashSet<Intersection>> emptyChains = GetEmptyChains();
+			int territory = 0;
+
+			foreach (var chain in emptyChains)
+			{
+				var adj = new HashSet<Intersection>();
+
+				foreach (var intersection in chain)
+				{
+					adj = SmartUnion(adj, board.Utils.GetAdjacentIntersections(intersection.I, intersection.J));
+				}
+
+				adj.RemoveWhere(x => IsEmpty(x.I, x.J));
+
+				bool bordersWhite = false;
+				bool bordersBlack = false;
+
+				foreach (var intersection in adj)
+				{
+					if (intersection.State == State.White)
+					{
+						bordersWhite = true;
+					}
+					else if (intersection.State == State.Black)
+					{
+						bordersBlack = true;
+					}
+				}
+
+				if (color == PlayerColor.White && (bordersWhite && !bordersBlack))
+				{
+					territory += chain.Count;
+				}
+				else if (color == PlayerColor.Black && (!bordersWhite && bordersBlack))
+				{
+					territory += chain.Count;
+				}
+			}
+
+			return territory;
+		}
+
+		public int ComputeScore(PlayerColor color)
+		{
+			if (board.IsEmpty)
+			{
+				return 0;
+			}
+
+			int score = (color == PlayerColor.Black) ? board.NbBlackStones : board.NbWhiteStones;
+
+			if (score <= 1)
+			{
+				return score;
+			}
+
+			return score + ComputeTerritory(color);
+		}
+
 		public HashSet<Intersection> GetAdjacentIntersections(int i, int j)
 		{
 			var intersections = new HashSet<Intersection>();
 
 			if (IsInsideBoard(i + 1, j))
 			{
-				intersections.Add(new Intersection(board[i, j], i + 1, j));
+				intersections.Add(new Intersection(board[i + 1, j], i + 1, j));
 			}
 
 			if (IsInsideBoard(i - 1, j))
 			{
-				intersections.Add(new Intersection(board[i, j], i - 1, j));
+				intersections.Add(new Intersection(board[i - 1, j], i - 1, j));
 			}
 
 			if (IsInsideBoard(i, j + 1))
 			{
-				intersections.Add(new Intersection(board[i, j], i, j + 1));
+				intersections.Add(new Intersection(board[i, j + 1], i, j + 1));
 			}
 
 			if (IsInsideBoard(i, j - 1))
 			{
-				intersections.Add(new Intersection(board[i, j], i, j - 1));
+				intersections.Add(new Intersection(board[i, j - 1], i, j - 1));
 			}
 
 			return intersections;
@@ -200,6 +261,48 @@ namespace SharpGo.Game
 				for (int j = 0; j < board.Size; j++)
 				{
 					if (IsEmpty(i, j))
+					{
+						continue;
+					}
+
+					HashSet<Intersection> chain = GetConnectedIntersections(i, j);
+					chain.Add(new Intersection(board[i, j], i, j));
+					chains.Add(chain);
+				}
+			}
+
+			var toRemove = new HashSet<HashSet<Intersection>>();
+			HashSet<Intersection>[] arr = chains.ToArray();
+
+			for (int i = 0; i < arr.Length; i++)
+			{
+				HashSet<Intersection> chain1 = arr[i];
+
+				for (int j = i; j < arr.Length; j++)
+				{
+					HashSet<Intersection> chain2 = arr[j];
+
+					if (chain1 != chain2 && chain1.SetEquals(chain2) &&
+						!(toRemove.Contains(chain1) || toRemove.Contains(chain2)))
+					{
+						toRemove.Add(chain1);
+					}
+				}
+			}
+
+			chains.ExceptWith(toRemove);
+			return chains;
+		}
+
+		public HashSet<HashSet<Intersection>> GetEmptyChains()
+		{
+			var chains = new HashSet<HashSet<Intersection>>();
+
+			for (int i = 0; i < board.Size; i++)
+			{
+				for (int j = 0; j < board.Size; j++)
+				{
+					if (IsOccupied(i, j))
 					{
 						continue;
 					}

@@ -18,7 +18,7 @@ namespace SharpGo.Game.Players
 		{
 			foreach (var intersection in intersections)
 			{
-				board.Capture(this, intersection);
+				board.Capture(intersection.I, intersection.J);
 			}
 		}
 
@@ -28,8 +28,8 @@ namespace SharpGo.Game.Players
 
 		public void Play(Board board)
 		{
-			HashSet<Intersection> legalIntersections = board.GetLegalIntersections(Color);
-			HashSet<Intersection> capturableIntersections = board.GetCapturableIntersections(Color);
+			HashSet<Intersection> legalIntersections = board.Utils.GetLegalIntersections(Color);
+			HashSet<Intersection> capturableIntersections = board.Utils.GetCapturableIntersections(Color);
 
 			if (Pass(board, legalIntersections) || legalIntersections.Count == 0)
 			{
