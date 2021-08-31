@@ -64,6 +64,7 @@ namespace SharpGo.Game
 
 				if (Player1.NbTurnsPlayed == Player2.NbTurnsPlayed)
 				{
+					NbTurns++;
 					Board.UpdateEmptyIntersections();
 				}
 
@@ -71,8 +72,6 @@ namespace SharpGo.Game
 				{
 					GameHasEnded = true;
 				}
-
-				NbTurns++;
 			}
 			else
 			{
