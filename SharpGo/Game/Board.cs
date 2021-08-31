@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using SharpGo.Game.Players;
 
 namespace SharpGo.Game
 {
 	public class Board
 	{
-		public State this[int i, int j]
+		public Intersection this[int i, int j]
 		{
 			get
 			{
@@ -15,7 +14,7 @@ namespace SharpGo.Game
 					throw new IndexOutOfRangeException($"Cannot place stone on intersection ({i},{j}), it is outside the board.");
 				}
 
-				return states[i][j];
+				return intersections[i][j];
 			}
 			private set
 			{
@@ -24,7 +23,7 @@ namespace SharpGo.Game
 					throw new IndexOutOfRangeException($"Cannot place stone on intersection ({i},{j}), it is outside the board.");
 				}
 
-				states[i][j] = value;
+				intersections[i][j] = value;
 			}
 		}
 
@@ -38,7 +37,7 @@ namespace SharpGo.Game
 
 		public bool IsEmpty => (NbWhiteStones == 0) && (NbBlackStones == 0) && (NbEmptyIntersections == Size * Size);
 
-		private readonly State[][] states;
+		private readonly Intersection[][] intersections;
 
 		public Board(int size = 19)
 		{
@@ -47,11 +46,16 @@ namespace SharpGo.Game
 			Size = size;
 			NbIntersections = Size * Size;
 			NbEmptyIntersections = NbIntersections;
-			states = new State[Size][];
+			intersections = new Intersection[Size][];
 
 			for (int i = 0; i < Size; i++)
 			{
-				states[i] = new State[Size];
+				intersections[i] = new Intersection[Size];
+
+				for (int j = 0; j < Size; j++)
+				{
+					intersections[i][j] = new Intersection(State.Empty, i, j);
+				}
 			}
 
 			Reset();
@@ -69,7 +73,7 @@ namespace SharpGo.Game
 				throw new IndexOutOfRangeException($"Cannot place stone on intersection ({i},{j}), it is outside the board.");
 			}
 
-			this[i, j] = Player.PlayerColorToState(color);
+			this[i, j].State = Player.PlayerColorToState(color);
 
 			if (color == PlayerColor.White)
 			{
@@ -85,16 +89,16 @@ namespace SharpGo.Game
 
 		public void Capture(int i, int j)
 		{
-			if (this[i, j] == State.White)
+			if (this[i, j].State == State.White)
 			{
-				this[i, j] = State.EmptyWhite;
+				this[i, j].State = State.EmptyWhite;
 
 				NbWhiteStones--;
 				NbEmptyIntersections++;
 			}
-			else if (this[i, j] == State.Black)
+			else if (this[i, j].State == State.Black)
 			{
-				this[i, j] = State.EmptyBlack;
+				this[i, j].State = State.EmptyBlack;
 
 				NbBlackStones--;
 				NbEmptyIntersections++;
@@ -109,7 +113,7 @@ namespace SharpGo.Game
 				{
 					if (Utils.IsEmpty(i, j))
 					{
-						this[i, j] = State.Empty;
+						this[i, j].State = State.Empty;
 					}
 				}
 			}
@@ -127,14 +131,14 @@ namespace SharpGo.Game
 				throw new IndexOutOfRangeException($"Cannot place stone on intersection ({i},{j}), it is outside the board.");
 			}
 
-			this[i, j] = Player.PlayerColorToState(color);
+			this[i, j].State = Player.PlayerColorToState(color);
 		}
 
 		public void RemoveTempStone(State state, int i, int j)
 		{
-			if (this[i, j] == State.White || this[i, j] == State.Black)
+			if (this[i, j].State == State.White || this[i, j].State == State.Black)
 			{
-				this[i, j] = state;
+				this[i, j].State = state;
 			}
 		}
 
@@ -144,7 +148,7 @@ namespace SharpGo.Game
 			{
 				for (int j = 0; j < Size; j++)
 				{
-					this[i, j] = State.Empty;
+					this[i, j].State = State.Empty;
 				}
 			}
 		}

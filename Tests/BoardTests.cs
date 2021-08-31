@@ -46,7 +46,7 @@ namespace SharpGo.Tests
 			Board b = new Board();
 			b.PlaceStone(PlayerColor.Black, 0, 0);
 			Assert.AreEqual(1, b.NbBlackStones);
-			Assert.AreEqual(State.Black, b[0, 0]);
+			Assert.AreEqual(State.Black, b[0, 0].State);
 		}
 
 		[TestMethod]
@@ -74,11 +74,11 @@ namespace SharpGo.Tests
 
 			b.PlaceStone(PlayerColor.Black, 0, 0);
 			Assert.AreEqual(1, b.NbBlackStones);
-			Assert.AreEqual(State.Black, b[0, 0]);
+			Assert.AreEqual(State.Black, b[0, 0].State);
 
 			b.Capture(0, 0);
 			Assert.AreEqual(0, b.NbBlackStones);
-			Assert.AreEqual(State.EmptyBlack, b[0, 0]);
+			Assert.AreEqual(State.EmptyBlack, b[0, 0].State);
 			Assert.IsTrue(b.IsEmpty);
 		}
 
@@ -104,14 +104,14 @@ namespace SharpGo.Tests
 
 			for (int i = 0; i < b.Size; i++)
 			{
-				Assert.AreEqual(State.EmptyBlack, b[i, 0]);
+				Assert.AreEqual(State.EmptyBlack, b[i, 0].State);
 			}
 
 			b.UpdateEmptyIntersections();
 
 			for (int i = 0; i < b.Size; i++)
 			{
-				Assert.AreEqual(State.Empty, b[i, 0]);
+				Assert.AreEqual(State.Empty, b[i, 0].State);
 			}
 		}
 	}

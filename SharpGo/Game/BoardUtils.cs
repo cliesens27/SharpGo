@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using SharpGo.Game.Players;
 
 namespace SharpGo.Game
@@ -12,7 +11,7 @@ namespace SharpGo.Game
 
 		public BoardUtils(Board board) => this.board = board;
 
-		public bool IsOccupied(int i, int j) => board[i, j] == State.White || board[i, j] == State.Black;
+		public bool IsOccupied(int i, int j) => board[i, j].State == State.White || board[i, j].State == State.Black;
 
 		public bool IsInsideBoard(int i, int j) => (i >= 0 && i < board.Size) && (j >= 0 && j < board.Size);
 
@@ -24,7 +23,7 @@ namespace SharpGo.Game
 
 			if (IsEmpty(i, j))
 			{
-				State previousState = board[i, j];
+				State previousState = board[i, j].State;
 
 				board.PlaceTempStone(color, i, j);
 				nbLiberties = CountIntersectionLiberties(i, j);
@@ -45,7 +44,7 @@ namespace SharpGo.Game
 			(j1 == j2 && (i1 == i2 + 1 || i1 == i2 - 1));
 
 		public bool CanBeConnected(int i1, int j1, int i2, int j2) =>
-			board[i1, j1] == board[i2, j2] ||
+			board[i1, j1].State == board[i2, j2].State ||
 			(IsEmpty(i1, j1) && IsEmpty(i2, j2));
 
 		public bool AreAdjacentConnected(int i1, int j1, int i2, int j2) =>
@@ -60,7 +59,7 @@ namespace SharpGo.Game
 			}
 
 			HashSet<Intersection> chain = GetChain(i, j);
-			var visited = new HashSet<Intersection> { new Intersection(board[i, j], i, j) };
+			var visited = new HashSet<Intersection> { board[i, j] };
 			int nbLiberties = 0;
 
 			foreach (var intersection in chain)
@@ -151,22 +150,22 @@ namespace SharpGo.Game
 
 			if (IsInsideBoard(i + 1, j))
 			{
-				intersections.Add(new Intersection(board[i + 1, j], i + 1, j));
+				intersections.Add(board[i + 1, j]);
 			}
 
 			if (IsInsideBoard(i - 1, j))
 			{
-				intersections.Add(new Intersection(board[i - 1, j], i - 1, j));
+				intersections.Add(board[i - 1, j]);
 			}
 
 			if (IsInsideBoard(i, j + 1))
 			{
-				intersections.Add(new Intersection(board[i, j + 1], i, j + 1));
+				intersections.Add(board[i, j + 1]);
 			}
 
 			if (IsInsideBoard(i, j - 1))
 			{
-				intersections.Add(new Intersection(board[i, j - 1], i, j - 1));
+				intersections.Add(board[i, j - 1]);
 			}
 
 			return intersections;
@@ -176,7 +175,7 @@ namespace SharpGo.Game
 		{
 			visited.Clear();
 			HashSet<Intersection> connectedIntersections = GetConnectedIntersectionsAux(i, j);
-			connectedIntersections.Remove(new Intersection(board[i, j], i, j));
+			connectedIntersections.Remove(board[i, j]);
 			return connectedIntersections;
 		}
 
@@ -209,7 +208,7 @@ namespace SharpGo.Game
 				{
 					if (IsLegal(color, i, j))
 					{
-						intersections.Add(new Intersection(board[i, j], i, j));
+						intersections.Add(board[i, j]);
 					}
 				}
 			}
@@ -225,13 +224,13 @@ namespace SharpGo.Game
 			{
 				for (int j = 0; j < board.Size; j++)
 				{
-					if (IsOccupied(i, j) && board[i, j] != Player.PlayerColorToState(color))
+					if (IsOccupied(i, j) && board[i, j].State != Player.PlayerColorToState(color))
 					{
 						int nbLiberties = CountIntersectionLiberties(i, j);
 
 						if (nbLiberties == 0)
 						{
-							intersections.Add(new Intersection(board[i, j], i, j));
+							intersections.Add(board[i, j]);
 						}
 					}
 				}
@@ -248,7 +247,7 @@ namespace SharpGo.Game
 			}
 
 			HashSet<Intersection> chain = GetConnectedIntersections(i, j);
-			chain.Add(new Intersection(board[i, j], i, j));
+			chain.Add(board[i, j]);
 			return chain;
 		}
 
@@ -266,7 +265,7 @@ namespace SharpGo.Game
 					}
 
 					HashSet<Intersection> chain = GetConnectedIntersections(i, j);
-					chain.Add(new Intersection(board[i, j], i, j));
+					chain.Add(board[i, j]);
 					chains.Add(chain);
 				}
 			}
@@ -308,7 +307,7 @@ namespace SharpGo.Game
 					}
 
 					HashSet<Intersection> chain = GetConnectedIntersections(i, j);
-					chain.Add(new Intersection(board[i, j], i, j));
+					chain.Add(board[i, j]);
 					chains.Add(chain);
 				}
 			}
@@ -370,7 +369,7 @@ namespace SharpGo.Game
 		}
 
 		private bool CanPlaceStone(PlayerColor color, int i, int j) =>
-			(color == PlayerColor.White && (board[i, j] == State.Empty || board[i, j] == State.EmptyBlack)) ||
-			(color == PlayerColor.Black && (board[i, j] == State.Empty || board[i, j] == State.EmptyWhite));
+			(color == PlayerColor.White && (board[i, j].State == State.Empty || board[i, j].State == State.EmptyBlack)) ||
+			(color == PlayerColor.Black && (board[i, j].State == State.Empty || board[i, j].State == State.EmptyWhite));
 	}
 }
