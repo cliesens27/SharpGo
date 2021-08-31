@@ -251,6 +251,18 @@ namespace SharpGo.Game
 			return chain;
 		}
 
+		public HashSet<Intersection> GetChainEmpty(int i, int j)
+		{
+			if (IsOccupied(i, j))
+			{
+				return new HashSet<Intersection>();
+			}
+
+			HashSet<Intersection> chain = GetConnectedIntersections(i, j);
+			chain.Add(board[i, j]);
+			return chain;
+		}
+
 		public HashSet<HashSet<Intersection>> GetChains()
 		{
 			var chains = new HashSet<HashSet<Intersection>>();
@@ -295,44 +307,41 @@ namespace SharpGo.Game
 
 		public HashSet<HashSet<Intersection>> GetEmptyChains()
 		{
-			var chains = new HashSet<HashSet<Intersection>>();
+			var emptyIntersections = new HashSet<Intersection>();
 
 			for (int i = 0; i < board.Size; i++)
 			{
 				for (int j = 0; j < board.Size; j++)
 				{
-					if (IsOccupied(i, j))
+					if (IsEmpty(i, j))
 					{
-						continue;
+						emptyIntersections.Add(board[i, j]);
 					}
-
-					HashSet<Intersection> chain = GetConnectedIntersections(i, j);
-					chain.Add(board[i, j]);
-					chains.Add(chain);
 				}
 			}
 
-			var toRemove = new HashSet<HashSet<Intersection>>();
-			HashSet<Intersection>[] arr = chains.ToArray();
+			var emptyChains = new HashSet<HashSet<Intersection>>();
 
-			for (int i = 0; i < arr.Length; i++)
+			foreach (var intersection in emptyIntersections)
 			{
-				HashSet<Intersection> chain1 = arr[i];
+				bool alreadyPresent = false;
 
-				for (int j = i; j < arr.Length; j++)
+				foreach (var chain in emptyChains)
 				{
-					HashSet<Intersection> chain2 = arr[j];
-
-					if (chain1 != chain2 && chain1.SetEquals(chain2) &&
-						!(toRemove.Contains(chain1) || toRemove.Contains(chain2)))
+					if (chain.Contains(intersection))
 					{
-						toRemove.Add(chain1);
+						alreadyPresent = true;
+						break;
 					}
+				}
+
+				if (!alreadyPresent)
+				{
+					emptyChains.Add(GetChainEmpty(intersection.I, intersection.J));
 				}
 			}
 
-			chains.ExceptWith(toRemove);
-			return chains;
+			return emptyChains;
 		}
 
 		private HashSet<Intersection> GetConnectedIntersectionsAux(int i, int j)
