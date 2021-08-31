@@ -18,7 +18,10 @@
 			return State == o.State && I == o.I && J == o.J;
 		}
 
-		public override int GetHashCode() => (State, I, J).GetHashCode();
+		/*
+		 * /!\ Does not take State into account /!\ 
+		 */
+		public override int GetHashCode() => (I, J).GetHashCode();
 
 		public static bool operator ==(Intersection x, Intersection y) => x.Equals(y);
 
