@@ -239,21 +239,10 @@ namespace SharpGo.Game
 			return intersections;
 		}
 
-		public HashSet<Intersection> GetChain(int i, int j)
+		public HashSet<Intersection> GetChain(int i, int j, bool emptyIntersections = false)
 		{
-			if (IsEmpty(i, j))
-			{
-				return new HashSet<Intersection>();
-			}
-
-			HashSet<Intersection> chain = GetConnectedIntersections(i, j);
-			chain.Add(board[i, j]);
-			return chain;
-		}
-
-		public HashSet<Intersection> GetChainEmpty(int i, int j)
-		{
-			if (IsOccupied(i, j))
+			if ((!emptyIntersections && IsEmpty(i, j)) ||
+				(emptyIntersections && IsOccupied(i, j)))
 			{
 				return new HashSet<Intersection>();
 			}
@@ -337,7 +326,7 @@ namespace SharpGo.Game
 
 				if (!alreadyPresent)
 				{
-					emptyChains.Add(GetChainEmpty(intersection.I, intersection.J));
+					emptyChains.Add(GetChain(intersection.I, intersection.J, emptyIntersections: true));
 				}
 			}
 
