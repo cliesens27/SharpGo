@@ -377,7 +377,7 @@ namespace SharpGo.Tests
 			b.PlaceStone(PlayerColor.White, 5, 1);
 
 			Assert.AreEqual(5, utils.GetChains().Count);
-			Assert.AreEqual(1, utils.GetEmptyChains().Count);
+			Assert.AreEqual(1, utils.GetChains(chainsOfEmptyIntersections: true).Count);
 		}
 
 		[TestMethod]

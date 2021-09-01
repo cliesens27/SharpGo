@@ -70,7 +70,7 @@ namespace SharpGo.Render
 			{
 				for (int j = 0; j < board.Size; j++)
 				{
-					DrawStone(board[i, j], board.Size, board.Size, i, j, radius);
+					DrawStone(board[i, j].State, board.Size, board.Size, i, j, radius);
 				}
 			}
 		}
@@ -177,7 +177,7 @@ namespace SharpGo.Render
 		private void DrawConnectedIntersections(Board board, int i, int j, int r, int g, int b, float radius)
 		{
 			var connectedIntersections = board.Utils.GetConnectedIntersections(i, j);
-			connectedIntersections.Add(new Intersection(board[i, j], i, j));
+			connectedIntersections.Add(board[i, j]);
 
 			db.Stroke(255 - r, 255 - g, 255 - b);
 			db.StrokeWidth(3);

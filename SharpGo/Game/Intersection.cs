@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace SharpGo.Game
+﻿namespace SharpGo.Game
 {
 	public class Intersection
 	{
-		public State State { get; }
+		public State State { get; set; }
 		public int I { get; }
 		public int J { get; }
 
