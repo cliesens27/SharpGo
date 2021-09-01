@@ -46,6 +46,7 @@ namespace SharpGo.Game
 			Size = size;
 			NbIntersections = Size * Size;
 			NbEmptyIntersections = NbIntersections;
+			NbWhiteStones = NbBlackStones = 0;
 			intersections = new Intersection[Size][];
 
 			for (int i = 0; i < Size; i++)
@@ -57,8 +58,29 @@ namespace SharpGo.Game
 					intersections[i][j] = new Intersection(State.Empty, i, j);
 				}
 			}
+		}
 
-			Reset();
+		public Board(Board board)
+		{
+			Utils = new BoardUtils(this);
+
+			Size = board.Size;
+			NbIntersections = Size * Size;
+			NbEmptyIntersections = board.NbIntersections;
+			NbWhiteStones = board.NbWhiteStones;
+			NbBlackStones = board.NbBlackStones;
+
+			intersections = new Intersection[Size][];
+
+			for (int i = 0; i < Size; i++)
+			{
+				intersections[i] = new Intersection[Size];
+
+				for (int j = 0; j < Size; j++)
+				{
+					intersections[i][j] = new Intersection(board[i, j].State, board[i, j].I, board[i, j].J);
+				}
+			}
 		}
 
 		public void PlaceStone(PlayerColor color, int i, int j)
@@ -139,17 +161,6 @@ namespace SharpGo.Game
 			if (this[i, j].State == State.White || this[i, j].State == State.Black)
 			{
 				this[i, j].State = state;
-			}
-		}
-
-		private void Reset()
-		{
-			for (int i = 0; i < Size; i++)
-			{
-				for (int j = 0; j < Size; j++)
-				{
-					this[i, j].State = State.Empty;
-				}
 			}
 		}
 	}

@@ -8,7 +8,6 @@ namespace SharpGo.Game.Players
 		public PlayerColor Color { get; }
 		public bool HasPassed { get; private set; }
 		public int NbTurnsPlayed { get; private set; }
-		public Intersection LastMove { get; private set; } = null;
 
 		protected Player(PlayerColor color) => Color = color;
 
@@ -32,7 +31,6 @@ namespace SharpGo.Game.Players
 
 			if (Pass(board, legalIntersections) || legalIntersections.Count == 0)
 			{
-				LastMove = null;
 				HasPassed = true;
 				NbTurnsPlayed++;
 				return;
@@ -45,7 +43,6 @@ namespace SharpGo.Game.Players
 			HashSet<Intersection> capturableIntersections = board.Utils.GetCapturableIntersections(Color);
 			Capture(capturableIntersections, board);
 
-			LastMove = new Intersection(PlayerColorToState(Color), i, j);
 			HasPassed = false;
 			NbTurnsPlayed++;
 		}
