@@ -29,7 +29,6 @@ namespace SharpGo.Game.Players
 		public void Play(Board board)
 		{
 			HashSet<Intersection> legalIntersections = board.Utils.GetLegalIntersections(Color);
-			HashSet<Intersection> capturableIntersections = board.Utils.GetCapturableIntersections(Color);
 
 			if (Pass(board, legalIntersections) || legalIntersections.Count == 0)
 			{
@@ -42,6 +41,8 @@ namespace SharpGo.Game.Players
 			(int i, int j) = PickPosition(board, legalIntersections);
 
 			PlaceStone(board, i, j);
+
+			HashSet<Intersection> capturableIntersections = board.Utils.GetCapturableIntersections(Color);
 			Capture(capturableIntersections, board);
 
 			LastMove = new Intersection(PlayerColorToState(Color), i, j);
