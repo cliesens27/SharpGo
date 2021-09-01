@@ -14,7 +14,7 @@ namespace SharpGo.Tests
 			Player p1 = new RandomNoPassPlayer(PlayerColor.Black);
 			Player p2 = new RandomNoPassPlayer(PlayerColor.White);
 			Rng.Seed = 1000000000;
-			GoGame game = new GoGame(p1, p2, boardSize: 25, closeOnGameEnd: true, render: true, frameRate: 999);
+			GoGame game = new GoGame(p1, p2, boardSize: 19, closeOnGameEnd: true, render: true, frameRate: 999);
 			game.Start();
 		}
 	}
