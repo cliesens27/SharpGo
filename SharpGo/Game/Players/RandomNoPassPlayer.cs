@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using MathlibNET.Random;
+using DrawingBoardNET.Drawing;
 
 namespace SharpGo.Game.Players
 {
@@ -10,7 +10,7 @@ namespace SharpGo.Game.Players
 
 		protected override (int, int) PickPosition(Board board, HashSet<Intersection> legalIntersections)
 		{
-			int index = Rng.Rand(legalIntersections.Count);
+			int index = MathUtils.Rand(legalIntersections.Count);
 			Intersection intersection = legalIntersections.ToArray()[index];
 			return (intersection.I, intersection.J);
 		}

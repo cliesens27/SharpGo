@@ -10,7 +10,7 @@ namespace SharpGo.Tests
 		[TestMethod]
 		public void TestProperties()
 		{
-			Board b = new Board();
+			Board b = new();
 			Player p = new RandomNoPassPlayer(PlayerColor.Black);
 
 			Assert.AreEqual(0, p.NbTurnsPlayed);

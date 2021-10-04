@@ -10,7 +10,7 @@
 
 		public override bool Equals(object obj)
 		{
-			if (!(obj is Intersection o))
+			if (obj is not Intersection o)
 			{
 				return false;
 			}

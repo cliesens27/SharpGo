@@ -1,6 +1,5 @@
 ﻿using DrawingBoardNET.Drawing;
 using DrawingBoardNET.Drawing.Constants;
-using MathlibNET;
 using SharpGo.Game;
 using SharpGo.Game.Players;
 
@@ -10,9 +9,9 @@ namespace SharpGo.Render
 	{
 		private const int HEIGHT = 950;
 		private const int WIDTH = 2 * HEIGHT;
-		private const float PANEL_BORDER = 10;
-		private const float PANEL_SIZE = HEIGHT - 2 * PANEL_BORDER;
-		private const float BASE_RADIUS = HEIGHT / 4.0f;
+		private const double PANEL_BORDER = 10;
+		private const double PANEL_SIZE = HEIGHT - 2 * PANEL_BORDER;
+		private const double BASE_RADIUS = HEIGHT / 4.0f;
 		private readonly DrawingBoard db;
 
 		public Renderer(out DrawingBoard db, int frameRate)
@@ -64,7 +63,7 @@ namespace SharpGo.Render
 
 			DrawGrid(board);
 
-			float radius = BASE_RADIUS / board.Size;
+			double radius = BASE_RADIUS / board.Size;
 
 			for (int i = 0; i < board.Size; i++)
 			{
@@ -75,7 +74,7 @@ namespace SharpGo.Render
 			}
 		}
 
-		private void DrawStone(State state, int nbRows, int Size, int i, int j, float radius)
+		private void DrawStone(State state, int nbRows, int Size, int i, int j, double radius)
 		{
 			switch (state)
 			{
@@ -93,8 +92,8 @@ namespace SharpGo.Render
 					break;
 			}
 
-			float x = SpecialFunctions.Lerp(j, -0.5f, Size - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
-			float y = SpecialFunctions.Lerp(i, -0.5f, nbRows - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
+			double x = MathUtils.Lerp(j, -0.5f, Size - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
+			double y = MathUtils.Lerp(i, -0.5f, nbRows - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
 
 			db.StrokeWidth(2);
 			db.Circle(x, y, radius);
@@ -105,30 +104,30 @@ namespace SharpGo.Render
 			db.StrokeWidth(1);
 			db.Stroke(255);
 
-			float offset = 0.5f * PANEL_SIZE / board.Size;
+			double offset = 0.5f * PANEL_SIZE / board.Size;
 
 			for (int i = 0; i < board.Size; i++)
 			{
-				float x1 = SpecialFunctions.Lerp(i, -0.5f, board.Size - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
-				float y1 = PANEL_BORDER + offset;
-				float x2 = x1;
-				float y2 = PANEL_SIZE + PANEL_BORDER - offset;
+				double x1 = MathUtils.Lerp(i, -0.5f, board.Size - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
+				double y1 = PANEL_BORDER + offset;
+				double x2 = x1;
+				double y2 = PANEL_SIZE + PANEL_BORDER - offset;
 
 				db.Line(x1, y1, x2, y2);
 			}
 
 			for (int i = 0; i < board.Size; i++)
 			{
-				float x1 = PANEL_BORDER + offset;
-				float y1 = SpecialFunctions.Lerp(i, -0.5f, board.Size - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
-				float x2 = PANEL_SIZE + PANEL_BORDER - offset;
-				float y2 = y1;
+				double x1 = PANEL_BORDER + offset;
+				double y1 = MathUtils.Lerp(i, -0.5f, board.Size - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER);
+				double x2 = PANEL_SIZE + PANEL_BORDER - offset;
+				double y2 = y1;
 
 				db.Line(x1, y1, x2, y2);
 			}
 		}
 
-		private void DrawPlayer(Board board, Player player, int playerNumber, float x, float y)
+		private void DrawPlayer(Board board, Player player, int playerNumber, double x, double y)
 		{
 			db.TextColor(255);
 			db.FontSize(24);
@@ -174,7 +173,7 @@ namespace SharpGo.Render
 			db.Text($"{(game.GameHasEnded ? "Game has ended" : "")}", WIDTH / 2 + PANEL_BORDER, PANEL_BORDER + PANEL_SIZE / 2 + 50);
 		}
 
-		private void DrawConnectedIntersections(Board board, int i, int j, int r, int g, int b, float radius)
+		private void DrawConnectedIntersections(Board board, int i, int j, int r, int g, int b, double radius)
 		{
 			var connectedIntersections = board.Utils.GetConnectedIntersections(i, j);
 			connectedIntersections.Add(board[i, j]);
@@ -185,10 +184,10 @@ namespace SharpGo.Render
 
 			foreach (var intersection in connectedIntersections)
 			{
-				float x = SpecialFunctions.Lerp(
+				double x = MathUtils.Lerp(
 					intersection.J, -0.5f, board.Size - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER
 				);
-				float y = SpecialFunctions.Lerp(
+				double y = MathUtils.Lerp(
 					intersection.I, -0.5f, board.Size - 0.5f, PANEL_BORDER, PANEL_SIZE + PANEL_BORDER
 				);
 

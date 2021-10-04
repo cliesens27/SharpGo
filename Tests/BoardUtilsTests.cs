@@ -10,9 +10,8 @@ namespace SharpGo.Tests
 		[TestMethod]
 		public void Test_IsOccupied()
 		{
-			Board b = new Board();
-			BoardUtils utils = new BoardUtils(b);
-			RandomNoPassPlayer p = new RandomNoPassPlayer(PlayerColor.Black);
+			Board b = new();
+			BoardUtils utils = new(b);
 
 			Assert.IsFalse(utils.IsOccupied(0, 0));
 
@@ -26,8 +25,8 @@ namespace SharpGo.Tests
 		[TestMethod]
 		public void Test_IsInsideBoard()
 		{
-			Board b = new Board();
-			BoardUtils utils = new BoardUtils(b);
+			Board b = new();
+			BoardUtils utils = new(b);
 
 			Assert.IsTrue(utils.IsInsideBoard(0, 0));
 			Assert.IsTrue(utils.IsInsideBoard(5, 5));
@@ -41,9 +40,8 @@ namespace SharpGo.Tests
 		[TestMethod]
 		public void Test_IsLegal()
 		{
-			Board b = new Board();
-			BoardUtils utils = new BoardUtils(b);
-			RandomNoPassPlayer p = new RandomNoPassPlayer(PlayerColor.Black);
+			Board b = new();
+			BoardUtils utils = new(b);
 
 			Assert.IsTrue(utils.IsLegal(PlayerColor.Black, 0, 0));
 
@@ -60,9 +58,8 @@ namespace SharpGo.Tests
 		[TestMethod]
 		public void Test_IsEmpty()
 		{
-			Board b = new Board();
-			BoardUtils utils = new BoardUtils(b);
-			RandomNoPassPlayer p = new RandomNoPassPlayer(PlayerColor.Black);
+			Board b = new();
+			BoardUtils utils = new(b);
 
 			Assert.IsTrue(utils.IsEmpty(0, 0));
 
@@ -79,20 +76,17 @@ namespace SharpGo.Tests
 		[TestMethod]
 		public void Test_AreAdjacent()
 		{
-			Board b = new Board();
-			BoardUtils utils = new BoardUtils(b);
-
-			Assert.IsTrue(utils.AreAdjacent(0, 0, 1, 0));
-			Assert.IsTrue(utils.AreAdjacent(18, 18, 18, 17));
-			Assert.IsFalse(utils.AreAdjacent(0, 0, 0, 18));
-			Assert.IsFalse(utils.AreAdjacent(0, 0, 1, 1));
+			Assert.IsTrue(BoardUtils.AreAdjacent(0, 0, 1, 0));
+			Assert.IsTrue(BoardUtils.AreAdjacent(18, 18, 18, 17));
+			Assert.IsFalse(BoardUtils.AreAdjacent(0, 0, 0, 18));
+			Assert.IsFalse(BoardUtils.AreAdjacent(0, 0, 1, 1));
 		}
 
 		[TestMethod]
 		public void Test_CanBeConnected()
 		{
-			Board b = new Board();
-			BoardUtils utils = new BoardUtils(b);
+			Board b = new();
+			BoardUtils utils = new(b);
 			b.PlaceStone(PlayerColor.Black, 0, 0);
 			b.PlaceStone(PlayerColor.Black, 1, 0);
 
@@ -111,8 +105,8 @@ namespace SharpGo.Tests
 		[TestMethod]
 		public void Test_AreAdjacentConnected()
 		{
-			Board b = new Board();
-			BoardUtils utils = new BoardUtils(b);
+			Board b = new();
+			BoardUtils utils = new(b);
 			b.PlaceStone(PlayerColor.Black, 0, 0);
 			b.PlaceStone(PlayerColor.Black, 1, 0);
 
@@ -131,8 +125,8 @@ namespace SharpGo.Tests
 		[TestMethod]
 		public void Test_CountIntersectionLiberties()
 		{
-			Board b = new Board();
-			BoardUtils utils = new BoardUtils(b);
+			Board b = new();
+			BoardUtils utils = new(b);
 
 			b.PlaceStone(PlayerColor.Black, 0, 0);
 			Assert.AreEqual(2, utils.CountIntersectionLiberties(0, 0));
@@ -147,7 +141,7 @@ namespace SharpGo.Tests
 		[TestMethod]
 		public void Test_ComputeScore_ComputeTerritory()
 		{
-			Board b = new Board(5);
+			Board b = new(5);
 			b.PlaceStone(PlayerColor.Black, 0, 1);
 			b.PlaceStone(PlayerColor.White, 0, 2);
 			b.PlaceStone(PlayerColor.Black, 1, 0);
@@ -170,8 +164,8 @@ namespace SharpGo.Tests
 		[TestMethod]
 		public void Test_GetAdjacentIntersections()
 		{
-			Board b = new Board();
-			BoardUtils utils = new BoardUtils(b);
+			Board b = new();
+			BoardUtils utils = new(b);
 
 			Assert.AreEqual(2, utils.GetAdjacentIntersections(0, 0).Count);
 			Assert.AreEqual(4, utils.GetAdjacentIntersections(1, 1).Count);
@@ -182,8 +176,8 @@ namespace SharpGo.Tests
 		[TestMethod]
 		public void Test_GetConnectedIntersections()
 		{
-			Board b = new Board();
-			BoardUtils utils = new BoardUtils(b);
+			Board b = new();
+			BoardUtils utils = new(b);
 
 			b.PlaceStone(PlayerColor.Black, 0, 0);
 			b.PlaceStone(PlayerColor.Black, 0, 1);
@@ -209,8 +203,8 @@ namespace SharpGo.Tests
 		[TestMethod]
 		public void Test_GetAdjacentConnectedIntersections()
 		{
-			Board b = new Board();
-			BoardUtils utils = new BoardUtils(b);
+			Board b = new();
+			BoardUtils utils = new(b);
 
 			b.PlaceStone(PlayerColor.Black, 0, 0);
 			b.PlaceStone(PlayerColor.Black, 0, 1);
@@ -236,8 +230,8 @@ namespace SharpGo.Tests
 		[TestMethod]
 		public void Test_GetLegalIntersections()
 		{
-			Board b = new Board();
-			BoardUtils utils = new BoardUtils(b);
+			Board b = new();
+			BoardUtils utils = new(b);
 
 			b.PlaceStone(PlayerColor.Black, 0, 0);
 			b.PlaceStone(PlayerColor.Black, 0, 1);
@@ -260,8 +254,8 @@ namespace SharpGo.Tests
 		[TestMethod]
 		public void Test_GetCapturableIntersections()
 		{
-			Board b = new Board();
-			BoardUtils utils = new BoardUtils(b);
+			Board b = new();
+			BoardUtils utils = new(b);
 
 			b.PlaceStone(PlayerColor.Black, 0, 0);
 			b.PlaceStone(PlayerColor.Black, 0, 1);
@@ -291,8 +285,8 @@ namespace SharpGo.Tests
 		[TestMethod]
 		public void Test_GetChain()
 		{
-			Board b = new Board();
-			BoardUtils utils = new BoardUtils(b);
+			Board b = new();
+			BoardUtils utils = new(b);
 
 			b.PlaceStone(PlayerColor.Black, 0, 0);
 			b.PlaceStone(PlayerColor.Black, 0, 1);
@@ -322,8 +316,8 @@ namespace SharpGo.Tests
 		[TestMethod]
 		public void Test_GetChains()
 		{
-			Board b = new Board();
-			BoardUtils utils = new BoardUtils(b);
+			Board b = new();
+			BoardUtils utils = new(b);
 
 			b.PlaceStone(PlayerColor.Black, 0, 0);
 			b.PlaceStone(PlayerColor.Black, 0, 1);
@@ -352,8 +346,8 @@ namespace SharpGo.Tests
 		[TestMethod]
 		public void Test_GetEmptyChains()
 		{
-			Board b = new Board();
-			BoardUtils utils = new BoardUtils(b);
+			Board b = new();
+			BoardUtils utils = new(b);
 
 			b.PlaceStone(PlayerColor.Black, 0, 0);
 			b.PlaceStone(PlayerColor.Black, 0, 1);
@@ -383,8 +377,8 @@ namespace SharpGo.Tests
 		[TestMethod]
 		public void Test_ChainsAndLiberties()
 		{
-			Board b = new Board();
-			BoardUtils utils = new BoardUtils(b);
+			Board b = new();
+			BoardUtils utils = new(b);
 
 			b.PlaceStone(PlayerColor.Black, 0, 0);
 			b.PlaceStone(PlayerColor.Black, 0, 1);

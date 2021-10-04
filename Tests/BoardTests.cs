@@ -12,7 +12,7 @@ namespace SharpGo.Tests
 		public void Test_Properties()
 		{
 			int size = 19;
-			Board b = new Board();
+			Board b = new();
 			Assert.IsTrue(b.IsEmpty);
 			Assert.AreEqual(0, b.NbBlackStones);
 			Assert.AreEqual(0, b.NbWhiteStones);
@@ -36,14 +36,14 @@ namespace SharpGo.Tests
 		[ExpectedException(typeof(IndexOutOfRangeException), "Indices should be outside [0, Size]")]
 		public void Test_Indexer_IndexOutsideBoard()
 		{
-			Board b = new Board();
+			Board b = new();
 			var x = b[-1, -1];
 		}
 
 		[TestMethod]
 		public void Test_PlaceStone()
 		{
-			Board b = new Board();
+			Board b = new();
 			b.PlaceStone(PlayerColor.Black, 0, 0);
 			Assert.AreEqual(1, b.NbBlackStones);
 			Assert.AreEqual(State.Black, b[0, 0].State);
@@ -53,7 +53,7 @@ namespace SharpGo.Tests
 		[ExpectedException(typeof(InvalidOperationException), "Intersection (0,0) should be occupied")]
 		public void Test_PlaceStone_OccupiedIntersection()
 		{
-			Board b = new Board();
+			Board b = new();
 			b.PlaceStone(PlayerColor.Black, 0, 0);
 			b.PlaceStone(PlayerColor.Black, 0, 0);
 		}
@@ -62,15 +62,14 @@ namespace SharpGo.Tests
 		[ExpectedException(typeof(IndexOutOfRangeException), "Indices should be outside [0, Size]")]
 		public void Test_PlaceStone_IndexOutsideBoard()
 		{
-			Board b = new Board();
+			Board b = new();
 			b.PlaceStone(PlayerColor.Black, -1, -1);
 		}
 
 		[TestMethod]
 		public void Test_Capture()
 		{
-			Board b = new Board();
-			RandomNoPassPlayer p = new RandomNoPassPlayer(PlayerColor.Black);
+			Board b = new();
 
 			b.PlaceStone(PlayerColor.Black, 0, 0);
 			Assert.AreEqual(1, b.NbBlackStones);
@@ -86,15 +85,14 @@ namespace SharpGo.Tests
 		[ExpectedException(typeof(IndexOutOfRangeException), "Indices should be outside [0, Size]")]
 		public void Test_Capture_IndexOutsideBoard()
 		{
-			Board b = new Board();
+			Board b = new();
 			b.PlaceStone(PlayerColor.Black, -1, -1);
 		}
 
 		[TestMethod]
 		public void Test_UpdateEmptyIntersections()
 		{
-			Board b = new Board();
-			RandomNoPassPlayer p = new RandomNoPassPlayer(PlayerColor.Black);
+			Board b = new();
 
 			for (int i = 0; i < b.Size; i++)
 			{

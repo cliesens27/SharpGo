@@ -6,7 +6,7 @@ namespace SharpGo.Game
 {
 	public class BoardUtils
 	{
-		private readonly HashSet<Intersection> visited = new HashSet<Intersection>();
+		private readonly HashSet<Intersection> visited = new();
 		private readonly Board board;
 
 		public BoardUtils(Board board) => this.board = board;
@@ -38,10 +38,6 @@ namespace SharpGo.Game
 		}
 
 		public bool IsEmpty(int i, int j) => !IsOccupied(i, j);
-
-		public bool AreAdjacent(int i1, int j1, int i2, int j2) =>
-			(i1 == i2 && (j1 == j2 + 1 || j1 == j2 - 1)) ||
-			(j1 == j2 && (i1 == i2 + 1 || i1 == i2 - 1));
 
 		public bool CanBeConnected(int i1, int j1, int i2, int j2) =>
 			board[i1, j1].State == board[i2, j2].State ||
@@ -218,7 +214,7 @@ namespace SharpGo.Game
 
 		public HashSet<Intersection> GetCapturableIntersections(PlayerColor color)
 		{
-			HashSet<Intersection> intersections = new HashSet<Intersection>();
+			HashSet<Intersection> intersections = new();
 
 			for (int i = 0; i < board.Size; i++)
 			{
@@ -294,6 +290,10 @@ namespace SharpGo.Game
 			return chains;
 		}
 
+		public static bool AreAdjacent(int i1, int j1, int i2, int j2) =>
+			(i1 == i2 && (j1 == j2 + 1 || j1 == j2 - 1)) ||
+			(j1 == j2 && (i1 == i2 + 1 || i1 == i2 - 1));
+
 		private HashSet<Intersection> GetConnectedIntersectionsAux(int i, int j)
 		{
 			HashSet<Intersection> connectedIntersections = GetAdjacentConnectedIntersections(i, j);
@@ -313,7 +313,7 @@ namespace SharpGo.Game
 			return SmartUnion(connectedIntersections, toAdd);
 		}
 
-		private HashSet<Intersection> SmartUnion(HashSet<Intersection> a, HashSet<Intersection> b)
+		private static HashSet<Intersection> SmartUnion(HashSet<Intersection> a, HashSet<Intersection> b)
 		{
 			if (a.Count > b.Count)
 			{

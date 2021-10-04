@@ -2,13 +2,12 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <StartupObject>SharpGo.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DrawingBoardNET.Source" Version="1.0.0.1" />
-    <PackageReference Include="Mathlib.NET.Source" Version="1.0.0.2" />
+    <PackageReference Include="DrawingBoardNET.Source" Version="1.0.1" />
   </ItemGroup>
 
 </Project>
